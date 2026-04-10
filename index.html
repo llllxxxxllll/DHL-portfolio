@@ -3,203 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>丁贺亮 - UX 设计师作品集</title>
+    <title>丁贺亮-作品集</title>
     
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- 引入 React 核心库 -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        /* 基础样式与动画设定 */
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 强制确保动画执行前的初始状态 */
+        .reveal-hidden { opacity: 0; transform: translateY(30px) scale(0.98); }
+        .reveal-visible { opacity: 1; transform: translateY(0) scale(1); }
     </style>
 </head>
-<body class="selection:bg-black selection:text-white">
+<body class="selection:bg-black selection:text-white bg-[#fafafa]">
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- SVG 图标组件 (替代 lucide-react) ---
-        const ArrowLeftIcon = ({ size=16, strokeWidth=1.5, className="" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-        );
-        const MailIcon = ({ size=20, strokeWidth=1, className="" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        );
-        const PhoneIcon = ({ size=20, strokeWidth=1, className="" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        );
-        const ChevronRightIcon = ({ size=40, strokeWidth=1, className="" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6"/></svg>
-        );
-        const ArrowUpRightIcon = ({ size=20, strokeWidth=1.5, className="" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        );
+        // --- 图标组件 ---
+        const ArrowLeftIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>);
+        const MailIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>);
+        const PhoneIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>);
+        const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
+        const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
-        // --- 数据中心 ---
+        // --- 数据集 ---
         const personalInfo = {
-            name: "丁贺亮",
-            enName: "HELIANG",
-            lastName: "DING",
-            gender: "Male / 男",
+            name: "丁贺亮", enName: "HELIANG", lastName: "DING",
             motto: "“平衡体验细节与商业目标，将业务目标拆解为可执行的设计策略。15年深耕，持续深入项目一线。”",
-            phone: "156-6990-7825",
-            email: "578458461@qq.com",
-            school: "厦门大学",
-            degree: "本科",
-            major: "数字媒体艺术专业",
+            phone: "156-6990-7825", email: "578458461@qq.com",
+            school: "厦门大学", degree: "本科", major: "数字媒体艺术专业",
             avatar: "https://images.unsplash.com/photo-1605462863863-10d9e47e15ee?auto=format&fit=crop&q=80&w=1200&h=1600" 
         };
+
+        const workExperienceData = [
+            { time: "至今 — 2019.09", company: "杭州ACCESS品牌管理集团", role: "UED 负责人", description: "全面负责11人UED团队管理与人才梯度建设，统筹电商C端VTN、B端ABM及海外双平台体验设计。建立跨端设计语言与组件库，设计效能提升约40%。" },
+            { time: "2019.07 — 2016.11", company: "杭州金诚集团", role: "设计组负责人", description: "统筹体验与视觉设计两大专业方向。全面负责“金诚逸APP”整体体验，主导多个从0到1的创新项目。" },
+            { time: "2016.06 — 2014.11", company: "墨仕(厦门)电子商务有限公司", role: "体验设计师", description: "独立负责“敢约”、“友空”等多款社交产品从概念到上线的完整体验设计。主导输出产品设计策略。" },
+            { time: "2014.10 — 2011.07", company: "厦门悟都软件技术有限公司", role: "视觉设计师", description: "服务华为、联想、OPPO等一线手机厂商，主导移动操作系统定制化UI及动效视觉设计。" }
+        ];
 
         const mockGallery = [
             "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=2000",
             "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80&w=2000",
             "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000",
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000",
-            "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2000"
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000"
         ];
 
         const corePortfolioData = [
             {
-                groupId: "group-1",
-                groupTitle: "AI 进化",
+                groupId: "group-1", groupTitle: "AI 进化",
                 projects: [
-                    { id: 1, title: "AI获客中心", subtitle: "AI赋能B端营销中台 • 2025", cover: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&q=80&w=1200&h=675", description: "ABM推出的智能营销中台「编导小A」，定位为经销商的AI专属编导。", sections: [{ title: "设计挑战", content: "将复杂的AI能力转化为经销商可感知的“傻瓜式”体验。" }, { title: "体验策略", content: "确立“零门槛创作、高质量输出、全链路赋能”原则。" }, { title: "项目成果", content: "上线1月，频道DAU目标达成125%；IP生成率93.1%。" }], gallery: mockGallery },
-                    { id: 2, title: "VTN App AI营养师", subtitle: "AI原生健康智能体 • 2025", cover: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=1200&h=675", description: "属于AI原生营养健康智能体，内置于VTN App，为用户提供7×24小时专属健康顾问服务。", sections: [{ title: "技术与场景", content: "基于多模型协同的RAG系统。场景覆盖从商详页到主动触达。" }, { title: "设计策略", content: "确立“专业可信、拟人温暖、场景融合”原则。" }, { title: "项目成果", content: "上线3个月内用户渗透率达63%，月活用户73.7w。" }], gallery: mockGallery }
+                    { id: 1, title: "AI获客中心", subtitle: "AI赋能B端营销中台 • 2025", cover: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery },
+                    { id: 2, title: "VTN App AI营养师", subtitle: "AI原生健康智能体 • 2025", cover: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery }
                 ]
             },
             {
-                groupId: "group-2",
-                groupTitle: "C端电商",
+                groupId: "group-2", groupTitle: "C端电商",
                 projects: [
-                    { id: 3, title: "VTN App 品牌升级", subtitle: "品牌重塑 & 全链路体验 • 2022-至今", cover: "https://images.unsplash.com/photo-1616077168079-7e09a6a715f5?auto=format&fit=crop&q=80&w=1200&h=675", description: "确立「主流之前」作为核心价值主张的重大业务战略升级。", sections: [{ title: "项目目标", content: "传递VTN'发现引领未来的新方向'定位。" }, { title: "设计统筹", content: "协调体验与视觉团队并行输出。" }, { title: "项目成果", content: "构建全新设计语言，首页点击率提升23.24%。" }], gallery: mockGallery },
-                    { id: 4, title: "VTN 福利甄选频道", subtitle: "常态化闪购体验设计 • 2024", cover: "https://images.unsplash.com/photo-1605152276897-4f618f831968?auto=format&fit=crop&q=80&w=1200&h=675", description: "从一个限时触发的促销活动，演进为持续销售的常态化闪购型频道。", sections: [{ title: "业务目标", content: "提升流量利用效率，优化用户消费心智。" }, { title: "设计策略", content: "确立“常态化可逛性+峰值抢购氛围”双模态设计原则。" }, { title: "项目成果", content: "活动GMV目标达成率126%；日均点击转化提升15.53%。" }], gallery: mockGallery },
-                    { id: 5, title: "VTN 自研直播", subtitle: "信任式内容场直播体系 • 2025", cover: "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?auto=format&fit=crop&q=80&w=1200&h=675", description: "摆脱对第三方小程序的依赖，将直播能力全面转向自主可控。", sections: [{ title: "项目定位", content: "构建符合VTN品牌调性的专属直播能力。" }, { title: "体验架构", content: "确立“沉浸感、互动性、数据化、品牌力”体验原则。" }, { title: "项目成果", content: "核心功能摆脱依赖，迭代效率跃升。" }], gallery: mockGallery },
-                    { id: 6, title: "VTN 核心业务体系", subtitle: "内容社区与用户激励体系 • 2022-2024", cover: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200&h=675", description: "主导VTN平台内部超过7个核心业务频道的设计与落地。", sections: [{ title: "设计核心", content: "结合业务目标，构建体验框架。平衡商业诉求与用户易用性。" }, { title: "产出与价值", content: "建立品牌级设计语言与可复用组件库。" }], gallery: mockGallery }
-                ]
-            },
-            {
-                groupId: "group-3",
-                groupTitle: "B端经营及海外建设",
-                projects: [
-                    { id: 7, title: "智能CRM-生意参谋", subtitle: "B端经销商AI经营助手 • 2023-2025", cover: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200&h=675", description: "变被动响应为主动经营的AI助手，主动识别生意机会与服务节点。", sections: [{ title: "设计策略", content: "确立“数据可感知、机会可识别、行动可引导”设计原则。" }, { title: "用户动线", content: "设计从“机会列表→详情洞察→行动引导”的最短闭环路径。" }, { title: "项目成果", content: "上线6月提供机会260w条，覆盖会员81w。" }], gallery: mockGallery },
-                    { id: 8, title: "海外 NTX & NTXBiz", subtitle: "东南亚双平台体验设计 • 2024-2025", cover: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1200&h=675", description: "将集团双平台模式复制至东南亚市场，打造面向海外消费者的本土化版本。", sections: [{ title: "统筹与落地", content: "定义双平台设计原则。深度适配本土语言、支付与文化习惯。" }, { title: "项目成果", content: "3个月内完成双平台从0到1上线；沉淀两套海外设计组件库。" }], gallery: mockGallery }
-                ]
-            },
-            {
-                groupId: "group-4", 
-                groupTitle: "其他项目",
-                projects: [
-                    { id: 10, title: "IM-怪兽 / 爱小丫", subtitle: "社交与创新领域探索 • 2018-2019", cover: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=1200&h=675", description: "在社交、区块链游戏及垂直教育等领域的从0到1探索项目组合。", sections: [{ title: "IM怪兽 (区块链社交)", content: "融合即时通讯与宠物养成的早期创新应用。" }, { title: "爱小丫 (亲子平台)", content: "面向学龄前儿童家庭，解决传统碎片化育儿痛点。" }], gallery: mockGallery }
+                    { id: 3, title: "VTN App 品牌升级", subtitle: "品牌重塑 & 全链路体验 • 2022-至今", cover: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery },
+                    { id: 4, title: "VTN 福利甄选频道", subtitle: "常态化闪购体验设计 • 2024", cover: "https://images.unsplash.com/photo-1605152276897-4f618f831968?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery }
                 ]
             }
         ];
 
         const managementData = [
             {
-                groupId: "group-5",
-                projects: [
-                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "流程提效与组织发展 • 2019-至今", cover: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200&h=675", description: "全面负责11人UED团队管理、人才梯度建设以及集团5大产品线的设计体系搭建工作。", sections: [{ title: "组织与人才", content: "推行“设计Owner”文化，提升团队跨部门影响力。" }, { title: "流程与系统化", content: "主导建立品牌级设计语言与可复用组件库。" }, { title: "效能提升", content: "团队整体设计效率提升约40%，内审通过率显著提高。" }], gallery: mockGallery }
+                groupId: "group-5", projects: [
+                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "流程提效与组织发展 • 2019-至今", cover: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery }
                 ]
             }
         ];
 
-        // --- 渐进式图片加载组件 ---
-        const ProgressiveImage = ({ src, alt }) => {
+        // --- 渐进式图片加载 (深度修复版) ---
+        const ProgressiveImage = ({ src, alt, className = "" }) => {
             const [isLoaded, setIsLoaded] = useState(false);
-            const [hasError, setHasError] = useState(false);
+            const [isError, setIsError] = useState(false);
+            
+            // 智能处理 URL 参数，避免由于重复 ? 或 & 导致的加载失败
+            const getFinalSrc = (url) => {
+                if (!url) return "";
+                const baseParams = "auto=format&fit=crop&q=60";
+                return url.includes('?') ? `${url}&${baseParams}` : `${url}?${baseParams}`;
+            };
 
             return (
-                <div className="relative w-full overflow-hidden bg-gray-100 min-h-[30vh] md:min-h-[50vh] flex items-center justify-center">
-                    {!isLoaded && !hasError && <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>}
-                    {hasError && <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-light tracking-widest text-sm uppercase">Image load failed</div>}
-                    <img
-                        src={src}
-                        alt={alt}
+                <div className={`relative w-full overflow-hidden bg-[#ededed] flex items-center justify-center ${className}`}>
+                    {!isLoaded && !isError && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#ededed] to-[#e8e8e8] animate-pulse"></div>
+                    )}
+                    
+                    {isError && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#f0f0f0] text-black/10">
+                            <span className="text-[10px] tracking-[0.2em] uppercase font-light">Image Unavailable</span>
+                        </div>
+                    )}
+
+                    <img 
+                        src={getFinalSrc(src)}
+                        alt={alt} 
                         loading="lazy" 
                         onLoad={() => setIsLoaded(true)}
-                        onError={() => setHasError(true)}
-                        className={`w-full h-auto object-cover transition-all duration-[1.5s] ease-out will-change-[filter,transform,opacity] ${isLoaded ? "opacity-100 blur-0 scale-100 grayscale" : "opacity-0 blur-xl scale-105"}`}
+                        onError={() => setIsError(true)}
+                        className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 grayscale blur-0" : "opacity-0 blur-lg"}`} 
                     />
                 </div>
             );
         };
 
-        // --- 滚动动画组件 ---
+        // --- 动画组件 (确保返回不空白) ---
         const ScrollReveal = ({ children, delay = 0, className = "" }) => {
             const ref = useRef(null);
             const [isVisible, setIsVisible] = useState(false);
 
             useEffect(() => {
-                const observer = new IntersectionObserver(
-                    ([entry]) => {
-                        if (entry.isIntersecting) {
+                const checkStatus = () => {
+                    if (ref.current) {
+                        const rect = ref.current.getBoundingClientRect();
+                        if (rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0) {
                             setIsVisible(true);
-                            observer.unobserve(entry.target);
+                            return true;
                         }
-                    },
-                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-                );
+                    }
+                    return false;
+                };
+
+                // 初次挂载检查
+                const timer = setTimeout(checkStatus, 60);
+
+                const observer = new IntersectionObserver(([entry]) => {
+                    if (entry.isIntersecting) {
+                        setIsVisible(true);
+                        observer.unobserve(entry.target);
+                    }
+                }, { threshold: 0.05 });
+
                 if (ref.current) observer.observe(ref.current);
-                return () => { if (ref.current) observer.unobserve(ref.current); };
+                
+                return () => {
+                    clearTimeout(timer);
+                    if (ref.current) observer.unobserve(ref.current);
+                };
             }, []);
 
             return (
-                <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-[0.96] translate-y-16"} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+                <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
                     {children}
                 </div>
             );
         };
 
-        // --- 主应用组件 ---
         function App() {
             const [activeProject, setActiveProject] = useState(null);
+            const [activeSection, setActiveSection] = useState('bio');
+            const [toast, setToast] = useState("");
+            const scrollPosRef = useRef(0);
 
             useEffect(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (activeProject) return;
+                const handler = () => {
+                    const sections = ['bio', 'experience', 'projects'];
+                    for (const id of sections) {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            const rect = el.getBoundingClientRect();
+                            if (rect.top <= 160 && rect.bottom >= 160) {
+                                setActiveSection(id);
+                                break;
+                            }
+                        }
+                    }
+                };
+                window.addEventListener('scroll', handler);
+                return () => window.removeEventListener('scroll', handler);
             }, [activeProject]);
 
-            const allProjectsFlat = [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)];
-            let currentIndex = -1;
-            let isLastProject = false;
-            let nextProject = null;
+            const scrollToSection = (id) => {
+                setActiveSection(id);
+                const el = document.getElementById(id);
+                if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                else if (el) { window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
+            };
 
+            const handleCopy = (txt) => {
+                navigator.clipboard.writeText(txt).then(() => {
+                    setToast("复制成功");
+                    setTimeout(() => setToast(""), 2000);
+                });
+            };
+
+            const allProjects = [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)];
+            let nextProject = null;
             if (activeProject) {
-                currentIndex = allProjectsFlat.findIndex(p => p.id === activeProject.id);
-                isLastProject = currentIndex === allProjectsFlat.length - 1;
-                nextProject = isLastProject ? null : allProjectsFlat[currentIndex + 1];
+                const curIdx = allProjects.findIndex(p => p.id === activeProject.id);
+                nextProject = allProjects[curIdx + 1] || null;
             }
 
-            const renderProjectGroup = (group, index) => (
+            const renderProjectGroup = (group) => (
                 <section key={group.groupId}>
                     {group.groupTitle && (
-                        <ScrollReveal>
-                            <div className="mb-20 pl-2">
-                                <h2 className="text-4xl md:text-5xl font-thin tracking-tight">{group.groupTitle}</h2>
-                            </div>
-                        </ScrollReveal>
+                        <ScrollReveal><div className="mb-12 pl-2"><h2 className="text-4xl md:text-5xl font-thin tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
-                        {group.projects.map((project, pIndex) => (
-                            <ScrollReveal key={project.id} delay={pIndex * 100}>
-                                <div className="group cursor-pointer rounded-none transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-white p-6 -m-6 border border-transparent hover:border-black/5 hover:z-10 relative" onClick={() => setActiveProject(project)}>
-                                    <div className="overflow-hidden aspect-[16/9] bg-gray-100 mb-10 shadow-sm">
-                                        <img src={project.cover} alt={project.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale" />
+                        {group.projects.map((p, i) => (
+                            <ScrollReveal key={p.id} delay={i * 100}>
+                                <div className="group cursor-pointer p-6 -m-6 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent hover:bg-white border border-transparent hover:border-black/5 hover:z-10 relative" 
+                                     onClick={() => { scrollPosRef.current = window.scrollY; setActiveProject(p); window.scrollTo(0,0); }}>
+                                    
+                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-5 shadow-sm">
+                                        <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full group-hover:scale-105 transition-transform duration-1000" />
                                     </div>
+                                    
                                     <div className="flex justify-between items-start pr-4">
                                         <div>
-                                            <h3 className="text-3xl font-medium tracking-tight mb-4 group-hover:underline decoration-1 underline-offset-8">{project.title}</h3>
-                                            <p className="text-sm text-black/50 font-light tracking-widest">{project.subtitle}</p>
+                                            <h3 className="text-xl font-medium tracking-tight mb-3 group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
+                                            <p className="text-sm text-black/50 font-light tracking-widest">{p.subtitle}</p>
                                         </div>
-                                        <div className="w-12 h-12 rounded-full border border-black/20 flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
-                                            <ArrowUpRightIcon size={20} />
-                                        </div>
+                                        <div className="w-12 h-12 rounded-full border border-black/20 flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1"><ArrowUpRightIcon /></div>
                                     </div>
                                 </div>
                             </ScrollReveal>
@@ -208,151 +239,177 @@
                 </section>
             );
 
-            return (
-                <div className="min-h-screen bg-[#fafafa] text-black font-sans">
-                    {activeProject ? (
-                        <article className="pb-0 bg-[#fafafa] min-h-screen relative z-10 fade-in">
-                            <header className="sticky top-0 z-50 bg-[#fafafa]/90 backdrop-blur-md border-b border-black/10 py-6 px-6 md:px-12">
-                                <div className="max-w-[90rem] mx-auto flex items-center justify-between">
-                                    <button onClick={() => setActiveProject(null)} className="group flex items-center gap-3 text-sm font-light uppercase tracking-widest hover:opacity-60 transition-opacity">
-                                        <span className="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center group-hover:border-black transition-colors"><ArrowLeftIcon /></span>
-                                        返回作品集
-                                    </button>
-                                </div>
-                            </header>
-                            <main className="max-w-[90rem] mx-auto pt-24 md:pt-32">
-                                <div className="max-w-4xl mx-auto px-6 mb-24 md:mb-32">
-                                    <ScrollReveal>
-                                        <h1 className="text-4xl md:text-6xl font-thin tracking-tight mb-4 leading-tight">{activeProject.title}</h1>
-                                        <p className="text-xl md:text-2xl text-black/40 font-light mb-16 tracking-wide">{activeProject.subtitle}</p>
+            if (activeProject) {
+                return (
+                    <div className="bg-[#fafafa] min-h-screen fade-in">
+                        <header className="sticky top-0 z-50 bg-[#fafafa]/90 backdrop-blur-md py-6 px-6 md:px-12 border-b border-black/[0.05]">
+                            <div className="max-w-[90rem] mx-auto flex items-center justify-between">
+                                <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
+                                        className="group flex items-center gap-3 text-sm font-light uppercase tracking-widest hover:opacity-60 transition-opacity">
+                                    <span className="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center group-hover:border-black transition-colors"><ArrowLeftIcon /></span> 返回作品集
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <main className="max-w-[90rem] mx-auto pt-20 bg-[#fafafa]">
+                            <div className="px-6 md:px-12 mb-20">
+                                <ScrollReveal>
+                                    <h1 className="text-5xl md:text-6xl font-thin tracking-tight mb-4">{activeProject.title}</h1>
+                                    <p className="text-xl text-black/40 font-light tracking-wide">{activeProject.subtitle}</p>
+                                </ScrollReveal>
+                            </div>
+
+                            <div className="flex flex-col gap-0 md:gap-2 px-0 md:px-6 mb-16">
+                                {activeProject.gallery?.map((src, idx) => (
+                                    <ScrollReveal key={idx} delay={idx * 50}>
+                                        <ProgressiveImage src={src} alt={`Detail ${idx + 1}`} />
                                     </ScrollReveal>
-                                    <ScrollReveal delay={100}>
-                                        <div className="prose prose-lg prose-p:text-black/80 max-w-none">
-                                            <p className="text-xl md:text-2xl font-light leading-relaxed mb-20 text-black/70">{activeProject.description}</p>
-                                            <div className="grid grid-cols-1 gap-12 md:gap-16 mt-16 border-t border-black/10 pt-16">
-                                                {activeProject.sections?.map((section, idx) => (
-                                                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-12">
-                                                        <h3 className="md:col-span-3 text-sm font-light uppercase tracking-[0.2em] text-black/40 m-0 pt-1">{section.title}</h3>
-                                                        <div className="md:col-span-9"><p className="whitespace-pre-line text-lg font-light leading-relaxed m-0 text-black/80">{section.content}</p></div>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                ))}
+                            </div>
+
+                            <div className="pt-12 pb-40 flex justify-center px-6">
+                                {nextProject ? (
+                                    <button onClick={() => { setActiveProject(nextProject); window.scrollTo(0,0); }} 
+                                            className="group flex flex-col items-center gap-6 px-16 md:px-44 py-20 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent hover:bg-white border border-transparent hover:border-black/5 rounded-none text-center">
+                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">下一个作品</span>
+                                        <div className="text-2xl md:text-5xl font-light tracking-tight transition-all group-hover:underline underline-offset-[20px] decoration-1">
+                                            {nextProject.title}
                                         </div>
-                                    </ScrollReveal>
-                                </div>
-                                <div className="w-full flex flex-col gap-0 md:gap-2 px-0 md:px-6 mb-32">
-                                    {activeProject.gallery?.map((imgSrc, idx) => (
-                                        <ScrollReveal key={idx} delay={idx * 50}>
-                                            <ProgressiveImage src={imgSrc} alt={`Detail ${idx + 1}`} />
-                                        </ScrollReveal>
-                                    ))}
-                                </div>
-                            </main>
-                            <div className="w-full px-0">
-                                {isLastProject ? (
-                                    <button onClick={() => setActiveProject(null)} className="w-full py-16 md:py-24 border-t border-black/10 bg-white text-center font-light text-2xl md:text-4xl tracking-tight hover:bg-black hover:text-white transition-colors duration-500 flex items-center justify-center gap-4 group">返回首页</button>
+                                    </button>
                                 ) : (
-                                    <button onClick={() => setActiveProject(nextProject)} className="w-full py-16 md:py-24 border-t border-black/10 bg-white text-center font-light text-2xl md:text-4xl tracking-tight hover:bg-black hover:text-white transition-colors duration-500 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 group">
-                                        <span className="text-black/40 group-hover:text-white/50 text-sm md:text-2xl tracking-widest transition-colors">下一个作品 / </span>
-                                        <span className="flex items-center gap-4 md:gap-6">{nextProject.title} <ChevronRightIcon className="group-hover:translate-x-4 transition-transform duration-500" /></span>
+                                    <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
+                                            className="group px-16 md:px-44 py-20 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent hover:bg-white border border-transparent hover:border-black/5 rounded-none text-2xl md:text-5xl font-light tracking-tight uppercase">
+                                        返回作品列表
                                     </button>
                                 )}
                             </div>
-                        </article>
-                    ) : (
-                        <div className="fade-in">
-                            <header className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 pt-32 pb-24 overflow-hidden border-b border-black/10">
-                                <div className="max-w-[90rem] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center z-10">
-                                    <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1">
-                                        <ScrollReveal>
-                                            <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
-                                                <span className="font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8 ml-1">SELECTED WORKS</span>
-                                                <span className="font-black text-[22vw] lg:text-[13vw] ml-[-1vw]">{personalInfo.lastName}</span>
-                                                <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
-                                                <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80 ml-1">{personalInfo.name}</span>
-                                            </h1>
-                                        </ScrollReveal>
-                                        <ScrollReveal delay={200} className="mt-24 lg:mt-32 max-w-xl pl-1">
-                                            <p className="text-black/30 mb-5 text-xs font-light uppercase tracking-[0.2em]">Design Philosophy</p>
-                                            <p className="font-light text-xl md:text-2xl leading-relaxed text-black/80 tracking-wide">{personalInfo.motto}</p>
-                                            <div className="flex flex-col gap-y-10 mt-16 pt-10 border-t border-black/10">
-                                                <div>
-                                                    <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p>
-                                                    <p className="text-xl font-light tracking-tight">{personalInfo.school} &nbsp; {personalInfo.degree} &nbsp; {personalInfo.major}</p>
-                                                </div>
-                                                <div className="flex flex-wrap gap-x-16 gap-y-6">
-                                                    <div>
-                                                        <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Phone</p>
-                                                        <p className="text-xl font-light tracking-tight">{personalInfo.phone}</p>
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Email</p>
-                                                        <a href={`mailto:${personalInfo.email}`} className="text-xl font-light tracking-tight hover:text-black/50 transition-colors lowercase">{personalInfo.email}</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ScrollReveal>
-                                    </div>
-                                    <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-end lg:justify-center">
-                                        <ScrollReveal delay={400} className="w-full">
-                                            <div className="w-full max-w-[380px] lg:max-w-[420px] mx-auto lg:ml-auto lg:mr-0 aspect-[3/4] overflow-hidden bg-gray-200 group relative shadow-2xl">
-                                                <img src={personalInfo.avatar} alt="Personal Avatar" className="w-full h-full object-cover grayscale opacity-90 transition-transform duration-[2s] group-hover:scale-105" />
-                                            </div>
-                                        </ScrollReveal>
-                                    </div>
-                                </div>
-                            </header>
-                            <main className="max-w-[90rem] mx-auto px-6 py-32">
-                                <ScrollReveal>
-                                    <div className="mb-32 pl-1">
-                                        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">核心项目展示</h2>
-                                        <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Selected Core Projects</p>
-                                    </div>
-                                </ScrollReveal>
-                                <div className="space-y-48 mb-48">
-                                    {corePortfolioData.map((group, index) => renderProjectGroup(group, index))}
-                                </div>
-                                <ScrollReveal>
-                                    <div className="mb-32 pl-1 border-t border-black/10 pt-32">
-                                        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">团队管理</h2>
-                                        <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Team Management & Leadership</p>
-                                    </div>
-                                </ScrollReveal>
-                                <div className="space-y-48">
-                                    {managementData.map((group, index) => renderProjectGroup(group, index))}
-                                </div>
-                            </main>
-                            <footer className="bg-black text-white py-32 mt-12">
-                                <div className="max-w-[90rem] mx-auto px-6 md:px-12">
-                                    <ScrollReveal>
-                                        <div className="flex flex-col lg:flex-row justify-between items-start gap-16">
-                                            <div className="max-w-3xl">
-                                                <h2 className="text-6xl md:text-8xl tracking-tighter mb-16 leading-[0.9]">
-                                                    <span className="font-thin">LET'S CREATE</span><br/>
-                                                    <span className="font-black text-white/40">SOMETHING</span><br/>
-                                                    <span className="font-thin">TOGETHER.</span>
-                                                </h2>
-                                                <div className="flex flex-wrap gap-10">
-                                                    <a href={`mailto:${personalInfo.email}`} className="flex items-center gap-4 text-sm md:text-base font-light lowercase tracking-widest hover:text-white/60 transition-colors">
-                                                        <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><MailIcon /></span>
-                                                        {personalInfo.email}
-                                                    </a>
-                                                    <a href={`tel:${personalInfo.phone}`} className="flex items-center gap-4 text-sm md:text-base font-light uppercase tracking-widest hover:text-white/60 transition-colors">
-                                                        <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><PhoneIcon /></span>
-                                                        {personalInfo.phone}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col items-start lg:items-end gap-2 text-white/40 text-sm font-light uppercase tracking-[0.2em] lg:mt-0 mt-12">
-                                                <p>Based in China</p>
-                                                <p className="mt-12 text-xs opacity-30 font-sans tracking-normal">© {new Date().getFullYear()} Heliang Ding. All rights reserved.</p>
-                                            </div>
-                                        </div>
-                                    </ScrollReveal>
-                                </div>
-                            </footer>
+                        </main>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-[#fafafa] text-black">
+                    {toast && <div className="fixed top-12 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-4 rounded-full text-sm z-[1000] fade-in shadow-2xl">{toast}</div>}
+                    
+                    <nav className="fixed top-0 left-0 w-full z-[100] bg-[#fafafa]/90 backdrop-blur-md py-5 border-b border-black/[0.05]">
+                        <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex justify-between items-center">
+                            <div className="font-bold tracking-[0.2em] text-sm uppercase hidden md:block">DING HELIANG</div>
+                            <div className="flex gap-8 text-xs md:text-sm tracking-widest mx-auto md:mx-0">
+                                <button onClick={() => scrollToSection('bio')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'bio' ? 'text-black' : 'text-black/30 hover:text-black'}`}>个人简介</button>
+                                <button onClick={() => scrollToSection('experience')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'experience' ? 'text-black' : 'text-black/30 hover:text-black'}`}>工作履历</button>
+                                <button onClick={() => scrollToSection('projects')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'projects' ? 'text-black' : 'text-black/30 hover:text-black'}`}>核心项目作品</button>
+                            </div>
                         </div>
-                    )}
+                    </nav>
+
+                    <header id="bio" className="relative min-h-screen flex flex-col justify-center pt-32 pb-16">
+                        <div className="absolute top-0 left-0 w-full flex justify-center pt-24 md:pt-32 overflow-hidden select-none pointer-events-none z-0">
+                            <span className="text-[22vw] lg:text-[23vw] font-black text-black/[0.03] tracking-tighter leading-[0.8] whitespace-nowrap uppercase">PORTFOLIO</span>
+                        </div>
+                        <div className="max-w-[90rem] mx-auto w-full px-6 md:px-12 grid lg:grid-cols-12 gap-12 items-center z-10 relative mt-12 md:mt-20">
+                            <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1">
+                                <ScrollReveal>
+                                    <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
+                                        <span className="font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8 ml-1">SELECTED WORKS</span>
+                                        <span className="font-black text-[22vw] lg:text-[13vw] ml-[-1vw]">{personalInfo.lastName}</span>
+                                        <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
+                                        <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80 ml-1">{personalInfo.name}</span>
+                                    </h1>
+                                </ScrollReveal>
+                                <ScrollReveal delay={200} className="mt-20 lg:mt-24 max-w-xl pl-1">
+                                    <p className="text-black/30 mb-5 text-xs font-light uppercase tracking-[0.2em]">Design Philosophy</p>
+                                    <p className="font-light text-xl md:text-2xl leading-relaxed text-black/80 tracking-wide">{personalInfo.motto}</p>
+                                    <div className="flex flex-col gap-y-10 mt-16 pt-10 border-t border-black/[0.05]">
+                                        <div><p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p><p className="text-xl font-light tracking-tight">{personalInfo.school} / {personalInfo.degree} / {personalInfo.major}</p></div>
+                                        <div className="flex flex-wrap gap-x-16 gap-y-6">
+                                            <div><p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Phone</p><div className="flex items-center gap-3"><p className="text-xl font-light tracking-tight">{personalInfo.phone}</p><button onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))} className="text-black/30 hover:text-black transition-colors"><CopyIcon/></button></div></div>
+                                            <div><p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Email</p><div className="flex items-center gap-3"><p className="text-xl font-light tracking-tight lowercase">{personalInfo.email}</p><button onClick={() => handleCopy(personalInfo.email)} className="text-black/30 hover:text-black transition-colors"><CopyIcon/></button></div></div>
+                                        </div>
+                                    </div>
+                                </ScrollReveal>
+                            </div>
+                            <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-end">
+                                <ScrollReveal delay={400} className="w-full max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed] shadow-2xl">
+                                    <img src={personalInfo.avatar} className="w-full h-full object-cover grayscale opacity-90 transition-transform duration-[2s] hover:scale-105" />
+                                </ScrollReveal>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-[90rem] mx-auto px-6 md:px-12 py-20">
+                        <section id="experience" className="mb-32 pt-12 border-t border-black/[0.05]">
+                            <ScrollReveal><div className="mb-16 pl-1">
+                                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">工作履历</h2>
+                                <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Professional Experience</p>
+                            </div></ScrollReveal>
+                            <div className="hidden md:block w-full relative pb-12 pt-8">
+                                <div className="w-full relative flex py-32 md:py-40 px-0">
+                                    <div className="absolute left-0 w-full h-[1px] bg-black/10 top-1/2 -translate-y-1/2"></div>
+                                    <div className="grid grid-cols-4 w-full">
+                                        {workExperienceData.map((exp, idx) => (
+                                            <ScrollReveal key={idx} delay={idx * 150} className="relative flex justify-center group cursor-default">
+                                                <div className="absolute w-[11px] h-[11px] bg-[#fafafa] border border-black rounded-full top-1/2 -translate-y-1/2 group-hover:bg-black group-hover:scale-[1.5] transition-all z-20"></div>
+                                                <div className={`absolute w-[1px] bg-black/15 ${idx%2===0 ? 'bottom-1/2 mb-2 h-8' : 'top-1/2 mt-2 h-8'} group-hover:bg-black/40 transition-all z-10`}></div>
+                                                <div className={`absolute left-1/2 -translate-x-1/2 ${idx%2===0 ? 'top-1/2 mt-8' : 'bottom-1/2 mb-8'}`}><p className="text-xs font-light tracking-[0.1em] text-black/50 uppercase whitespace-nowrap">{exp.time}</p></div>
+                                                <div className={`absolute w-[90%] left-1/2 -translate-x-1/2 ${idx%2===0 ? 'bottom-1/2 mb-16' : 'top-1/2 mt-16'}`}>
+                                                    <div className="flex flex-col"><h3 className="text-lg xl:text-xl font-bold tracking-tight mb-1">{exp.company}</h3><p className="text-sm font-medium text-black/50 mb-3">{exp.role}</p><p className="text-[12px] font-light leading-relaxed text-black/60">{exp.description}</p></div>
+                                                </div>
+                                            </ScrollReveal>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="block md:hidden border-l border-black/20 ml-2 mt-8">
+                                {workExperienceData.map((exp, idx) => (
+                                    <ScrollReveal key={idx} delay={idx * 100} className="relative pl-6 mb-12 group cursor-default">
+                                        <div className="absolute w-[11px] h-[11px] bg-[#fafafa] border border-black rounded-full -left-[6px] top-1 group-hover:bg-black transition-all z-10"></div>
+                                        <p className="text-[11px] font-light tracking-[0.1em] text-black/50 uppercase mb-2">{exp.time}</p>
+                                        <h3 className="text-lg font-bold tracking-tight mb-1">{exp.company}</h3>
+                                        <p className="text-xs font-medium text-black/50 mb-3">{exp.role}</p>
+                                        <p className="text-[12px] font-light leading-relaxed text-black/60">{exp.description}</p>
+                                    </ScrollReveal>
+                                ))}
+                            </div>
+                        </section>
+
+                        <div id="projects" className="pt-8 border-t border-black/[0.05]">
+                            <ScrollReveal><div className="mb-12 pl-1 pt-8">
+                                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">核心项目作品</h2>
+                                <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Selected Core Projects</p>
+                            </div></ScrollReveal>
+                            <div className="space-y-32 mb-32">{corePortfolioData.map(renderProjectGroup)}</div>
+
+                            <div className="pt-12 border-t border-black/[0.05]">
+                                <ScrollReveal><div className="mb-12 pl-1 pt-8">
+                                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">团队管理</h2>
+                                    <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Team Management & Leadership</p>
+                                </div></ScrollReveal>
+                                <div className="space-y-32">{managementData.map(renderProjectGroup)}</div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <footer className="bg-black text-white py-24 mt-16 border-t border-white/5">
+                        <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex flex-col lg:flex-row justify-between items-start gap-16">
+                            <ScrollReveal>
+                                <h2 className="text-6xl md:text-8xl tracking-tighter mb-16 leading-[0.9]">
+                                    <span className="font-thin">LET'S CREATE</span><br/><span className="font-black text-white/40">SOMETHING</span><br/><span className="font-thin">TOGETHER.</span>
+                                </h2>
+                                <div className="flex flex-wrap gap-10">
+                                    <div className="flex items-center gap-4 text-sm md:text-base font-light tracking-widest hover:text-white/60 transition-colors cursor-pointer" onClick={() => handleCopy(personalInfo.email)}>
+                                        <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><MailIcon /></span>{personalInfo.email}
+                                    </div>
+                                    <div className="flex items-center gap-4 text-sm md:text-base font-light tracking-widest hover:text-white/60 transition-colors cursor-pointer" onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))}>
+                                        <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><PhoneIcon /></span>{personalInfo.phone}
+                                    </div>
+                                </div>
+                            </ScrollReveal>
+                            <div className="flex flex-col lg:items-end text-white/40 text-sm font-light uppercase tracking-[0.2em] mt-12">
+                                <p>Based in China</p><p className="mt-12 text-xs opacity-30 font-sans tracking-normal">© {new Date().getFullYear()} Heliang Ding.</p>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
             );
         }
