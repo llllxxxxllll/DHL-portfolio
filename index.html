@@ -31,22 +31,33 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- 图标组件 ---
-        const ArrowLeftIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>);
-        const MailIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>);
-        const PhoneIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>);
-        const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
-        const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
+        // ==========================================
+        // --- 1. 数据配置中心 (在这里修改你的链接) ---
+        // ==========================================
+        
+        // 【核心】改为你腾讯云 COS 的基础域名
+        const COS_URL = "https://ding-heliang-125000000.cos.ap-shanghai.myqcloud.com";
 
-        // --- 数据集 ---
+        /**
+         * 批量生成图片链接的辅助函数
+         * @param {string} folder 文件夹名称
+         * @param {number} count 图片总数
+         * @param {string} ext 后缀名 (默认为 jpg)
+         */
+        const generateGallery = (folder, count, ext = "jpg") => {
+            return Array.from({ length: count }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.${ext}`);
+        };
+
+        // --- 个人信息 ---
         const personalInfo = {
             name: "丁贺亮", enName: "HELIANG", lastName: "DING",
             motto: "“平衡体验细节与商业目标，将业务目标拆解为可执行的设计策略。15年深耕，持续深入项目一线。”",
             phone: "156-6990-7825", email: "578458461@qq.com",
             school: "厦门大学", degree: "本科", major: "数字媒体艺术专业",
-            avatar: "https://images.unsplash.com/photo-1605462863863-10d9e47e15ee?auto=format&fit=crop&q=80&w=1200&h=1600" 
+            avatar: `${COS_URL}/assets/avatar.jpg` 
         };
 
+        // --- 工作履历 ---
         const workExperienceData = [
             { time: "至今 — 2019.09", company: "杭州ACCESS品牌管理集团", role: "UED 负责人", description: "全面负责11人UED团队管理与人才梯度建设，统筹电商C端VTN、B端ABM及海外双平台体验设计。建立跨端设计语言与组件库，设计效能提升约40%。" },
             { time: "2019.07 — 2016.11", company: "杭州金诚集团", role: "设计组负责人", description: "统筹体验与视觉设计两大专业方向。全面负责“金诚逸APP”整体体验，主导多个从0到1的创新项目。" },
@@ -54,115 +65,102 @@
             { time: "2014.10 — 2011.07", company: "厦门悟都软件技术有限公司", role: "视觉设计师", description: "服务华为、联想、OPPO等一线手机厂商，主导移动操作系统定制化UI及动效视觉设计。" }
         ];
 
-        const mockGallery = [
-            "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=2000",
-            "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80&w=2000",
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000",
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000"
-        ];
-
+        // --- 核心项目作品 (五大分组结构) ---
         const corePortfolioData = [
             {
-                groupId: "group-1", groupTitle: "AI 进化",
+                groupId: "group-1", groupTitle: "品牌设计体系建设",
                 projects: [
-                    { id: 1, title: "AI获客中心", subtitle: "AI赋能B端营销中台 • 2025", cover: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery },
-                    { id: 2, title: "VTN App AI营养师", subtitle: "AI原生健康智能体 • 2025", cover: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery }
+                    { id: 1, title: "VTN 品牌升级", subtitle: "App品牌重塑及核心体验优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: generateGallery("vtn-brand", 12) },
+                    { id: 2, title: "海外设计体系建设", subtitle: "东南亚市场0-1建设，NTX、NTXBiz", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas", 8) }
                 ]
             },
             {
-                groupId: "group-2", groupTitle: "C端电商",
+                groupId: "group-2", groupTitle: "AI赋能",
                 projects: [
-                    { id: 3, title: "VTN App 品牌升级", subtitle: "品牌重塑 & 全链路体验 • 2022-至今", cover: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery },
-                    { id: 4, title: "VTN 福利甄选频道", subtitle: "常态化闪购体验设计 • 2024", cover: "https://images.unsplash.com/photo-1605152276897-4f618f831968?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery }
+                    { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai", 8) },
+                    { id: 4, title: "VTN AI营养师", subtitle: "AI健康智能体", cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, gallery: generateGallery("vtn-ai", 6) }
+                ]
+            },
+            {
+                groupId: "group-3", groupTitle: "C端频道差异化建设",
+                projects: [
+                    { id: 5, title: "福利甄选", subtitle: "常态化闪购体验设计", cover: `${COS_URL}/projects/vtn-selection/cover.jpg`, gallery: generateGallery("vtn-selection", 5) },
+                    { id: 6, title: "自研直播", subtitle: "沉浸式电商直播购物及互动体验", cover: `${COS_URL}/projects/vtn-live/cover.jpg`, gallery: generateGallery("vtn-live", 6) }
+                ]
+            },
+            {
+                groupId: "group-4", groupTitle: "B端生态赋能",
+                projects: [
+                    { id: 7, title: "ABM体验建设", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b", 10) }
+                ]
+            },
+            {
+                groupId: "group-5", groupTitle: "其他（含动效）",
+                projects: [
+                    { 
+                        id: 8, 
+                        title: "社交、育儿、视频、生活服务等", 
+                        subtitle: "需跳转第三方", 
+                        cover: `${COS_URL}/projects/others/cover.jpg`, 
+                        // 添加了外链跳转属性
+                        externalLink: "https://www.zcool.com.cn/work/ZMzcyMzU2MDg=.html" 
+                    }
                 ]
             }
         ];
 
+        // 团队管理独立分组
         const managementData = [
             {
-                groupId: "group-5", projects: [
-                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "流程提效与组织发展 • 2019-至今", cover: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200", gallery: mockGallery }
+                groupId: "group-6", projects: [
+                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "流程提效与组织发展", cover: `${COS_URL}/projects/management/cover.jpg`, gallery: generateGallery("management", 5) }
                 ]
             }
         ];
 
-        // --- 渐进式图片加载 (深度修复版) ---
+        // --- 2. 交互与功能组件 ---
+
+        const ArrowLeftIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>);
+        const MailIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>);
+        const PhoneIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>);
+        const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
+        const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
+
         const ProgressiveImage = ({ src, alt, className = "" }) => {
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
-            
-            // 智能处理 URL 参数，避免由于重复 ? 或 & 导致的加载失败
-            const getFinalSrc = (url) => {
-                if (!url) return "";
-                const baseParams = "auto=format&fit=crop&q=60";
-                return url.includes('?') ? `${url}&${baseParams}` : `${url}?${baseParams}`;
-            };
 
             return (
                 <div className={`relative w-full overflow-hidden bg-[#ededed] flex items-center justify-center ${className}`}>
-                    {!isLoaded && !isError && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#ededed] to-[#e8e8e8] animate-pulse"></div>
-                    )}
-                    
-                    {isError && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#f0f0f0] text-black/10">
-                            <span className="text-[10px] tracking-[0.2em] uppercase font-light">Image Unavailable</span>
-                        </div>
-                    )}
-
-                    <img 
-                        src={getFinalSrc(src)}
-                        alt={alt} 
-                        loading="lazy" 
-                        onLoad={() => setIsLoaded(true)}
-                        onError={() => setIsError(true)}
-                        className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 grayscale blur-0" : "opacity-0 blur-lg"}`} 
-                    />
+                    {!isLoaded && !isError && <div className="absolute inset-0 bg-gradient-to-br from-[#ededed] to-[#e8e8e8] animate-pulse"></div>}
+                    {isError && <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#f0f0f0] text-black/10 text-[10px] tracking-widest uppercase">Image Unavailable</div>}
+                    <img src={src} alt={alt} loading="lazy" onLoad={() => setIsLoaded(true)} onError={() => setIsError(true)} className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 grayscale blur-0" : "opacity-0 blur-lg"}`} />
                 </div>
             );
         };
 
-        // --- 动画组件 (确保返回不空白) ---
         const ScrollReveal = ({ children, delay = 0, className = "" }) => {
             const ref = useRef(null);
             const [isVisible, setIsVisible] = useState(false);
-
             useEffect(() => {
                 const checkStatus = () => {
                     if (ref.current) {
                         const rect = ref.current.getBoundingClientRect();
-                        if (rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0) {
-                            setIsVisible(true);
-                            return true;
-                        }
+                        if (rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0) { setIsVisible(true); return true; }
                     }
                     return false;
                 };
-
-                // 初次挂载检查
                 const timer = setTimeout(checkStatus, 60);
-
                 const observer = new IntersectionObserver(([entry]) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(true);
-                        observer.unobserve(entry.target);
-                    }
+                    if (entry.isIntersecting) { setIsVisible(true); observer.unobserve(entry.target); }
                 }, { threshold: 0.05 });
-
                 if (ref.current) observer.observe(ref.current);
-                
-                return () => {
-                    clearTimeout(timer);
-                    if (ref.current) observer.unobserve(ref.current);
-                };
+                return () => { clearTimeout(timer); if (ref.current) observer.unobserve(ref.current); };
             }, []);
-
-            return (
-                <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
-                    {children}
-                </div>
-            );
+            return ( <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}> {children} </div> );
         };
+
+        // --- 3. 主应用入口 ---
 
         function App() {
             const [activeProject, setActiveProject] = useState(null);
@@ -178,10 +176,7 @@
                         const el = document.getElementById(id);
                         if (el) {
                             const rect = el.getBoundingClientRect();
-                            if (rect.top <= 160 && rect.bottom >= 160) {
-                                setActiveSection(id);
-                                break;
-                            }
+                            if (rect.top <= 160 && rect.bottom >= 160) { setActiveSection(id); break; }
                         }
                     }
                 };
@@ -197,10 +192,22 @@
             };
 
             const handleCopy = (txt) => {
-                navigator.clipboard.writeText(txt).then(() => {
+                const textArea = document.createElement("textarea");
+                textArea.value = txt;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
                     setToast("复制成功");
-                    setTimeout(() => setToast(""), 2000);
-                });
+                } catch (err) {
+                    setToast("复制失败");
+                }
+                document.body.removeChild(textArea);
+                setTimeout(() => setToast(""), 2000);
             };
 
             const allProjects = [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)];
@@ -213,24 +220,34 @@
             const renderProjectGroup = (group) => (
                 <section key={group.groupId}>
                     {group.groupTitle && (
-                        <ScrollReveal><div className="mb-12 pl-2"><h2 className="text-4xl md:text-5xl font-thin tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
+                        <ScrollReveal><div className="mb-12 pl-2"><h2 className="text-3xl md:text-4xl font-thin tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
                     )}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-32">
                         {group.projects.map((p, i) => (
                             <ScrollReveal key={p.id} delay={i * 100}>
                                 <div className="group cursor-pointer p-6 -m-6 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent hover:bg-white border border-transparent hover:border-black/5 hover:z-10 relative" 
-                                     onClick={() => { scrollPosRef.current = window.scrollY; setActiveProject(p); window.scrollTo(0,0); }}>
+                                     onClick={() => { 
+                                         if (p.externalLink) {
+                                             window.open(p.externalLink, '_blank');
+                                             return;
+                                         }
+                                         scrollPosRef.current = window.scrollY; 
+                                         setActiveProject(p); 
+                                         window.scrollTo(0,0); 
+                                     }}>
                                     
-                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-5 shadow-sm">
+                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-5 shadow-sm relative">
                                         <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full group-hover:scale-105 transition-transform duration-1000" />
                                     </div>
                                     
                                     <div className="flex justify-between items-start pr-4">
                                         <div>
                                             <h3 className="text-xl font-medium tracking-tight mb-3 group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
-                                            <p className="text-sm text-black/50 font-light tracking-widest">{p.subtitle}</p>
+                                            <p className="text-sm text-black/50 font-light tracking-widest uppercase">{p.subtitle}</p>
                                         </div>
-                                        <div className="w-12 h-12 rounded-full border border-black/20 flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1"><ArrowUpRightIcon /></div>
+                                        <div className="w-12 h-12 rounded-full border border-black/20 flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
+                                            <ArrowUpRightIcon />
+                                        </div>
                                     </div>
                                 </div>
                             </ScrollReveal>
@@ -239,6 +256,7 @@
                 </section>
             );
 
+            // --- 详情页视图 ---
             if (activeProject) {
                 return (
                     <div className="bg-[#fafafa] min-h-screen fade-in">
@@ -246,19 +264,12 @@
                             <div className="max-w-[90rem] mx-auto flex items-center justify-between">
                                 <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
                                         className="group flex items-center gap-3 text-sm font-light uppercase tracking-widest hover:opacity-60 transition-opacity">
-                                    <span className="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center group-hover:border-black transition-colors"><ArrowLeftIcon /></span> 返回作品集
+                                    <span className="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center group-hover:border-black transition-colors"><ArrowLeftIcon size={16} /></span> 返回作品集
                                 </button>
                             </div>
                         </header>
                         
                         <main className="max-w-[90rem] mx-auto pt-20 bg-[#fafafa]">
-                            <div className="px-6 md:px-12 mb-20">
-                                <ScrollReveal>
-                                    <h1 className="text-5xl md:text-6xl font-thin tracking-tight mb-4">{activeProject.title}</h1>
-                                    <p className="text-xl text-black/40 font-light tracking-wide">{activeProject.subtitle}</p>
-                                </ScrollReveal>
-                            </div>
-
                             <div className="flex flex-col gap-0 md:gap-2 px-0 md:px-6 mb-16">
                                 {activeProject.gallery?.map((src, idx) => (
                                     <ScrollReveal key={idx} delay={idx * 50}>
@@ -269,11 +280,18 @@
 
                             <div className="pt-12 pb-40 flex justify-center px-6">
                                 {nextProject ? (
-                                    <button onClick={() => { setActiveProject(nextProject); window.scrollTo(0,0); }} 
-                                            className="group flex flex-col items-center gap-6 px-16 md:px-44 py-20 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent hover:bg-white border border-transparent hover:border-black/5 rounded-none text-center">
+                                    <button onClick={() => { 
+                                                if (nextProject.externalLink) {
+                                                    window.open(nextProject.externalLink, '_blank');
+                                                    return;
+                                                }
+                                                setActiveProject(nextProject); window.scrollTo(0,0); 
+                                            }} 
+                                            className="group flex flex-col items-center gap-6 px-8 md:px-24 lg:px-44 py-20 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent hover:bg-white border border-transparent hover:border-black/5 rounded-none text-center w-full md:w-auto">
                                         <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">下一个作品</span>
-                                        <div className="text-2xl md:text-5xl font-light tracking-tight transition-all group-hover:underline underline-offset-[20px] decoration-1">
+                                        <div className={`${nextProject.title.length > 10 ? 'text-xl md:text-3xl' : nextProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-2xl md:text-5xl'} font-light tracking-tight transition-all group-hover:underline underline-offset-[20px] decoration-1 flex items-center justify-center gap-3 flex-wrap break-keep`}>
                                             {nextProject.title}
+                                            {nextProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
                                         </div>
                                     </button>
                                 ) : (
@@ -288,6 +306,7 @@
                 );
             }
 
+            // --- 首页视图 ---
             return (
                 <div className="min-h-screen bg-[#fafafa] text-black">
                     {toast && <div className="fixed top-12 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-4 rounded-full text-sm z-[1000] fade-in shadow-2xl">{toast}</div>}
@@ -321,10 +340,31 @@
                                     <p className="text-black/30 mb-5 text-xs font-light uppercase tracking-[0.2em]">Design Philosophy</p>
                                     <p className="font-light text-xl md:text-2xl leading-relaxed text-black/80 tracking-wide">{personalInfo.motto}</p>
                                     <div className="flex flex-col gap-y-10 mt-16 pt-10 border-t border-black/[0.05]">
-                                        <div><p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p><p className="text-xl font-light tracking-tight">{personalInfo.school} / {personalInfo.degree} / {personalInfo.major}</p></div>
+                                        <div>
+                                            <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p>
+                                            <p className="text-xl font-light tracking-tight">
+                                                {personalInfo.school}
+                                                <span className="font-thin mx-2 opacity-20">/</span>
+                                                {personalInfo.degree}
+                                                <span className="font-thin mx-2 opacity-20">/</span>
+                                                {personalInfo.major}
+                                            </p>
+                                        </div>
                                         <div className="flex flex-wrap gap-x-16 gap-y-6">
-                                            <div><p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Phone</p><div className="flex items-center gap-3"><p className="text-xl font-light tracking-tight">{personalInfo.phone}</p><button onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))} className="text-black/30 hover:text-black transition-colors"><CopyIcon/></button></div></div>
-                                            <div><p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Email</p><div className="flex items-center gap-3"><p className="text-xl font-light tracking-tight lowercase">{personalInfo.email}</p><button onClick={() => handleCopy(personalInfo.email)} className="text-black/30 hover:text-black transition-colors"><CopyIcon/></button></div></div>
+                                            <div onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))} className="cursor-pointer group">
+                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Phone <span className="normal-case tracking-normal opacity-70 ml-1 font-thin">(Wechat)</span></p>
+                                                <div className="flex items-center gap-3">
+                                                    <p className="text-xl font-light tracking-tight">{personalInfo.phone}</p>
+                                                    <span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span>
+                                                </div>
+                                            </div>
+                                            <div onClick={() => handleCopy(personalInfo.email)} className="cursor-pointer group">
+                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Email</p>
+                                                <div className="flex items-center gap-3">
+                                                    <p className="text-xl font-light tracking-tight lowercase">{personalInfo.email}</p>
+                                                    <span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </ScrollReveal>
@@ -338,7 +378,7 @@
                     </header>
 
                     <main className="max-w-[90rem] mx-auto px-6 md:px-12 py-20">
-                        <section id="experience" className="mb-32 pt-12 border-t border-black/[0.05]">
+                        <section id="experience" className="mb-16 pt-12 border-t border-black/[0.05]">
                             <ScrollReveal><div className="mb-16 pl-1">
                                 <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">工作履历</h2>
                                 <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Professional Experience</p>
@@ -349,7 +389,7 @@
                                     <div className="grid grid-cols-4 w-full">
                                         {workExperienceData.map((exp, idx) => (
                                             <ScrollReveal key={idx} delay={idx * 150} className="relative flex justify-center group cursor-default">
-                                                <div className="absolute w-[11px] h-[11px] bg-[#fafafa] border border-black rounded-full top-1/2 -translate-y-1/2 group-hover:bg-black group-hover:scale-[1.5] transition-all z-20"></div>
+                                                <div className="absolute w-[11px] h-[11px] bg-[#fafafa] border border-black/20 rounded-full top-1/2 -translate-y-1/2 group-hover:bg-black group-hover:scale-[1.5] transition-all z-20"></div>
                                                 <div className={`absolute w-[1px] bg-black/15 ${idx%2===0 ? 'bottom-1/2 mb-2 h-8' : 'top-1/2 mt-2 h-8'} group-hover:bg-black/40 transition-all z-10`}></div>
                                                 <div className={`absolute left-1/2 -translate-x-1/2 ${idx%2===0 ? 'top-1/2 mt-8' : 'bottom-1/2 mb-8'}`}><p className="text-xs font-light tracking-[0.1em] text-black/50 uppercase whitespace-nowrap">{exp.time}</p></div>
                                                 <div className={`absolute w-[90%] left-1/2 -translate-x-1/2 ${idx%2===0 ? 'bottom-1/2 mb-16' : 'top-1/2 mt-16'}`}>
@@ -363,7 +403,7 @@
                             <div className="block md:hidden border-l border-black/20 ml-2 mt-8">
                                 {workExperienceData.map((exp, idx) => (
                                     <ScrollReveal key={idx} delay={idx * 100} className="relative pl-6 mb-12 group cursor-default">
-                                        <div className="absolute w-[11px] h-[11px] bg-[#fafafa] border border-black rounded-full -left-[6px] top-1 group-hover:bg-black transition-all z-10"></div>
+                                        <div className="absolute w-[11px] h-[11px] bg-[#fafafa] border border-black/20 rounded-full -left-[6px] top-1 group-hover:bg-black transition-all z-10"></div>
                                         <p className="text-[11px] font-light tracking-[0.1em] text-black/50 uppercase mb-2">{exp.time}</p>
                                         <h3 className="text-lg font-bold tracking-tight mb-1">{exp.company}</h3>
                                         <p className="text-xs font-medium text-black/50 mb-3">{exp.role}</p>
@@ -375,17 +415,17 @@
 
                         <div id="projects" className="pt-8 border-t border-black/[0.05]">
                             <ScrollReveal><div className="mb-12 pl-1 pt-8">
-                                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">核心项目作品</h2>
+                                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">核心项目作品</h2>
                                 <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Selected Core Projects</p>
                             </div></ScrollReveal>
-                            <div className="space-y-32 mb-32">{corePortfolioData.map(renderProjectGroup)}</div>
+                            <div className="mb-32">{corePortfolioData.map(renderProjectGroup)}</div>
 
                             <div className="pt-12 border-t border-black/[0.05]">
                                 <ScrollReveal><div className="mb-12 pl-1 pt-8">
-                                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">团队管理</h2>
+                                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">团队管理</h2>
                                     <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Team Management & Leadership</p>
                                 </div></ScrollReveal>
-                                <div className="space-y-32">{managementData.map(renderProjectGroup)}</div>
+                                <div>{managementData.map(renderProjectGroup)}</div>
                             </div>
                         </div>
                     </main>
@@ -401,7 +441,8 @@
                                         <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><MailIcon /></span>{personalInfo.email}
                                     </div>
                                     <div className="flex items-center gap-4 text-sm md:text-base font-light tracking-widest hover:text-white/60 transition-colors cursor-pointer" onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))}>
-                                        <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><PhoneIcon /></span>{personalInfo.phone}
+                                        <span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><PhoneIcon /></span>
+                                        <span>{personalInfo.phone} <span className="text-white/40 text-xs md:text-sm ml-1 font-thin">(Wechat)</span></span>
                                     </div>
                                 </div>
                             </ScrollReveal>
