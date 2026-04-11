@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 引入 React 核心库 -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -39,13 +38,10 @@
         const COS_URL = "https://ding-heliang-125000000.cos.ap-shanghai.myqcloud.com";
 
         /**
-         * 批量生成图片链接的辅助函数
-         * @param {string} folder 文件夹名称
-         * @param {number} count 图片总数
-         * @param {string} ext 后缀名 (默认为 jpg)
+         * 批量生成图片链接（支持无限量加载，默认最高探测100张）
          */
-        const generateGallery = (folder, count, ext = "jpg") => {
-            return Array.from({ length: count }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.${ext}`);
+        const generateGallery = (folder, maxCount = 100, ext = "jpg") => {
+            return Array.from({ length: maxCount }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.${ext}`);
         };
 
         // --- 个人信息 ---
@@ -65,33 +61,33 @@
             { time: "2014.10 — 2011.07", company: "厦门悟都软件技术有限公司", role: "视觉设计师", description: "服务华为、联想、OPPO等一线手机厂商，主导移动操作系统定制化UI及动效视觉设计。" }
         ];
 
-        // --- 核心项目作品 (五大分组结构) ---
+        // --- 核心项目作品 (不限数量自动探测版) ---
         const corePortfolioData = [
             {
                 groupId: "group-1", groupTitle: "品牌设计体系建设",
                 projects: [
-                    { id: 1, title: "VTN 品牌升级", subtitle: "App品牌重塑及核心体验优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: generateGallery("vtn-brand", 12) },
-                    { id: 2, title: "海外设计体系建设", subtitle: "东南亚市场0-1建设，NTX、NTXBiz", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas", 8) }
+                    { id: 1, title: "VTN 品牌升级", subtitle: "App品牌重塑及核心体验优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: generateGallery("vtn-brand") },
+                    { id: 2, title: "海外设计体系建设", subtitle: "东南亚市场0-1建设，NTX、NTXBiz", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") }
                 ]
             },
             {
                 groupId: "group-2", groupTitle: "AI赋能",
                 projects: [
-                    { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai", 8) },
-                    { id: 4, title: "VTN AI营养师", subtitle: "AI健康智能体", cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, gallery: generateGallery("vtn-ai", 6) }
+                    { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai") },
+                    { id: 4, title: "VTN AI营养师", subtitle: "AI健康智能体", cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, gallery: generateGallery("vtn-ai") }
                 ]
             },
             {
                 groupId: "group-3", groupTitle: "C端频道差异化建设",
                 projects: [
-                    { id: 5, title: "福利甄选", subtitle: "常态化闪购体验设计", cover: `${COS_URL}/projects/vtn-selection/cover.jpg`, gallery: generateGallery("vtn-selection", 5) },
-                    { id: 6, title: "自研直播", subtitle: "沉浸式电商直播购物及互动体验", cover: `${COS_URL}/projects/vtn-live/cover.jpg`, gallery: generateGallery("vtn-live", 6) }
+                    { id: 5, title: "福利甄选", subtitle: "常态化闪购体验设计", cover: `${COS_URL}/projects/vtn-selection/cover.jpg`, gallery: generateGallery("vtn-selection") },
+                    { id: 6, title: "自研直播", subtitle: "沉浸式电商直播购物及互动体验", cover: `${COS_URL}/projects/vtn-live/cover.jpg`, gallery: generateGallery("vtn-live") }
                 ]
             },
             {
                 groupId: "group-4", groupTitle: "B端生态赋能",
                 projects: [
-                    { id: 7, title: "ABM体验建设", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b", 10) }
+                    { id: 7, title: "ABM体验建设", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b") }
                 ]
             },
             {
@@ -102,18 +98,16 @@
                         title: "社交、育儿、视频、生活服务等", 
                         subtitle: "需跳转第三方", 
                         cover: `${COS_URL}/projects/others/cover.jpg`, 
-                        // 添加了外链跳转属性
                         externalLink: "https://www.zcool.com.cn/work/ZMzcyMzU2MDg=.html" 
                     }
                 ]
             }
         ];
 
-        // 团队管理独立分组
         const managementData = [
             {
                 groupId: "group-6", projects: [
-                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "流程提效与组织发展", cover: `${COS_URL}/projects/management/cover.jpg`, gallery: generateGallery("management", 5) }
+                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "流程提效与组织发展", cover: `${COS_URL}/projects/management/cover.jpg`, gallery: generateGallery("management") }
                 ]
             }
         ];
@@ -130,11 +124,22 @@
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
 
+            // 核心魔法：如果加载失败（云端没这张图），直接彻底隐藏，不占任何空间！
+            if (isError) return null;
+
             return (
-                <div className={`relative w-full overflow-hidden bg-[#ededed] flex items-center justify-center ${className}`}>
-                    {!isLoaded && !isError && <div className="absolute inset-0 bg-gradient-to-br from-[#ededed] to-[#e8e8e8] animate-pulse"></div>}
-                    {isError && <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#f0f0f0] text-black/10 text-[10px] tracking-widest uppercase">Image Unavailable</div>}
-                    <img src={src} alt={alt} loading="lazy" onLoad={() => setIsLoaded(true)} onError={() => setIsError(true)} className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 grayscale blur-0" : "opacity-0 blur-lg"}`} />
+                <div className={`relative w-full overflow-hidden flex items-center justify-center ${className} ${!isLoaded ? 'bg-[#ededed] min-h-[10vh]' : ''}`}>
+                    {!isLoaded && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#ededed] to-[#e8e8e8] animate-pulse"></div>
+                    )}
+                    <img 
+                        src={src} 
+                        alt={alt} 
+                        loading="lazy" 
+                        onLoad={() => setIsLoaded(true)} 
+                        onError={() => setIsError(true)} 
+                        className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 grayscale blur-0" : "opacity-0 blur-lg"}`} 
+                    />
                 </div>
             );
         };
