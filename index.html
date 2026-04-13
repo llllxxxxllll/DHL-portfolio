@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 提前建立网络通道，节省几百毫秒连接时间 -->
-    <link rel="preconnect" href="https://cdn.staticfile.net" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com" crossorigin>
-
-    <!-- 【核心恢复】引擎放回头部，确保浏览器一打开网页就全速并发下载这些核心文件 -->
+    <!-- 稳定的官方与国内加速 CDN，不加花里胡哨的预加载标签 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
     <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
@@ -33,7 +28,7 @@
 </head>
 <body class="selection:bg-black selection:text-white bg-[#fafafa]">
     
-    <!-- 恢复原生 Loading 位于 root 内，一旦 React 解析完毕会自动顶替掉它，无缝衔接 -->
+    <!-- 原生 Loading：React 加载完毕后会自动吞噬它，天然无缝衔接 -->
     <div id="root">
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; background-color: #fafafa;">
             <div style="width: 32px; height: 32px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
@@ -264,7 +259,7 @@
                     {group.groupTitle && (
                         <ScrollReveal><div className="mb-6 md:mb-12 pl-2"><h2 className="text-2xl md:text-4xl font-bold tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
                     )}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-16 md:mb-32">
+                    <div className="grid grid-cols-2 gap-4 md:gap-24 mb-8 md:mb-32">
                         {group.projects.map((p, i) => (
                             <ScrollReveal key={p.id} delay={i * 100}>
                                 <div className="group cursor-pointer p-0 md:p-6 m-0 md:-m-6 transition-all duration-700 md:hover:-translate-y-3 md:hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent md:hover:bg-white border border-transparent md:hover:border-black/5 md:hover:z-10 relative" 
@@ -278,14 +273,14 @@
                                          window.scrollTo(0,0); 
                                      }}>
                                     
-                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-4 md:mb-5 shadow-sm relative">
+                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-3 md:mb-5 shadow-sm relative">
                                         <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
                                     </div>
                                     
                                     <div className="flex justify-between items-start pr-0 md:pr-4">
                                         <div>
-                                            <h3 className="text-xl font-normal tracking-tight mb-2 md:mb-3 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
-                                            <p className="text-xs md:text-sm text-black/50 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
+                                            <h3 className="text-base md:text-xl font-normal tracking-tight mb-1 md:mb-3 md:group-hover:underline underline-offset-4 md:underline-offset-8 decoration-1">{p.title}</h3>
+                                            <p className="text-[10px] md:text-sm text-black/50 font-light tracking-wider md:tracking-widest uppercase line-clamp-2 md:line-clamp-none leading-tight md:leading-normal">{p.subtitle}</p>
                                         </div>
                                         <div className="w-12 h-12 rounded-full border border-black/20 hidden md:flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
                                             <ArrowUpRightIcon />
@@ -314,7 +309,7 @@
                         <main className="max-w-[90rem] mx-auto pt-0 md:pt-20 bg-[#ffffff]">
                             <ProjectGallery gallery={activeProject.gallery} />
 
-                            <div className="pt-12 pb-24 md:pb-40 flex flex-col md:flex-row justify-center items-stretch gap-6 px-6 max-w-5xl mx-auto">
+                            <div className="pt-12 pb-24 md:pb-40 flex flex-row justify-center items-stretch gap-2 md:gap-6 px-4 md:px-6 max-w-5xl mx-auto">
                                 {prevProject && (
                                     <button onClick={() => { 
                                                 if (prevProject.externalLink) {
@@ -323,9 +318,9 @@
                                                 }
                                                 setActiveProject(prevProject); window.scrollTo(0,0); 
                                             }} 
-                                            className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">上一个作品</span>
-                                        <div className={`${prevProject.title.length > 10 ? 'text-xl md:text-3xl' : prevProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-3xl md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-2 md:gap-3 flex-wrap break-keep`}>
+                                            className="group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-10 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
+                                        <span className="text-black/30 text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.5em] uppercase font-light">上一个作品</span>
+                                        <div className={`${prevProject.title.length > 10 ? 'text-xs md:text-3xl' : prevProject.title.length > 6 ? 'text-sm md:text-4xl' : 'text-base md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[8px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-1 md:gap-3 flex-wrap break-keep`}>
                                             {prevProject.title}
                                             {prevProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
                                         </div>
@@ -340,18 +335,18 @@
                                                 }
                                                 setActiveProject(nextProject); window.scrollTo(0,0); 
                                             }} 
-                                            className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">下一个作品</span>
-                                        <div className={`${nextProject.title.length > 10 ? 'text-xl md:text-3xl' : nextProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-3xl md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-2 md:gap-3 flex-wrap break-keep`}>
+                                            className="group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-10 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
+                                        <span className="text-black/30 text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.5em] uppercase font-light">下一个作品</span>
+                                        <div className={`${nextProject.title.length > 10 ? 'text-xs md:text-3xl' : nextProject.title.length > 6 ? 'text-sm md:text-4xl' : 'text-base md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[8px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-1 md:gap-3 flex-wrap break-keep`}>
                                             {nextProject.title}
                                             {nextProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
                                         </div>
                                     </button>
                                 ) : (
                                     <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
-                                            className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">End</span>
-                                        <div className="text-3xl md:text-5xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 uppercase">
+                                            className="group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-10 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
+                                        <span className="text-black/30 text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.5em] uppercase font-light">End</span>
+                                        <div className="text-base md:text-5xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[8px] md:underline-offset-[20px] decoration-1 uppercase">
                                             返回作品列表
                                         </div>
                                     </button>
