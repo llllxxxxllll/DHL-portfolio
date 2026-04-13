@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 引入 Tailwind CSS (保持官方 CDN，有较好的全球缓存) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 【优化点1】替换为国内极速 CDN 节点，告别 unpkg 的龟速 -->
-    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
+    <!-- 【终极优化 1：网络预热】提前跟服务器握手，节省 DNS 解析和建立连接的几百毫秒时间 -->
+    <link rel="preconnect" href="https://cdn.staticfile.net" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com" crossorigin>
 
     <style>
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -25,38 +22,41 @@
 
         /* 原生 Loading 动画样式 */
         @keyframes global-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes global-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes global-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        #initial-loader { transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white bg-[#fafafa]">
     
-    <!-- 【优化点2】在这里预埋了原生的 Loading 界面。
-         只要浏览器一打开，它就瞬间显示。等 React 完全加载并编译完接管网页时，它会被自动覆盖消失。没有任何白屏感。 -->
-    <div id="root">
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; background-color: #fafafa;">
-            <div style="width: 32px; height: 32px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
-            <p style="margin-top: 24px; font-size: 10px; letter-spacing: 0.4em; color: rgba(0,0,0,0.3); text-transform: uppercase; animation: global-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">Loading Portfolio</p>
-        </div>
+    <!-- 【终极优化 2：原生骨架屏】跳过所有复杂的 JS 编译，用纯原生代码让用户打开网页 0.1 秒内就能看到高逼格的加载状态 -->
+    <div id="initial-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999999;">
+        <div style="width: 36px; height: 36px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 0.8s linear infinite;"></div>
+        <p style="margin-top: 32px; font-size: 11px; letter-spacing: 0.5em; color: rgba(0,0,0,0.4); text-transform: uppercase; animation: global-pulse 1.5s ease-in-out infinite;">Loading</p>
     </div>
 
-    <script type="text/babel">
+    <!-- React 的容器 -->
+    <div id="root"></div>
+
+    <!-- 【终极优化 3：非阻塞式加载】把最重最拖网速的脚本全部移到最后，让前面的 Loading 界面得以瞬间渲染 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
+
+    <!-- React 业务代码开始 -->
+    <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef } = React;
 
         // ==========================================
-        // --- 1. 数据配置中心 (在这里修改你的链接) ---
+        // --- 1. 数据配置中心 ---
         // ==========================================
         
-        // 【核心】改为你腾讯云 COS 的基础域名
         const COS_URL = "https://dhl-1420296989.cos.ap-shanghai.myqcloud.com";
 
-        /**
-         * 批量生成图片链接（支持无限量加载，默认最高探测100张）
-         */
         const generateGallery = (folder, maxCount = 100, ext = "jpg") => {
             return Array.from({ length: maxCount }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.${ext}`);
         };
 
-        // --- 个人信息 ---
         const personalInfo = {
             name: "丁贺亮", enName: "HELIANG", lastName: "DING",
             motto: "“平衡体验细节与商业目标，将业务目标拆解为可执行的设计策略。15年深耕，持续深入项目一线。”",
@@ -65,7 +65,6 @@
             avatar: `${COS_URL}/assets/avatar.jpg` 
         };
 
-        // --- 工作履历 ---
         const workExperienceData = [
             { time: "至今 — 2019.09", company: "杭州ACCESS品牌管理集团", role: "UED 负责人", description: "全面负责11人UED团队管理与人才梯度建设，统筹电商C端VTN、B端ABM及海外双平台体验设计。建立跨端设计语言与组件库，设计效能提升约40%。" },
             { time: "2019.07 — 2016.11", company: "杭州金诚集团", role: "设计组负责人", description: "统筹体验与视觉设计两大专业方向。全面负责“金诚逸APP”整体体验，主导多个从0到1的创新项目。" },
@@ -73,7 +72,6 @@
             { time: "2014.10 — 2011.07", company: "厦门悟都软件技术有限公司", role: "视觉设计师", description: "服务华为、联想、OPPO等一线手机厂商，主导移动操作系统定制化UI及动效视觉设计。" }
         ];
 
-        // --- 核心项目作品 (不限数量自动探测版) ---
         const corePortfolioData = [
             {
                 groupId: "group-1", groupTitle: "品牌设计体系建设",
@@ -204,11 +202,24 @@
             return ( <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}> {children} </div> );
         };
 
+        // --- 3. 主应用入口 ---
+
         function App() {
             const [activeProject, setActiveProject] = useState(null);
             const [activeSection, setActiveSection] = useState('bio');
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
+
+            // 【终极接管逻辑】当 React 成功接管整个应用并渲染完毕后，优雅平滑地隐藏原生骨架屏
+            useEffect(() => {
+                const loader = document.getElementById('initial-loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 600);
+                }
+            }, []);
 
             useEffect(() => {
                 if (activeProject) return;
