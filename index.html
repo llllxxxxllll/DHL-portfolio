@@ -122,7 +122,6 @@
         const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
         const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
-        // 【更新】加入了 onLoadSuccess 回调，用于智能预加载逻辑
         const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess }) => {
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
@@ -154,10 +153,8 @@
             );
         };
 
-        // 【新增黑科技】智能滑动窗口渲染组件，完美解决 100 张占位图齐刷刷出现的问题
         const ProjectGallery = ({ gallery }) => {
             const [highestValid, setHighestValid] = useState(-1);
-            // 滑动窗口逻辑：始终保持当前已加载完成的进度，往下多探测 3 张
             const renderCount = highestValid + 4; 
 
             return (
@@ -196,8 +193,6 @@
             }, []);
             return ( <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}> {children} </div> );
         };
-
-        // --- 3. 主应用入口 ---
 
         function App() {
             const [activeProject, setActiveProject] = useState(null);
@@ -259,9 +254,11 @@
             const renderProjectGroup = (group) => (
                 <section key={group.groupId}>
                     {group.groupTitle && (
-                        <ScrollReveal><div className="mb-6 md:mb-12 pl-2"><h2 className="text-2xl md:text-4xl font-thin tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
+                        /* 【修改点1】小组标题加粗，改为 font-bold */
+                        <ScrollReveal><div className="mb-6 md:mb-12 pl-2"><h2 className="text-2xl md:text-4xl font-bold tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
                     )}
-                    <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-24 mb-16 md:mb-32">
+                    {/* 【修改点4】整体缩小项目组间的间距：移动端 mb-8，PC端保持 mb-32 */}
+                    <div className="grid grid-cols-2 gap-4 md:gap-24 mb-8 md:mb-32">
                         {group.projects.map((p, i) => (
                             <ScrollReveal key={p.id} delay={i * 100}>
                                 <div className="group cursor-pointer p-0 md:p-6 m-0 md:-m-6 transition-all duration-700 md:hover:-translate-y-3 md:hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent md:hover:bg-white border border-transparent md:hover:border-black/5 md:hover:z-10 relative" 
@@ -281,7 +278,8 @@
                                     
                                     <div className="flex justify-between items-start pr-0 md:pr-4">
                                         <div>
-                                            <h3 className="text-sm md:text-xl font-medium tracking-tight mb-1 md:mb-3 md:group-hover:underline underline-offset-4 md:underline-offset-8 decoration-1">{p.title}</h3>
+                                            {/* 【修改点2】去掉加粗(font-normal)，并放大移动端字号(text-base) */}
+                                            <h3 className="text-base md:text-xl font-normal tracking-tight mb-1 md:mb-3 md:group-hover:underline underline-offset-4 md:underline-offset-8 decoration-1">{p.title}</h3>
                                             <p className="text-[10px] md:text-sm text-black/50 font-light tracking-wider md:tracking-widest uppercase line-clamp-2 md:line-clamp-none leading-tight md:leading-normal">{p.subtitle}</p>
                                         </div>
                                         <div className="w-12 h-12 rounded-full border border-black/20 hidden md:flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
@@ -309,7 +307,6 @@
                         </header>
                         
                         <main className="max-w-[90rem] mx-auto pt-0 md:pt-20 bg-[#ffffff]">
-                            {/* 【优化点】这里彻底去除了 ScrollReveal 的包裹，并启用了智能滑动加载组件 */}
                             <ProjectGallery gallery={activeProject.gallery} />
 
                             <div className="pt-12 pb-24 md:pb-40 flex flex-row justify-center items-stretch gap-2 md:gap-6 px-4 md:px-6 max-w-5xl mx-auto">
@@ -376,7 +373,8 @@
                         </div>
                     </nav>
 
-                    <header id="bio" className="relative min-h-screen flex flex-col justify-center pt-32 pb-16">
+                    {/* 【修改点3】缩减移动端 Header 下方的 padding，原本为 pb-16，现在为 pb-8 */}
+                    <header id="bio" className="relative min-h-screen flex flex-col justify-center pt-32 pb-8 md:pb-16">
                         <div className="absolute top-0 left-0 w-full flex justify-center pt-24 md:pt-32 overflow-hidden select-none pointer-events-none z-0">
                             <span className="text-[22vw] lg:text-[23vw] font-black text-black/[0.03] tracking-tighter leading-[0.8] whitespace-nowrap uppercase">PORTFOLIO</span>
                         </div>
@@ -431,8 +429,10 @@
                         </div>
                     </header>
 
-                    <main className="max-w-[90rem] mx-auto px-6 md:px-12 py-20">
-                        <section id="experience" className="mb-16 pt-12 border-t border-black/[0.05]">
+                    {/* 【修改点6】缩短移动端 Main 区域的上下留白 (py-12 代替之前的 py-20) */}
+                    <main className="max-w-[90rem] mx-auto px-6 md:px-12 py-12 md:py-20">
+                        {/* 【修改点3/6】缩减“工作履历”顶部留白与下方间距 */}
+                        <section id="experience" className="mb-10 md:mb-32 pt-8 md:pt-12 border-t border-black/[0.05]">
                             <ScrollReveal><div className="mb-16 pl-1">
                                 <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4">工作履历</h2>
                                 <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Professional Experience</p>
@@ -472,19 +472,23 @@
                                 <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">核心项目作品</h2>
                                 <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Selected Core Projects</p>
                             </div></ScrollReveal>
-                            <div className="mb-32">{corePortfolioData.map(renderProjectGroup)}</div>
+                            {/* 【修改点4】整体缩小核心项目包装器的 bottom margin */}
+                            <div className="mb-8 md:mb-32">{corePortfolioData.map(renderProjectGroup)}</div>
 
-                            <div className="pt-12 border-t border-black/[0.05]">
-                                <ScrollReveal><div className="mb-12 pl-1 pt-8">
+                            {/* 【修改点5】缩短“团队管理”上的分割线间距 */}
+                            <div className="pt-8 md:pt-12 border-t border-black/[0.05]">
+                                <ScrollReveal><div className="mb-8 md:mb-12 pl-1 pt-8">
                                     <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">团队管理</h2>
                                     <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Team Management & Leadership</p>
                                 </div></ScrollReveal>
-                                <div>{managementData.map(renderProjectGroup)}</div>
+                                {/* 【修改点5】减小团队管理包装器的留白 */}
+                                <div className="mb-4 md:mb-0">{managementData.map(renderProjectGroup)}</div>
                             </div>
                         </div>
                     </main>
 
-                    <footer className="bg-black text-white py-24 mt-16 border-t border-white/5">
+                    {/* 【修改点5】缩减 Footer 上方的留白间距 */}
+                    <footer className="bg-black text-white py-12 md:py-24 mt-8 md:mt-16 border-t border-white/5">
                         <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex flex-col lg:flex-row justify-between items-start gap-16">
                             <ScrollReveal>
                                 <h2 className="text-6xl md:text-8xl tracking-tighter mb-16 leading-[0.9]">
