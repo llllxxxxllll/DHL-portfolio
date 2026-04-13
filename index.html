@@ -121,26 +121,56 @@
         const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
         const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
-        const ProgressiveImage = ({ src, alt, className = "" }) => {
+        // 【更新】加入了 onLoadSuccess 回调，用于智能预加载逻辑
+        const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess }) => {
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
 
-            // 核心魔法：如果加载失败（云端没这张图），直接彻底隐藏，不占任何空间！
             if (isError) return null;
 
             return (
                 <div className={`relative w-full overflow-hidden flex items-center justify-center ${className} ${!isLoaded ? 'bg-[#f2f4f6] min-h-[30vh] md:min-h-[50vh]' : ''}`}>
                     {!isLoaded && (
-                        <div className="absolute inset-0 bg-[#f2f4f6] animate-pulse"></div>
+                        <div className="absolute inset-0 bg-[#f2f4f6] flex items-center justify-center">
+                            <svg className="w-6 h-6 md:w-8 md:h-8 text-black/10 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
                     )}
                     <img 
                         src={src} 
                         alt={alt} 
                         loading="lazy" 
-                        onLoad={() => setIsLoaded(true)} 
+                        onLoad={() => {
+                            setIsLoaded(true);
+                            if (onLoadSuccess) onLoadSuccess();
+                        }} 
                         onError={() => setIsError(true)} 
                         className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 blur-0" : "opacity-0 blur-lg"}`} 
                     />
+                </div>
+            );
+        };
+
+        // 【新增黑科技】智能滑动窗口渲染组件，完美解决 100 张占位图齐刷刷出现的问题
+        const ProjectGallery = ({ gallery }) => {
+            const [highestValid, setHighestValid] = useState(-1);
+            // 滑动窗口逻辑：始终保持当前已加载完成的进度，往下多探测 3 张
+            const renderCount = highestValid + 4; 
+
+            return (
+                <div className="flex flex-col gap-4 md:gap-8 px-4 md:px-6 mb-16 mt-4 md:mt-0">
+                    {gallery?.slice(0, renderCount).map((src, idx) => (
+                        <ProgressiveImage 
+                            key={src} 
+                            src={src} 
+                            alt={`Detail ${idx + 1}`} 
+                            onLoadSuccess={() => {
+                                setHighestValid(prev => Math.max(prev, idx));
+                            }}
+                        />
+                    ))}
                 </div>
             );
         };
@@ -276,13 +306,8 @@
                         </header>
                         
                         <main className="max-w-[90rem] mx-auto pt-0 md:pt-20 bg-[#ffffff]">
-                            <div className="flex flex-col gap-4 md:gap-8 px-4 md:px-6 mb-16 mt-4 md:mt-0">
-                                {activeProject.gallery?.map((src, idx) => (
-                                    <ScrollReveal key={idx} delay={idx * 50}>
-                                        <ProgressiveImage src={src} alt={`Detail ${idx + 1}`} />
-                                    </ScrollReveal>
-                                ))}
-                            </div>
+                            {/* 【优化点】这里彻底去除了 ScrollReveal 的包裹，并启用了智能滑动加载组件 */}
+                            <ProjectGallery gallery={activeProject.gallery} />
 
                             <div className="pt-12 pb-40 flex justify-center px-6">
                                 {nextProject ? (
