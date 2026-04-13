@@ -5,53 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 核心解法：加上 defer 属性！
-         它会让浏览器立刻渲染底部的 <body>，绝不白屏卡死，同时在后台异步极速下载这些库 -->
-    <script src="https://unpkg.zhimg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.zhimg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.zhimg.com/@babel/standalone@7.23.1/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
-        /* 保证原生动画极速执行 */
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; overflow: hidden; }
+        /* 1. 优先加载的全局原生 Loading 样式 (极小极快) */
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
+        
+        #global-loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #fafafa; z-index: 999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease-out; /* 渐隐消失动画 */
+        }
+        .spinner {
+            width: 32px; height: 32px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8);
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* 2. 网页 App 样式 */
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
         .reveal-hidden { opacity: 0; transform: translateY(30px) scale(0.98); }
         .reveal-visible { opacity: 1; transform: translateY(0) scale(1); }
-
-        /* 绝对秒出的原生 Loading 样式 */
-        @keyframes global-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes global-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        
-        #root { opacity: 0; transition: opacity 0.8s ease; }
-        #root.ready { opacity: 1; }
     </style>
 </head>
-<body class="selection:bg-black selection:text-white bg-[#fafafa]">
-    
-    <!-- 这个加载界面绝对会在 0.05 秒内瞬间显示，彻底消灭白屏 -->
-    <div id="native-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999999; transition: opacity 0.6s ease;">
-        <div style="width: 36px; height: 36px; border: 3px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 0.8s linear infinite;"></div>
-        <div id="loader-msg" style="margin-top: 24px; font-family: sans-serif; font-size: 11px; letter-spacing: 0.3em; color: rgba(0,0,0,0.4); text-transform: uppercase; text-align: center; line-height: 1.8; animation: global-pulse 2s infinite;">
-            正在构建作品集环境...
-        </div>
+<body class="selection:bg-black selection:text-white">
+
+    <!-- 【核心逻辑 1】浏览器一进页面，不需要下载任何库，瞬间秒出这个加载层，彻底消灭白屏焦虑 -->
+    <div id="global-loader">
+        <div class="spinner"></div>
+        <p style="margin-top: 24px; font-size: 10px; letter-spacing: 0.4em; color: rgba(0,0,0,0.3); text-transform: uppercase; animation: pulse 2s infinite;">Loading</p>
     </div>
 
-    <!-- 智能超时诊断：如果超过8秒还在转圈，明确告诉用户原因 -->
-    <script>
-        setTimeout(function() {
-            var msg = document.getElementById('loader-msg');
-            if (msg) {
-                msg.innerHTML = "资源下载缓慢，请稍候...<br><span style='font-size:9px; opacity:0.6; text-transform:none; letter-spacing: 0.1em;'>通常是因为国内连接 Tailwind 节点发生网络超时<br>若长期卡顿，建议使用发布指南进行打包部署。</span>";
-            }
-        }, 8000);
-    </script>
-
+    <!-- React 的渲染容器 -->
     <div id="root"></div>
+
+    <!-- 【核心逻辑 2】把几 MB 的重型引擎全放到脚底。这样它们不仅照常下载，且绝不阻塞页面第一眼的显示！ -->
+    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- React 业务代码开始 -->
     <script type="text/babel">
@@ -220,18 +215,12 @@
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
 
-            // 【重磅功能】React 加载完成后，丝滑地移除全局骨架屏
+            // 【核心逻辑 3】当 React 渲染完真实网页后，我们平滑、优雅地让它隐退。
             useEffect(() => {
-                const loader = document.getElementById('native-loader');
-                const rootDiv = document.getElementById('root');
-                
+                const loader = document.getElementById('global-loader');
                 if (loader) {
                     loader.style.opacity = '0';
-                    setTimeout(() => loader.remove(), 600);
-                }
-                if (rootDiv) {
-                    rootDiv.classList.add('ready');
-                    document.body.style.overflow = 'auto'; // 恢复系统滚动
+                    setTimeout(() => loader.remove(), 800); // 等待淡出动画结束再彻底移除
                 }
             }, []);
 
