@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 【终极优化 1：网络预热】提前跟服务器握手，节省 DNS 解析和建立连接的几百毫秒时间 -->
+    <!-- 提前建立网络通道，节省几百毫秒连接时间 -->
     <link rel="preconnect" href="https://cdn.staticfile.net" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com" crossorigin>
+
+    <!-- 【核心恢复】引擎放回头部，确保浏览器一打开网页就全速并发下载这些核心文件 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
 
     <style>
         body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
@@ -23,28 +29,20 @@
         /* 原生 Loading 动画样式 */
         @keyframes global-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes global-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        #initial-loader { transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white bg-[#fafafa]">
     
-    <!-- 【终极优化 2：原生骨架屏】跳过所有复杂的 JS 编译，用纯原生代码让用户打开网页 0.1 秒内就能看到高逼格的加载状态 -->
-    <div id="initial-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999999;">
-        <div style="width: 36px; height: 36px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 0.8s linear infinite;"></div>
-        <p style="margin-top: 32px; font-size: 11px; letter-spacing: 0.5em; color: rgba(0,0,0,0.4); text-transform: uppercase; animation: global-pulse 1.5s ease-in-out infinite;">Loading</p>
+    <!-- 恢复原生 Loading 位于 root 内，一旦 React 解析完毕会自动顶替掉它，无缝衔接 -->
+    <div id="root">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; background-color: #fafafa;">
+            <div style="width: 32px; height: 32px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
+            <p style="margin-top: 24px; font-size: 10px; letter-spacing: 0.4em; color: rgba(0,0,0,0.3); text-transform: uppercase; animation: global-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">Loading Portfolio</p>
+        </div>
     </div>
 
-    <!-- React 的容器 -->
-    <div id="root"></div>
-
-    <!-- 【终极优化 3：非阻塞式加载】把最重最拖网速的脚本全部移到最后，让前面的 Loading 界面得以瞬间渲染 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
-
     <!-- React 业务代码开始 -->
-    <script type="text/babel" data-presets="react">
+    <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
         // ==========================================
@@ -209,17 +207,6 @@
             const [activeSection, setActiveSection] = useState('bio');
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
-
-            // 【终极接管逻辑】当 React 成功接管整个应用并渲染完毕后，优雅平滑地隐藏原生骨架屏
-            useEffect(() => {
-                const loader = document.getElementById('initial-loader');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 600);
-                }
-            }, []);
 
             useEffect(() => {
                 if (activeProject) return;
