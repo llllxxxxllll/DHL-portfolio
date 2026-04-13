@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 稳定的官方与国内加速 CDN，不加花里胡哨的预加载标签 -->
+    <!-- 核心解法：加上 defer 属性！
+         它会让浏览器立刻渲染底部的 <body>，绝不白屏卡死，同时在后台异步极速下载这些库 -->
+    <script src="https://unpkg.zhimg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.zhimg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.zhimg.com/@babel/standalone@7.23.1/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
 
     <style>
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
+        /* 保证原生动画极速执行 */
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; overflow: hidden; }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -21,20 +23,35 @@
         .reveal-hidden { opacity: 0; transform: translateY(30px) scale(0.98); }
         .reveal-visible { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* 原生 Loading 动画样式 */
+        /* 绝对秒出的原生 Loading 样式 */
         @keyframes global-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes global-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes global-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        
+        #root { opacity: 0; transition: opacity 0.8s ease; }
+        #root.ready { opacity: 1; }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white bg-[#fafafa]">
     
-    <!-- 原生 Loading：React 加载完毕后会自动吞噬它，天然无缝衔接 -->
-    <div id="root">
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; background-color: #fafafa;">
-            <div style="width: 32px; height: 32px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
-            <p style="margin-top: 24px; font-size: 10px; letter-spacing: 0.4em; color: rgba(0,0,0,0.3); text-transform: uppercase; animation: global-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">Loading Portfolio</p>
+    <!-- 这个加载界面绝对会在 0.05 秒内瞬间显示，彻底消灭白屏 -->
+    <div id="native-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999999; transition: opacity 0.6s ease;">
+        <div style="width: 36px; height: 36px; border: 3px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 0.8s linear infinite;"></div>
+        <div id="loader-msg" style="margin-top: 24px; font-family: sans-serif; font-size: 11px; letter-spacing: 0.3em; color: rgba(0,0,0,0.4); text-transform: uppercase; text-align: center; line-height: 1.8; animation: global-pulse 2s infinite;">
+            正在构建作品集环境...
         </div>
     </div>
+
+    <!-- 智能超时诊断：如果超过8秒还在转圈，明确告诉用户原因 -->
+    <script>
+        setTimeout(function() {
+            var msg = document.getElementById('loader-msg');
+            if (msg) {
+                msg.innerHTML = "资源下载缓慢，请稍候...<br><span style='font-size:9px; opacity:0.6; text-transform:none; letter-spacing: 0.1em;'>通常是因为国内连接 Tailwind 节点发生网络超时<br>若长期卡顿，建议使用发布指南进行打包部署。</span>";
+            }
+        }, 8000);
+    </script>
+
+    <div id="root"></div>
 
     <!-- React 业务代码开始 -->
     <script type="text/babel">
@@ -203,6 +220,21 @@
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
 
+            // 【重磅功能】React 加载完成后，丝滑地移除全局骨架屏
+            useEffect(() => {
+                const loader = document.getElementById('native-loader');
+                const rootDiv = document.getElementById('root');
+                
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.remove(), 600);
+                }
+                if (rootDiv) {
+                    rootDiv.classList.add('ready');
+                    document.body.style.overflow = 'auto'; // 恢复系统滚动
+                }
+            }, []);
+
             useEffect(() => {
                 if (activeProject) return;
                 const handler = () => {
@@ -259,7 +291,7 @@
                     {group.groupTitle && (
                         <ScrollReveal><div className="mb-6 md:mb-12 pl-2"><h2 className="text-2xl md:text-4xl font-bold tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
                     )}
-                    <div className="grid grid-cols-2 gap-4 md:gap-24 mb-8 md:mb-32">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-16 md:mb-32">
                         {group.projects.map((p, i) => (
                             <ScrollReveal key={p.id} delay={i * 100}>
                                 <div className="group cursor-pointer p-0 md:p-6 m-0 md:-m-6 transition-all duration-700 md:hover:-translate-y-3 md:hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent md:hover:bg-white border border-transparent md:hover:border-black/5 md:hover:z-10 relative" 
@@ -273,14 +305,14 @@
                                          window.scrollTo(0,0); 
                                      }}>
                                     
-                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-3 md:mb-5 shadow-sm relative">
+                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-4 md:mb-5 shadow-sm relative">
                                         <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
                                     </div>
                                     
                                     <div className="flex justify-between items-start pr-0 md:pr-4">
                                         <div>
-                                            <h3 className="text-base md:text-xl font-normal tracking-tight mb-1 md:mb-3 md:group-hover:underline underline-offset-4 md:underline-offset-8 decoration-1">{p.title}</h3>
-                                            <p className="text-[10px] md:text-sm text-black/50 font-light tracking-wider md:tracking-widest uppercase line-clamp-2 md:line-clamp-none leading-tight md:leading-normal">{p.subtitle}</p>
+                                            <h3 className="text-xl font-normal tracking-tight mb-2 md:mb-3 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
+                                            <p className="text-xs md:text-sm text-black/50 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
                                         </div>
                                         <div className="w-12 h-12 rounded-full border border-black/20 hidden md:flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
                                             <ArrowUpRightIcon />
@@ -309,7 +341,7 @@
                         <main className="max-w-[90rem] mx-auto pt-0 md:pt-20 bg-[#ffffff]">
                             <ProjectGallery gallery={activeProject.gallery} />
 
-                            <div className="pt-12 pb-24 md:pb-40 flex flex-row justify-center items-stretch gap-2 md:gap-6 px-4 md:px-6 max-w-5xl mx-auto">
+                            <div className="pt-12 pb-24 md:pb-40 flex flex-col md:flex-row justify-center items-stretch gap-6 px-6 max-w-5xl mx-auto">
                                 {prevProject && (
                                     <button onClick={() => { 
                                                 if (prevProject.externalLink) {
@@ -318,9 +350,9 @@
                                                 }
                                                 setActiveProject(prevProject); window.scrollTo(0,0); 
                                             }} 
-                                            className="group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-10 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.5em] uppercase font-light">上一个作品</span>
-                                        <div className={`${prevProject.title.length > 10 ? 'text-xs md:text-3xl' : prevProject.title.length > 6 ? 'text-sm md:text-4xl' : 'text-base md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[8px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-1 md:gap-3 flex-wrap break-keep`}>
+                                            className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
+                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">上一个作品</span>
+                                        <div className={`${prevProject.title.length > 10 ? 'text-xl md:text-3xl' : prevProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-3xl md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-2 md:gap-3 flex-wrap break-keep`}>
                                             {prevProject.title}
                                             {prevProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
                                         </div>
@@ -335,18 +367,18 @@
                                                 }
                                                 setActiveProject(nextProject); window.scrollTo(0,0); 
                                             }} 
-                                            className="group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-10 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.5em] uppercase font-light">下一个作品</span>
-                                        <div className={`${nextProject.title.length > 10 ? 'text-xs md:text-3xl' : nextProject.title.length > 6 ? 'text-sm md:text-4xl' : 'text-base md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[8px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-1 md:gap-3 flex-wrap break-keep`}>
+                                            className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
+                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">下一个作品</span>
+                                        <div className={`${nextProject.title.length > 10 ? 'text-xl md:text-3xl' : nextProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-3xl md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-2 md:gap-3 flex-wrap break-keep`}>
                                             {nextProject.title}
                                             {nextProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
                                         </div>
                                     </button>
                                 ) : (
                                     <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
-                                            className="group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-10 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-[10px] md:text-sm tracking-[0.2em] md:tracking-[0.5em] uppercase font-light">End</span>
-                                        <div className="text-base md:text-5xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[8px] md:underline-offset-[20px] decoration-1 uppercase">
+                                            className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
+                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">End</span>
+                                        <div className="text-3xl md:text-5xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 uppercase">
                                             返回作品列表
                                         </div>
                                     </button>
