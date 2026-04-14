@@ -73,9 +73,9 @@
                         title: "VTN 品牌升级", 
                         subtitle: "App品牌重塑及核心体验优化", 
                         cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
-                        // 已经写入你专属的 B站视频链接，并添加了强制高清参数 high_quality=1
+                        // 改回自己上传的原生 mp4 视频（只有原生视频才能精确截取第一帧当封面）
                         gallery: [
-                            "https://player.bilibili.com/player.html?isOutside=true&aid=116400677001872&bvid=BV1oUQYBJECi&cid=37488430078&p=1&high_quality=1", 
+                            `${COS_URL}/projects/vtn-brand/showreel.mp4`, 
                             ...generateGallery("vtn-brand") 
                         ] 
                     },
@@ -192,13 +192,15 @@
                             );
                         }
 
-                        // 原本的普通 MP4 视频逻辑 (保留，以防以后要用)
+                        // 原生 MP4 视频逻辑：默认暂停、完美截取第一帧封面、带声音和控制条
                         if (isVideo) {
                             return (
-                                <div key={src} className="relative w-full flex items-center justify-center bg-[#f2f4f6]">
+                                <div key={src} className="relative w-full flex items-center justify-center bg-[#ededed] shadow-sm">
                                     <video 
-                                        src={src} 
-                                        autoPlay loop muted playsInline 
+                                        src={`${src}#t=0.001`} 
+                                        controls 
+                                        preload="metadata"
+                                        playsInline 
                                         className="w-full h-auto object-cover"
                                         onLoadedData={() => setHighestValid(prev => Math.max(prev, idx))}
                                         onError={() => setHighestValid(prev => Math.max(prev, idx))}
