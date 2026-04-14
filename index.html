@@ -206,12 +206,14 @@
                 <section key={group.groupId} className="mb-24">
                     {group.groupTitle && (
                         <ScrollReveal className="relative z-20">
-                            <div className="mb-6 md:mb-8 pl-1">
+                            {/* 4. 优化：手机端标题到项目列表的间距扩大到 3 倍 (mb-6 -> mb-[72px])，PC 端保持 mb-8 不变 */}
+                            <div className="mb-[72px] md:mb-8 pl-1">
                                 <h2 className="text-3xl md:text-5xl font-thin text-black/30">{group.groupTitle}</h2>
                             </div>
                         </ScrollReveal>
                     )}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+                    {/* 4. 优化：手机端项目之间的间距缩小到二分之一 (gap-16 -> gap-8)，PC 端保持 gap-24 不变 */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24">
                         {group.projects.map((p, i) => (
                             <ScrollReveal key={p.id} delay={i * 100}>
                                 <div className="group cursor-pointer p-0 md:p-8 m-0 md:-m-8 transition-all duration-700 md:hover:-translate-y-3 md:hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent md:hover:bg-white border border-transparent md:hover:border-black/5 md:hover:z-10 relative" 
@@ -230,7 +232,8 @@
                                     <div className="flex justify-between items-center pr-0 md:pr-4">
                                         <div className="flex-1 pr-4">
                                             <h3 className="text-lg md:text-xl font-normal tracking-tight mb-1 md:mb-2 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
-                                            <p className="text-xs md:text-sm text-black/40 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
+                                            {/* 5. 优化：手机端副文案字号 +1 (text-xs -> text-[13px])，PC 端保持 md:text-sm 不变 */}
+                                            <p className="text-[13px] md:text-sm text-black/40 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
                                         </div>
                                         {/* 手机端专门加入的向右箭头，增加点击感并与封面右对齐 */}
                                         <div className="md:hidden flex items-center justify-center text-black/20">
@@ -451,14 +454,20 @@
                                 <div className="h-12 md:h-16"></div>
                             </div>
                             
-                            {/* 移动端 */}
-                            <div className="block md:hidden border-l border-black/10 ml-2 mt-8 pb-12">
+                            {/* 移动端履历结构完全重构 */}
+                            <div className="block md:hidden relative ml-2 mt-8">
+                                {/* 3. 优化：竖直线，独立抽离出来，顶部从第一个圆点中心(top-[10px])开始，底部到底侧文字(bottom-0)停止 */}
+                                <div className="absolute w-px bg-black/10 left-0 top-[10px] bottom-0 z-0"></div>
+                                
                                 {workExperienceData.map((exp, idx) => (
-                                    <ScrollReveal key={idx} delay={idx * 100} className="relative pl-6 mb-12 group">
-                                        <div className="absolute w-3 h-3 bg-black rounded-full -left-[6px] top-1"></div>
-                                        <p className="text-[11px] font-thin tracking-[0.1em] text-black/60 uppercase mb-2">{exp.time}</p>
-                                        <h3 className="text-lg font-bold tracking-tight mb-1">{exp.company}</h3>
-                                        <p className="text-sm font-medium text-black/50 mb-3">{exp.role}</p>
+                                    <ScrollReveal key={idx} delay={idx * 100} className="relative pl-6 mb-12 last:mb-0 group z-10">
+                                        {/* 圆点对齐优化，精确对齐首行文本中心 */}
+                                        <div className="absolute w-3 h-3 bg-black rounded-full -left-[5.5px] top-1"></div>
+                                        {/* 1. 优化：手机端时间字号 +2 (text-[11px] -> text-[13px]) */}
+                                        <p className="text-[13px] font-thin tracking-[0.1em] text-black/60 uppercase mb-2">{exp.time}</p>
+                                        {/* 2. 优化：三个字段下间距保持一致统一用 mb-2 */}
+                                        <h3 className="text-lg font-bold tracking-tight mb-2">{exp.company}</h3>
+                                        <p className="text-sm font-medium text-black/50 mb-2">{exp.role}</p>
                                         <p className="text-sm font-light leading-relaxed text-black/60 whitespace-pre-line">{exp.description}</p>
                                     </ScrollReveal>
                                 ))}
