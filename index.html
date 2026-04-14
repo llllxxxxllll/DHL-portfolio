@@ -68,7 +68,17 @@
             {
                 groupId: "group-1", groupTitle: "品牌设计体系建设",
                 projects: [
-                    { id: 1, title: "VTN 品牌升级", subtitle: "App品牌重塑及核心体验优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: generateGallery("vtn-brand") },
+                    { 
+                        id: 1, 
+                        title: "VTN 品牌升级", 
+                        subtitle: "App品牌重塑及核心体验优化", 
+                        cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
+                        // 已经写入你专属的 B站视频链接，并添加了强制高清参数 high_quality=1
+                        gallery: [
+                            "https://player.bilibili.com/player.html?isOutside=true&aid=116400677001872&bvid=BV1oUQYBJECi&cid=37488430078&p=1&high_quality=1", 
+                            ...generateGallery("vtn-brand") 
+                        ] 
+                    },
                     { id: 2, title: "海外设计体系建设", subtitle: "东南亚市场0-1建设，NTX、NTXBiz", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") }
                 ]
             },
@@ -159,16 +169,55 @@
 
             return (
                 <div className="flex flex-col gap-4 md:gap-8 px-4 md:px-6 mb-16 mt-4 md:mt-0">
-                    {gallery?.slice(0, renderCount).map((src, idx) => (
-                        <ProgressiveImage 
-                            key={src} 
-                            src={src} 
-                            alt={`Detail ${idx + 1}`} 
-                            onLoadSuccess={() => {
-                                setHighestValid(prev => Math.max(prev, idx));
-                            }}
-                        />
-                    ))}
+                    {gallery?.slice(0, renderCount).map((src, idx) => {
+                        // 【修改2】增加对 B站链接的识别逻辑
+                        const isBilibili = typeof src === 'string' && src.includes('player.bilibili.com');
+                        const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
+
+                        // 如果是 B站视频，渲染 B站自带的 iframe 播放器
+                        if (isBilibili) {
+                            return (
+                                <div key={src} className="relative w-full aspect-video bg-[#ededed] shadow-sm">
+                                    <iframe 
+                                        src={src} 
+                                        scrolling="no" 
+                                        border="0" 
+                                        frameBorder="no" 
+                                        framespacing="0" 
+                                        allowFullScreen={true}
+                                        className="absolute top-0 left-0 w-full h-full"
+                                        onLoad={() => setHighestValid(prev => Math.max(prev, idx))}
+                                    ></iframe>
+                                </div>
+                            );
+                        }
+
+                        // 原本的普通 MP4 视频逻辑 (保留，以防以后要用)
+                        if (isVideo) {
+                            return (
+                                <div key={src} className="relative w-full flex items-center justify-center bg-[#f2f4f6]">
+                                    <video 
+                                        src={src} 
+                                        autoPlay loop muted playsInline 
+                                        className="w-full h-auto object-cover"
+                                        onLoadedData={() => setHighestValid(prev => Math.max(prev, idx))}
+                                        onError={() => setHighestValid(prev => Math.max(prev, idx))}
+                                    ></video>
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <ProgressiveImage 
+                                key={src} 
+                                src={src} 
+                                alt={`Detail ${idx + 1}`} 
+                                onLoadSuccess={() => {
+                                    setHighestValid(prev => Math.max(prev, idx));
+                                }}
+                            />
+                        );
+                    })}
                 </div>
             );
         };
