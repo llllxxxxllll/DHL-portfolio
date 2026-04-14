@@ -70,7 +70,7 @@
                 projects: [
                     { 
                         id: 1, 
-                        title: "VTN 品牌升级", 
+                        title: "VTN App 品牌重塑", 
                         subtitle: "App品牌重塑及核心体验优化", 
                         cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
                         // 改回自己上传的原生 mp4 视频（只有原生视频才能精确截取第一帧当封面）
@@ -177,7 +177,7 @@
                         // 如果是 B站视频，渲染 B站自带的 iframe 播放器
                         if (isBilibili) {
                             return (
-                                <div key={src} className="relative w-full aspect-video bg-[#ededed] shadow-sm">
+                                <div key={src} className="relative w-full aspect-video bg-[#ededed]">
                                     <iframe 
                                         src={src} 
                                         scrolling="no" 
@@ -195,7 +195,7 @@
                         // 原生 MP4 视频逻辑：默认暂停、完美截取第一帧封面、带声音和控制条
                         if (isVideo) {
                             return (
-                                <div key={src} className="relative w-full flex items-center justify-center bg-[#ededed] shadow-sm">
+                                <div key={src} className="relative w-full flex items-center justify-center bg-[#ededed]">
                                     <video 
                                         src={`${src}#t=0.001`} 
                                         controls 
@@ -307,7 +307,7 @@
             const renderProjectGroup = (group) => (
                 <section key={group.groupId}>
                     {group.groupTitle && (
-                        <ScrollReveal><div className="mb-6 md:mb-12 pl-2"><h2 className="text-2xl md:text-4xl font-bold tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
+                        <ScrollReveal><div className="mb-6 md:mb-12 pl-2"><h2 className="text-3xl md:text-5xl font-light tracking-tight">{group.groupTitle}</h2></div></ScrollReveal>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-16 md:mb-32">
                         {group.projects.map((p, i) => (
@@ -323,13 +323,13 @@
                                          window.scrollTo(0,0); 
                                      }}>
                                     
-                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-4 md:mb-5 shadow-sm relative">
+                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-4 md:mb-5 relative">
                                         <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
                                     </div>
                                     
                                     <div className="flex justify-between items-start pr-0 md:pr-4">
                                         <div>
-                                            <h3 className="text-xl font-normal tracking-tight mb-2 md:mb-3 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
+                                            <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-2 md:mb-3 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
                                             <p className="text-xs md:text-sm text-black/50 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
                                         </div>
                                         <div className="w-12 h-12 rounded-full border border-black/20 hidden md:flex items-center justify-center opacity-0 -translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
@@ -359,7 +359,7 @@
                         <main className="max-w-[90rem] mx-auto pt-0 md:pt-20 bg-[#ffffff]">
                             <ProjectGallery gallery={activeProject.gallery} />
 
-                            <div className="pt-12 pb-24 md:pb-40 flex flex-col md:flex-row justify-center items-stretch gap-6 px-6 max-w-5xl mx-auto">
+                            <div className="pt-12 pb-24 md:pb-40 flex flex-col-reverse md:flex-row justify-center items-stretch gap-6 px-6 max-w-5xl mx-auto">
                                 {prevProject && (
                                     <button onClick={() => { 
                                                 if (prevProject.externalLink) {
@@ -369,7 +369,7 @@
                                                 setActiveProject(prevProject); window.scrollTo(0,0); 
                                             }} 
                                             className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">上一个作品</span>
+                                        <span className="text-black/50 text-xs md:text-sm tracking-[0.5em] uppercase font-light">上一个作品</span>
                                         <div className={`${prevProject.title.length > 10 ? 'text-xl md:text-3xl' : prevProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-3xl md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-2 md:gap-3 flex-wrap break-keep`}>
                                             {prevProject.title}
                                             {prevProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
@@ -386,7 +386,7 @@
                                                 setActiveProject(nextProject); window.scrollTo(0,0); 
                                             }} 
                                             className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">下一个作品</span>
+                                        <span className="text-black/50 text-xs md:text-sm tracking-[0.5em] uppercase font-light">下一个作品</span>
                                         <div className={`${nextProject.title.length > 10 ? 'text-xl md:text-3xl' : nextProject.title.length > 6 ? 'text-2xl md:text-4xl' : 'text-3xl md:text-5xl'} font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 flex items-center justify-center gap-2 md:gap-3 flex-wrap break-keep`}>
                                             {nextProject.title}
                                             {nextProject.externalLink && <span className="opacity-30"><ArrowUpRightIcon /></span>}
@@ -395,7 +395,7 @@
                                 ) : (
                                     <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
                                             className="group flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 px-6 md:px-16 py-12 md:py-20 transition-all duration-700 bg-transparent rounded-none text-center w-full">
-                                        <span className="text-black/30 text-xs md:text-sm tracking-[0.5em] uppercase font-light">End</span>
+                                        <span className="text-black/50 text-xs md:text-sm tracking-[0.5em] uppercase font-light">End</span>
                                         <div className="text-3xl md:text-5xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-[12px] md:underline-offset-[20px] decoration-1 uppercase">
                                             返回作品列表
                                         </div>
