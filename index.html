@@ -42,7 +42,9 @@
         // ==========================================
         const COS_URL = "https://dhl-1420296989.cos.ap-shanghai.myqcloud.com";
 
-        const generateGallery = (folder, maxCount = 6) => {
+        // 彻底恢复你的 100 张灵活上限！
+        // 配合下方的 SequentialGallery 智能组件，不再会导致浏览器疯狂转圈。
+        const generateGallery = (folder, maxCount = 100) => {
             return Array.from({ length: maxCount }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.jpg`);
         };
 
@@ -112,7 +114,8 @@
         const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
         const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
-        const ProgressiveImage = ({ src, alt, className = "" }) => {
+        // 加入 onLoadSuccess 和 onLoadError 以支持智能探测
+        const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess, onLoadError }) => {
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
             if (isError) return null;
@@ -126,7 +129,14 @@
                             </svg>
                         </div>
                     )}
-                    <img src={src} alt={alt} loading="lazy" onLoad={() => setIsLoaded(true)} onError={() => setIsError(true)} className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 blur-0" : "opacity-0 blur-lg"}`} />
+                    <img 
+                        src={src} 
+                        alt={alt} 
+                        loading="lazy" 
+                        onLoad={() => { setIsLoaded(true); if (onLoadSuccess) onLoadSuccess(); }} 
+                        onError={() => { setIsError(true); if (onLoadError) onLoadError(); }} 
+                        className={`w-full h-auto object-cover transition-all duration-[1.2s] ease-out ${isLoaded ? "opacity-100 blur-0" : "opacity-0 blur-lg"}`} 
+                    />
                 </div>
             );
         };
@@ -142,6 +152,63 @@
                 return () => { if (ref.current) observer.unobserve(ref.current); };
             }, []);
             return ( <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}> {children} </div> );
+        };
+
+        // 核心优化：多米诺骨牌式的智能相册加载器
+        // 它支持 100 张上限，但只有当前一张图片加载成功，才会去请求下一张，完美解决 404 引起的浏览器转圈问题。
+        const SequentialGallery = ({ gallery }) => {
+            const [renderCount, setRenderCount] = useState(2); // 初始探测前 2 个（应对首图为视频的情况）
+            const [failedIndex, setFailedIndex] = useState(-1);
+
+            // 一旦探测到不存在的图，立刻切断后续所有 100 张的渲染和请求
+            const itemsToRender = gallery.slice(0, failedIndex === -1 ? renderCount : failedIndex);
+
+            return (
+                <div className="flex flex-col gap-4 px-4 md:gap-4 md:px-6 mb-16">
+                    {itemsToRender.map((src, idx) => {
+                        const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
+                        
+                        const handleSuccess = () => {
+                            if (failedIndex === -1 && idx >= renderCount - 2) {
+                                setRenderCount(prev => Math.min(prev + 1, gallery.length));
+                            }
+                        };
+
+                        const handleError = () => {
+                            if (failedIndex === -1 || idx < failedIndex) {
+                                setFailedIndex(idx);
+                            }
+                        };
+
+                        if (isVideo) {
+                            return (
+                                <ScrollReveal key={src} delay={50}>
+                                    <div className="relative w-full flex items-center justify-center bg-[#ededed]">
+                                        <video 
+                                            src={`${src}#t=0.001`} 
+                                            controls preload="metadata" playsInline 
+                                            className="w-full h-auto object-cover"
+                                            onLoadedMetadata={handleSuccess}
+                                            onError={handleError}
+                                        ></video>
+                                    </div>
+                                </ScrollReveal>
+                            );
+                        }
+
+                        return (
+                            <ScrollReveal key={src} delay={50}>
+                                <ProgressiveImage 
+                                    src={src} 
+                                    alt={`Detail ${idx + 1}`} 
+                                    onLoadSuccess={handleSuccess}
+                                    onLoadError={handleError}
+                                />
+                            </ScrollReveal>
+                        );
+                    })}
+                </div>
+            );
         };
 
         // --- 3. 主应用 ---
@@ -265,26 +332,8 @@
                         </header>
                         <main className="max-w-[90rem] mx-auto pt-0 md:pt-20 bg-[#ffffff]">
                             
-                            {/* 恢复了视频逻辑判断！如果是 .mp4 则渲染视频组件 */}
-                            <div className="flex flex-col gap-4 px-4 md:gap-4 md:px-6 mb-16">
-                                {activeProject.gallery?.map((src, idx) => {
-                                    const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
-                                    if (isVideo) {
-                                        return (
-                                            <ScrollReveal key={idx} delay={idx * 50}>
-                                                <div className="relative w-full flex items-center justify-center bg-[#ededed]">
-                                                    <video src={`${src}#t=0.001`} controls preload="metadata" playsInline className="w-full h-auto object-cover"></video>
-                                                </div>
-                                            </ScrollReveal>
-                                        );
-                                    }
-                                    return (
-                                        <ScrollReveal key={idx} delay={idx * 50}>
-                                            <ProgressiveImage src={src} alt={`Detail ${idx + 1}`} />
-                                        </ScrollReveal>
-                                    );
-                                })}
-                            </div>
+                            {/* 使用智能序列相册组件替代粗暴的遍历渲染 */}
+                            <SequentialGallery gallery={activeProject.gallery} />
 
                             {/* 详情页底部：完全恢复“上一个作品”和“下一个作品” */}
                             <div className="pt-12 pb-24 md:pb-40 flex flex-row justify-center items-stretch gap-3 md:gap-6 px-4 md:px-6 max-w-5xl mx-auto">
