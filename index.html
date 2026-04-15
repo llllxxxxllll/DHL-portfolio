@@ -63,6 +63,20 @@
 
         const corePortfolioData = [
             {
+                groupId: "group-1", groupTitle: "品牌设计体系建设",
+                projects: [
+                    { id: 1, title: "VTN App 品牌重塑", subtitle: "App品牌重塑及核心体验优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-brand/showreel.mp4`, ...generateGallery("vtn-brand") ] },
+                    { id: 2, title: "海外设计体系建设", subtitle: "东南亚市场0-1建设，NTX、NTXBiz", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") }
+                ]
+            },
+            {
+                groupId: "group-2", groupTitle: "AI赋能",
+                projects: [
+                    { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai") },
+                    { id: 4, title: "VTN AI营养师", subtitle: "AI健康智能体", cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, gallery: generateGallery("vtn-ai") }
+                ]
+            },
+            {
                 groupId: "group-3", groupTitle: "频道差异化建设",
                 projects: [
                     { id: 5, title: "福利甄选", subtitle: "常态化闪购体验设计", cover: `${COS_URL}/projects/vtn-selection/cover.jpg`, gallery: generateGallery("vtn-selection") },
