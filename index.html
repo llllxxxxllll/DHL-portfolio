@@ -55,7 +55,7 @@
         };
 
         const workExperienceData = [
-            { time: "今 — 2019.09", company: "杭州ACCESS品牌管理集团", role: "UED 负责人", description: "1.全面负责UED团队人才阶梯建设、专业赋能、绩效考核与文化塑造，制定设计战略并与公司业务目标对齐；\n2.统筹核心产品（VTN、ABM、TJ）及海外新业务NTX体系从0到1的体验设计规划与落地、构建5大设计体系；\n3.深入设计一线，担任重点难点项目核心主设，确保高质量交付；\n4.建立设计内审机制，优化设计流程及跨部门协作机制。" },
+            { time: "今 — 2019.09", company: "杭州ACCESS品牌管理集团", role: "UED 负责人", description: "1.全面负责UED人才阶梯建设、绩效考核与文化建设；\n2.统筹核心产品（VTN、ABM、TJ）及海外体系（NTX、NTXBiz）的设计系统搭建及产品设计规划与落地；\n3.担任重点、难点项目核心主设，持续深入设计一线；\n4.流程优化与提效，如建立设计内审机制，优化设计流程及跨部门协作机制等。" },
             { time: "2019.07 — 2016.11", company: "杭州金诚集团", role: "设计组负责人", description: "1.负责体验与视觉设计团队建设与文化塑造；\n2.担任核心项目主设，主导金诚逸IM、有象视频、区块链应用及育儿产品等多条业务线全链路体验设计；\n3.制定设计流程、评审规范与质量标尺，系统化提升团队输出效率；\n4.建立常态化沟通机制，确保设计方案高质量交付。" },
             { time: "2016.06 — 2014.11", company: "厦门墨仕电子商务有限公司", role: "体验设计师", description: "1.独立负责“敢约”、“友空”等多款社交产品从概念到上线的全链路交付，定义信息架构与视觉风格；\n2.主导输出产品的核心设计策略与设计语言；\n3.为产品线建立并维护初期设计系统与组件库，显著提升协作效率。" },
             { time: "2014.10 — 2011.07", company: "厦门悟都软件技术有限公司", role: "视觉设计师", description: "1.服务于华为、联想等厂商，深度参与操作系统定制化设计，独立承担从概念到落地的视觉方案；\n2.专精系统级动态视觉表达（如开机动画）及原生应用UI设计；\n3.精准实施各品牌独有的设计规范，实现“零误差”交付。" }
@@ -65,8 +65,8 @@
             {
                 groupId: "group-1", groupTitle: "品牌设计体系建设",
                 projects: [
-                    { id: 1, title: "VTN App 品牌重塑", subtitle: "App品牌重塑及核心体验优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-brand/showreel.mp4`, ...generateGallery("vtn-brand") ] },
-                    { id: 2, title: "海外设计体系建设", subtitle: "东南亚市场0-1建设，NTX、NTXBiz", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") }
+                    { id: 1, title: "VTN App", subtitle: "品牌心智升级、设计语言重塑、核心链路优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-brand/showreel.mp4`, ...generateGallery("vtn-brand") ] },
+                    { id: 2, title: "海外体系-NTX&NTXBiz", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") }
                 ]
             },
             {
@@ -294,7 +294,7 @@
                     {group.groupTitle && (
                         <ScrollReveal className="relative z-20">
                             <div className="mb-9 md:mb-8 pl-1">
-                                <h2 className="text-3xl md:text-5xl font-thin text-black/30">{group.groupTitle}</h2>
+                                <h2 className="text-3xl md:text-5xl font-thin text-black/50">{group.groupTitle}</h2>
                             </div>
                         </ScrollReveal>
                     )}
@@ -421,10 +421,7 @@
                                     </h1>
                                 </ScrollReveal>
                                 <ScrollReveal delay={200} className="mt-16 lg:mt-24 max-w-xl pl-1">
-                                    <p className="text-black/30 mb-5 text-xs font-light uppercase tracking-[0.2em]">Design Philosophy</p>
-                                    <p className="font-light text-xl md:text-2xl leading-relaxed text-black/80 tracking-wide">{personalInfo.motto}</p>
-                                    
-                                    <div className="flex flex-col gap-y-10 mt-16 pt-10 border-t border-black/[0.05]">
+                                    <div className="flex flex-col gap-y-10">
                                         <div>
                                             <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p>
                                             <p className="text-xl font-thin tracking-tight">{personalInfo.school}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.degree}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.major}</p>
