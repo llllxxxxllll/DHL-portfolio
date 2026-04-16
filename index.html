@@ -90,8 +90,11 @@
             {
                 groupId: "group-1", groupTitle: "品牌设计体系建设",
                 projects: [
-                    { id: 1, title: "VTN App", subtitle: "品牌心智升级、设计语言重塑、核心链路优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-brand/showreel.mp4`, ...generateGallery("vtn-brand") ] },
-                    { id: 2, title: "海外体系-NTX&NTXBiz", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") }
+                    // 为 VTN App 增加 fullWidth: true 的属性，触发首屏强化的渲染逻辑
+                    { id: 1, title: "VTN App", subtitle: "品牌心智升级、设计语言重塑、核心链路优化", cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-brand/showreel.mp4`, ...generateGallery("vtn-brand") ], fullWidth: true },
+                    { id: 2, title: "海外体系-NTX&NTXBiz", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") },
+                    // ABM 体验建设移入此分组
+                    { id: 7, title: "ABM体验建设", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b") }
                 ]
             },
             {
@@ -108,12 +111,7 @@
                     { id: 6, title: "自研直播", subtitle: "沉浸式电商直播购物及互动体验", cover: `${COS_URL}/projects/vtn-live/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-live/showreel.mp4`, ...generateGallery("vtn-live") ] }
                 ]
             },
-            {
-                groupId: "group-4", groupTitle: "B端生态赋能",
-                projects: [
-                    { id: 7, title: "ABM体验建设", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b") }
-                ]
-            },
+            // 原来的 group-4 (B端生态赋能) 已被清空，所以直接删除该分组块
             {
                 groupId: "group-5", groupTitle: "其他",
                 projects: [
@@ -345,7 +343,7 @@
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24">
                         {group.projects.map((p, i) => (
-                            <ScrollReveal key={p.id} delay={i * 100}>
+                            <ScrollReveal key={p.id} delay={i * 100} className={p.fullWidth ? "md:col-span-2" : ""}>
                                 <div className="group cursor-pointer p-0 md:p-8 m-0 md:-m-8 transition-all duration-700 md:hover:-translate-y-3 md:hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)] bg-transparent md:hover:bg-white border border-transparent md:hover:border-black/5 md:hover:z-10 relative" 
                                      onClick={() => { 
                                          if (p.externalLink) {
