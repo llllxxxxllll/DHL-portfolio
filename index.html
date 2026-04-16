@@ -317,11 +317,12 @@
                                     </div>
                                     <div className="flex justify-between items-center pr-0 md:pr-4">
                                         <div className="flex-1 pr-4">
-                                            <h3 className="text-lg md:text-xl font-normal tracking-tight mb-1 md:mb-2 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
+                                            {/* 手机端间距优化：缩短标题与副文案的间距至三分之二 (mb-1 -> mb-[3px]) */}
+                                            <h3 className="text-lg md:text-xl font-normal tracking-tight mb-[3px] md:mb-2 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
                                             <p className="text-[13px] md:text-sm text-black/40 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
                                         </div>
-                                        {/* 手机端箭头优化：横线 32px，箭头放大 1.1 倍 */}
-                                        <div className="md:hidden flex items-center justify-center text-black/20">
+                                        {/* 手机端箭头优化：颜色变为纯黑，并向左移动 16px */}
+                                        <div className="md:hidden flex items-center justify-center text-black mr-[16px]">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M0 8h32"/><path d="M27.6 3.6 L32 8 L27.6 12.4"/>
                                             </svg>
