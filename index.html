@@ -33,7 +33,7 @@
 </head>
 <body class="selection:bg-black selection:text-white">
 
-    <!-- 🚀 优化一：物理级 App Shell 骨架屏 -->
+    <!-- 🚀 App Shell 骨架屏 (纯净 The One 版本) -->
     <div id="root">
         <div style="min-height: 100vh; background-color: #fafafa; color: #000; display: flex; flex-direction: column;">
             <nav style="position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background-color: rgba(250, 250, 250, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 1.25rem 0;">
@@ -45,8 +45,8 @@
                 </div>
             </nav>
             <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 5rem;">
-                <div style="width: 28px; height: 28px; border: 2px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
-                <p style="margin-top: 20px; font-size: 16px; color: rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: 0.1em; animation: pulse-subtle 2s infinite;">正在为您对齐最后一颗像素</p>
+                <div style="width: 84px; height: 84px; border: 1px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
+                <p style="margin-top: 40px; font-size: 15px; font-weight: 300; color: rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: normal; animation: pulse-subtle 2s infinite;">正在为您对齐最后一颗像素</p>
             </div>
         </div>
     </div>
@@ -74,10 +74,30 @@
         };
 
         const workExperienceData = [
-            { time: "今 — 2019.09", company: "杭州ACCESS品牌管理集团", role: "UED 负责人", description: "1.全面负责UED人才阶梯建设、绩效考核与文化建设；\n2.统筹核心产品（VTN、ABM、TJ）及海外体系（NTX、NTXBiz）的设计系统搭建及产品设计规划与落地；\n3.担任重点、难点项目核心主设，持续深入设计一线；\n4.流程优化与提效，如建立设计内审机制，优化设计流程及跨部门协作机制等。" },
-            { time: "2019.07 — 2016.11", company: "杭州金诚集团", role: "设计组负责人", description: "1.负责体验与视觉设计团队建设与文化塑造；\n2.担任核心项目主设，主导金诚逸IM、有象视频、区块链应用及育儿产品等多条业务线全链路体验设计；\n3.制定设计流程、评审规范与质量标尺，系统化提升团队输出效率；\n4.建立常态化沟通机制，确保设计方案高质量交付。" },
-            { time: "2016.06 — 2014.11", company: "厦门墨仕电子商务有限公司", role: "体验设计师", description: "1.独立负责“敢约”、“友空”等多款社交产品从概念到上线的全链路交付，定义信息架构与视觉风格；\n2.主导输出产品的核心设计策略与设计语言；\n3.为产品线建立并维护初期设计系统与组件库，显著提升协作效率。" },
-            { time: "2014.10 — 2011.07", company: "厦门悟都软件技术有限公司", role: "视觉设计师", description: "1.服务于华为、联想等厂商，深度参与操作系统定制化设计，独立承担从概念到落地的视觉方案；\n2.专精系统级动态视觉表达（如开机动画）及原生应用UI设计；\n3.精准实施各品牌独有的设计规范，实现“零误差”交付。" }
+            { 
+                time: "今 ～ 2019.09", 
+                company: "杭州ACCESS品牌管理集团", 
+                role: "UED 负责人", 
+                description: "1.全面负责UED人才阶梯建设、绩效考核与文化建设；\n2.统筹核心产品（VTN、ABM、TJ）及海外体系（NTX、NTXBiz）的设计系统搭建及产品设计规划与落地；\n3.担任重点、难点项目核心主设，持续深入设计一线；\n4.流程优化与提效，如建立设计内审机制，优化设计流程及跨部门协作机制等。" 
+            },
+            { 
+                time: "2019.07 ～ 2016.11", 
+                company: "杭州金诚集团", 
+                role: "设计组负责人", 
+                description: "1.负责体验与视觉设计团队建设与文化塑造；\n2.担任核心项目主设，主导金诚逸IM、有象视频、区块链应用及育儿产品等多条业务线全链路体验设计；\n3.制定设计流程、评审规范与质量标尺，系统化提升团队输出效率；\n4.建立常态化沟通机制，确保设计方案高质量交付。" 
+            },
+            { 
+                time: "2016.06 ～ 2014.11", 
+                company: "厦门墨仕电子商务有限公司", 
+                role: "体验设计师", 
+                description: "1.独立负责“敢约”、“友空”等多款社交产品从概念到上线的全链路交付，定义信息架构与视觉风格；\n2.主导输出产品的核心设计策略与设计语言；\n3.为产品线建立并维护初期设计系统与组件库，显著提升协作效率。" 
+            },
+            { 
+                time: "2014.10 ～ 2011.07", 
+                company: "厦门悟都软件技术有限公司", 
+                role: "视觉设计师", 
+                description: "1.服务于华为、联想等厂商，深度参与操作系统定制化设计，独立承担从概念到落地的视觉方案；\n2.专精系统级动态视觉表达（如开机动画）及原生应用UI设计；\n3.精准实施各品牌独有的设计规范，实现“零误差”交付。" 
+            }
         ];
 
         const corePortfolioData = [
@@ -327,16 +347,14 @@
                     {group.groupTitle && (
                         <ScrollReveal className="relative z-20">
                             <div className="mb-[18px] md:mb-8 pl-1">
-                                {/* 分组标题字重调整为中等粗度 font-medium */}
-                                <h2 className="text-3xl md:text-5xl font-medium text-black/50">{group.groupTitle}</h2>
+                                <h2 className="text-3xl md:text-5xl font-thin text-black/80">{group.groupTitle}</h2>
                             </div>
                         </ScrollReveal>
                     )}
-                    {/* 调整：将上下行间距放大到1.5倍 (手机端 gap-y-6, PC端 gap-y-[72px]) */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 md:gap-x-24 gap-y-6 md:gap-y-[72px]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                         {group.projects.map((p, i) => (
                             <ScrollReveal key={p.id} delay={i * 100} className={p.fullWidth ? "md:col-span-2" : ""}>
-                                <div className="group cursor-pointer transition-all duration-700 md:hover:-translate-y-3 relative w-full" 
+                                <div className="group cursor-pointer transition-all duration-700 md:hover:-translate-y-2 relative w-full" 
                                      onClick={() => { 
                                          if (p.externalLink) {
                                              window.open(p.externalLink, '_blank');
@@ -346,24 +364,11 @@
                                              window.scrollTo(0,0); 
                                          }
                                      }}>
-                                    <div className="aspect-video overflow-hidden bg-[#ededed] mb-3 md:mb-4 relative">
+                                    
+                                    <div className="aspect-video overflow-hidden bg-[#ededed] relative">
                                         <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
                                     </div>
-                                    <div className="flex justify-between items-center pr-0 md:pr-4">
-                                        <div className="flex-1 pr-4">
-                                            {/* 项目标题字重调整为细体 font-light */}
-                                            <h3 className="text-lg md:text-xl font-light tracking-tight mb-[1.5px] md:mb-1 md:group-hover:underline underline-offset-8 decoration-1">{p.title}</h3>
-                                            <p className="text-[13px] md:text-sm text-black/40 font-light tracking-widest uppercase leading-normal">{p.subtitle}</p>
-                                        </div>
-                                        <div className="md:hidden flex items-center justify-center text-black mr-[16px]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="16" viewBox="0 0 32 16" fill="none" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M0 8h32"/><path d="M27.6 3.6 L32 8 L27.6 12.4"/>
-                                            </svg>
-                                        </div>
-                                        <div className="w-12 h-12 rounded-full border border-black/20 hidden md:flex items-center justify-center opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 bg-black text-white mt-1">
-                                            <ArrowUpRightIcon size={20} />
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </ScrollReveal>
                         ))}
@@ -373,7 +378,6 @@
 
             // --- 详情页 ---
             if (activeProject) {
-                // 如果是“自研直播”项目，开启暗黑模式
                 const isDarkMode = activeProject.title === "自研直播";
 
                 return (
@@ -388,7 +392,6 @@
                         </header>
                         <main className={`max-w-[90rem] mx-auto pt-0 md:pt-20 ${isDarkMode ? 'bg-[#222222]' : 'bg-[#ffffff]'}`}>
                             
-                            {/* 使用带有容错机制的智能序列相册组件，传入深色主题标志 */}
                             <SequentialGallery gallery={activeProject.gallery} isDarkMode={isDarkMode} />
 
                             <div className="pt-12 pb-24 md:pb-40 flex flex-row justify-center items-stretch gap-3 md:gap-6 px-4 md:px-6 max-w-5xl mx-auto">
@@ -444,44 +447,46 @@
                     </nav>
                     
                     {/* 个人简介 */}
-                    <header id="bio" className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-24 border-b border-black/[0.05]">
+                    <header id="bio" className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-24 border-b border-black/[0.05]">
                         <div className="absolute top-0 left-0 w-full flex justify-center pt-24 md:pt-32 overflow-hidden select-none pointer-events-none z-0">
                             <span className="text-[22vw] lg:text-[23vw] font-black text-black/[0.03] tracking-tighter leading-[0.8] whitespace-nowrap uppercase">PORTFOLIO</span>
                         </div>
-                        <div className="max-w-[90rem] mx-auto w-full grid lg:grid-cols-12 gap-12 items-center z-10 relative mt-12 md:mt-20">
-                            <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1">
-                                <ScrollReveal>
-                                    <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
-                                        <span className="font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8 ml-1">SELECTED WORKS</span>
-                                        <span className="font-black text-[22vw] lg:text-[13vw] ml-[-1vw]">{personalInfo.lastName}</span>
-                                        <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
-                                        <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80 ml-1">{personalInfo.name}</span>
-                                    </h1>
-                                </ScrollReveal>
-                                <ScrollReveal delay={200} className="mt-16 lg:mt-24 max-w-xl pl-1">
-                                    <div className="flex flex-col gap-y-10">
-                                        <div>
-                                            <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p>
-                                            <p className="text-xl font-thin tracking-tight">{personalInfo.school}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.degree}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.major}</p>
-                                        </div>
-                                        
-                                        <div className="flex flex-wrap gap-x-16 gap-y-6">
-                                            <div onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))} className="cursor-pointer group">
-                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Phone <span className="normal-case tracking-normal opacity-70 ml-1 font-thin">(Wechat)</span></p>
-                                                <div className="flex items-center gap-3"><p className="text-xl font-thin tracking-tight">{personalInfo.phone}</p><span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span></div>
+                        <div className="max-w-[90rem] mx-auto px-6 md:px-12 w-full z-10 relative">
+                            <div className="grid lg:grid-cols-12 gap-12 items-center mt-12 md:mt-20">
+                                <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1">
+                                    <ScrollReveal className="pl-1">
+                                        <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
+                                            <span className="font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8">SELECTED WORKS</span>
+                                            <span className="font-black text-[22vw] lg:text-[13vw]">{personalInfo.lastName}</span>
+                                            <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
+                                            <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80">{personalInfo.name}</span>
+                                        </h1>
+                                    </ScrollReveal>
+                                    <ScrollReveal delay={200} className="mt-16 lg:mt-24 max-w-xl pl-1">
+                                        <div className="flex flex-col gap-y-10">
+                                            <div>
+                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p>
+                                                <p className="text-xl font-thin tracking-tight">{personalInfo.school}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.degree}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.major}</p>
                                             </div>
-                                            <div onClick={() => handleCopy(personalInfo.email)} className="cursor-pointer group">
-                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Email</p>
-                                                <div className="flex items-center gap-3"><p className="text-xl font-thin tracking-tight lowercase">{personalInfo.email}</p><span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span></div>
+                                            
+                                            <div className="flex flex-wrap gap-x-16 gap-y-6">
+                                                <div onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))} className="cursor-pointer group">
+                                                    <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Phone <span className="normal-case tracking-normal opacity-70 ml-1 font-thin">(Wechat)</span></p>
+                                                    <div className="flex items-center gap-3"><p className="text-xl font-thin tracking-tight">{personalInfo.phone}</p><span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span></div>
+                                                </div>
+                                                <div onClick={() => handleCopy(personalInfo.email)} className="cursor-pointer group">
+                                                    <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Email</p>
+                                                    <div className="flex items-center gap-3"><p className="text-xl font-thin tracking-tight lowercase">{personalInfo.email}</p><span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </ScrollReveal>
-                            </div>
-                            <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-end">
-                                <ScrollReveal delay={400} className="w-full max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed]">
-                                    <ProgressiveImage src={personalInfo.avatar} className="w-full h-full object-cover opacity-90 transition-transform duration-[2s] hover:scale-105" />
-                                </ScrollReveal>
+                                    </ScrollReveal>
+                                </div>
+                                <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-end">
+                                    <ScrollReveal delay={400} className="w-full max-w-[380px] lg:max-w-[480px] aspect-[3/4] overflow-hidden bg-[#ededed]">
+                                        <ProgressiveImage src={personalInfo.avatar} className="w-full h-full object-cover opacity-90 transition-transform duration-[2s] hover:scale-105" />
+                                    </ScrollReveal>
+                                </div>
                             </div>
                         </div>
                     </header>
@@ -504,19 +509,19 @@
                                         <div key={`top-${idx}`} className="flex flex-col justify-end pb-1.5 px-0.5 min-h-[220px]">
                                             {idx % 2 === 0 ? (
                                                 <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <h3 className="text-lg xl:text-xl font-bold tracking-tight mb-1">{exp.company}</h3>
-                                                    <p className="text-sm font-medium text-black/50 mb-3">{exp.role}</p>
-                                                    <p className="text-[12px] font-light leading-relaxed text-black/60 text-justify whitespace-pre-line">{exp.description}</p>
+                                                    <h3 className="text-lg xl:text-xl font-bold tracking-tight mb-2">{exp.company}</h3>
+                                                    <p className="text-[14px] font-normal text-black mb-2">{exp.role}</p>
+                                                    <p className="text-[14px] font-light leading-relaxed text-black/60 text-justify whitespace-pre-line">{exp.description}</p>
                                                 </ScrollReveal>
                                             ) : (
                                                 <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <p className="text-[11px] font-thin tracking-[0.1em] text-black/40 uppercase text-center pb-1.5">{exp.time}</p>
+                                                    <p className="text-[12px] font-thin tracking-[0.1em] text-black/50 uppercase text-center pb-1.5">{exp.time}</p>
                                                 </ScrollReveal>
                                             )}
                                         </div>
                                     ))}
 
-                                    {/* 第二行：轴线 */}
+                                    {/* 实心小黑点和普通线条轴线 */}
                                     <div className="col-span-4 h-px bg-black/10 relative my-4 flex items-center">
                                         <div className="absolute inset-0 grid grid-cols-4 pointer-events-none">
                                             {[0, 1, 2, 3].map(i => (
@@ -533,13 +538,13 @@
                                         <div key={`bottom-${idx}`} className="flex flex-col justify-start pt-1.5 px-0.5 min-h-[220px]">
                                             {idx % 2 !== 0 ? (
                                                 <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <h3 className="text-lg xl:text-xl font-bold tracking-tight mb-1">{exp.company}</h3>
-                                                    <p className="text-sm font-medium text-black/50 mb-3">{exp.role}</p>
-                                                    <p className="text-[12px] font-light leading-relaxed text-black/60 text-justify whitespace-pre-line">{exp.description}</p>
+                                                    <h3 className="text-lg xl:text-xl font-bold tracking-tight mb-2">{exp.company}</h3>
+                                                    <p className="text-[14px] font-normal text-black mb-2">{exp.role}</p>
+                                                    <p className="text-[14px] font-light leading-relaxed text-black/60 text-justify whitespace-pre-line">{exp.description}</p>
                                                 </ScrollReveal>
                                             ) : (
                                                 <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <p className="text-[11px] font-thin tracking-[0.1em] text-black/40 uppercase text-center pt-1.5">{exp.time}</p>
+                                                    <p className="text-[12px] font-thin tracking-[0.1em] text-black/50 uppercase text-center pt-1.5">{exp.time}</p>
                                                 </ScrollReveal>
                                             )}
                                         </div>
@@ -548,24 +553,24 @@
                                 <div className="h-12 md:h-16"></div>
                             </div>
                             
-                            {/* 移动端履历结构完全重构 */}
+                            {/* 移动端履历结构同步还原为实心小黑点 */}
                             <div className="block md:hidden relative ml-2 mt-8 mb-16">
                                 <div className="absolute w-px bg-black/10 left-0 top-[10px] bottom-0 z-0"></div>
                                 
                                 {workExperienceData.map((exp, idx) => (
                                     <ScrollReveal key={idx} delay={idx * 100} className="relative pl-6 mb-12 last:mb-0 group z-10">
                                         <div className="absolute w-3 h-3 bg-black rounded-full -left-[5.5px] top-1"></div>
-                                        <p className="text-[13px] font-thin tracking-[0.1em] text-black/60 uppercase mb-2">{exp.time}</p>
+                                        <p className="text-[14px] font-thin tracking-[0.1em] text-black/70 uppercase mb-2">{exp.time}</p>
                                         <h3 className="text-lg font-bold tracking-tight mb-2">{exp.company}</h3>
-                                        <p className="text-sm font-medium text-black/50 mb-2">{exp.role}</p>
-                                        <p className="text-sm font-light leading-relaxed text-black/60 whitespace-pre-line">{exp.description}</p>
+                                        <p className="text-[14px] font-normal text-black mb-2">{exp.role}</p>
+                                        <p className="text-[14px] font-light leading-relaxed text-black/60 whitespace-pre-line">{exp.description}</p>
                                     </ScrollReveal>
                                 ))}
                             </div>
                         </section>
 
                         {/* 核心项目展示 */}
-                        <section id="projects" className="pt-24 md:pt-32 border-t border-black/[0.05]">
+                        <section id="projects" className="pt-8 md:pt-16">
                             <ScrollReveal>
                                 <div className="mb-12 md:mb-16 pl-1">
                                     <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">核心项目展示</h2>
@@ -578,7 +583,7 @@
                             </div>
 
                             {/* 团队管理 */}
-                            <div className="pt-24 md:pt-32 border-t border-black/[0.05]">
+                            <div className="pt-4 md:pt-8">
                                 <ScrollReveal>
                                     <div className="mb-12 md:mb-16 pl-1">
                                         <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">团队管理</h2>
