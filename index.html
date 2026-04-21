@@ -112,7 +112,19 @@
                         coverVideoBackground: `${COS_URL}/projects/vtn-brand/cover.mp4`, // 底层视频
                         coverForeground: `${COS_URL}/projects/vtn-brand/cover.png`,      // 顶层图片
                         cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, // 保留 JPG 作为无视频支持情况下的兜底图
-                        gallery: [ `${COS_URL}/projects/vtn-brand/showreel.mp4`, ...generateGallery("vtn-brand") ], 
+                        // 👇 修改点：在 gallery 数组中重新排布
+                        gallery: [ 
+                            // 1. 第一个位置：全新的双层叠加视频头图
+                            {
+                                type: 'double-layer-video',
+                                background: `${COS_URL}/projects/vtn-brand/cover.mp4`,
+                                foreground: `${COS_URL}/projects/vtn-brand/cover1.png`
+                            },
+                            // 2. 第二个位置：顺位恢复原来的 showreel 演示视频
+                            `${COS_URL}/projects/vtn-brand/showreel.mp4`, 
+                            // 3. 第三个位置开始：所有的高清设计长图
+                            ...generateGallery("vtn-brand") 
+                        ], 
                         fullWidth: true 
                     },
                     { id: 2, title: "海外体系-NTX&NTXBiz", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") },
@@ -266,9 +278,39 @@
 
             return (
                 <div className="flex flex-col gap-8 px-6 md:gap-8 md:px-20 mb-16">
-                    {itemsToRender.map((src, idx) => {
+                    {itemsToRender.map((item, idx) => {
                         if (failedIndices.has(idx)) return null;
 
+                        // 👇 新增：处理对象类型的双层循环背景
+                        if (typeof item === 'object' && item !== null && item.type === 'double-layer-video') {
+                            return (
+                                <ScrollReveal key={`complex-${idx}`} delay={50}>
+                                    <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
+                                        {startDownload && (
+                                            <div className="relative w-full flex items-center justify-center overflow-hidden">
+                                                <video 
+                                                    src={`${item.background}#t=0.001`} 
+                                                    autoPlay loop muted playsInline 
+                                                    className="w-full h-auto block object-cover z-0"
+                                                    onLoadedMetadata={() => handleSuccess(idx)}
+                                                    onError={() => handleError(idx)}
+                                                ></video>
+                                                {item.foreground && (
+                                                    <img 
+                                                        src={item.foreground} 
+                                                        alt={`Overlay ${idx + 1}`}
+                                                        className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </ScrollReveal>
+                            );
+                        }
+
+                        // 👇 原有的字符串 URL 类型的处理
+                        const src = item;
                         const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
                         if (isVideo) {
                             return (
