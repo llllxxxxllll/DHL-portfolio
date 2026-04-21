@@ -108,22 +108,18 @@
                         id: 1, 
                         title: "VTN App", 
                         subtitle: "品牌心智升级、设计语言重塑、核心链路优化", 
-                        // 👇 核心改动：双层封面组合配置
-                        coverVideoBackground: `${COS_URL}/projects/vtn-brand/cover.mp4`, // 底层视频
-                        coverForeground: `${COS_URL}/projects/vtn-brand/cover.png`,      // 顶层图片
-                        cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, // 保留 JPG 作为无视频支持情况下的兜底图
-                        // 👇 修改点：在 gallery 数组中重新排布
+                        coverVideoBackground: `${COS_URL}/projects/vtn-brand/cover.mp4`, 
+                        coverForeground: `${COS_URL}/projects/vtn-brand/cover.png`,      
+                        cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
+                        // 👇 修改点：将 showreel.mp4 提到了数组的绝对第一位！
                         gallery: [ 
-                            // 1. 第一个位置：全新的双层叠加视频头图
+                            `${COS_URL}/projects/vtn-brand/showreel.mp4`, 
                             {
                                 type: 'double-layer-video',
                                 background: `${COS_URL}/projects/vtn-brand/cover.mp4`,
                                 foreground: `${COS_URL}/projects/vtn-brand/cover1.png`
                             },
-                            // 2. 第二个位置：顺位恢复原来的 showreel 演示视频
-                            `${COS_URL}/projects/vtn-brand/showreel.mp4`, 
-                            // 3. 第三个位置开始：所有的高清设计长图
-                            ...generateGallery("vtn-brand") 
+                            ...generateGallery("vtn-brand")
                         ], 
                         fullWidth: true 
                     },
