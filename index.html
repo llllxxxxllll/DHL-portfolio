@@ -528,11 +528,11 @@
                             <span className="text-[22vw] lg:text-[23vw] font-black text-black/[0.03] tracking-tighter leading-[0.8] whitespace-nowrap uppercase">PORTFOLIO</span>
                         </div>
                         <div className="max-w-[90rem] mx-auto w-full grid lg:grid-cols-12 gap-6 lg:gap-12 items-center z-10 relative mt-12 md:mt-20">
-                            {/* 👇 优化：大幅减小移动端的 pt 值 (提拉到了 12vw)，让文字暴力上移，重重地压在右侧头像上！ */}
-                            <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1 pt-[12vw] sm:pt-[10vw] md:pt-0">
+                            {/* 👇 优化：将移动端 pt 值精确调整为 35vw，这会让下方文字下沉，刚好从右上角照片竖直高度约 2/3 的位置开始压盖 */}
+                            <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1 pt-[35vw] sm:pt-[32vw] md:pt-0">
                                 <ScrollReveal className="pl-1">
                                     <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
-                                        {/* 👇 优化：加上 hidden md:block，在手机端彻底隐藏 SELECTED WORKS */}
+                                        {/* 隐藏 SELECTED WORKS 保持移动端极简冲击力 */}
                                         <span className="hidden md:block font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8 ml-1">SELECTED WORKS</span>
                                         <span className="font-black text-[22vw] lg:text-[13vw] ml-[-1vw]">{personalInfo.lastName}</span>
                                         <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
