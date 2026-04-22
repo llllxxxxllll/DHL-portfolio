@@ -531,10 +531,10 @@
                             <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1">
                                 <ScrollReveal className="pl-1">
                                     <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
-                                        <span className="font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8">SELECTED WORKS</span>
-                                        <span className="font-black text-[22vw] lg:text-[13vw]">{personalInfo.lastName}</span>
+                                        <span className="font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8 ml-1">SELECTED WORKS</span>
+                                        <span className="font-black text-[22vw] lg:text-[13vw] ml-[-1vw]">{personalInfo.lastName}</span>
                                         <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
-                                        <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80">{personalInfo.name}</span>
+                                        <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80 ml-1">{personalInfo.name}</span>
                                     </h1>
                                 </ScrollReveal>
                                 <ScrollReveal delay={200} className="mt-16 lg:mt-24 max-w-xl pl-1">
@@ -557,8 +557,10 @@
                                     </div>
                                 </ScrollReveal>
                             </div>
-                            <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-start lg:justify-end pl-1 lg:pl-0">
-                                <ScrollReveal delay={400} className="w-[120px] md:w-full md:max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed]">
+                            
+                            {/* 👇 修改点：纯手机端引入绝对定位杂志排版 (absolute right-0 top-2)，平板/PC端强制恢复原样 (md:relative md:static) */}
+                            <div className="lg:col-span-5 order-1 lg:order-2 absolute right-0 top-2 md:relative md:top-auto md:right-auto flex justify-end md:justify-start lg:justify-end md:pl-1 lg:pl-0 z-10">
+                                <ScrollReveal delay={400} className="w-[105px] sm:w-[130px] md:w-full md:max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed]">
                                     <ProgressiveImage src={personalInfo.avatar} className="w-full h-full object-cover opacity-90 transition-transform duration-[2s] hover:scale-105" />
                                 </ScrollReveal>
                             </div>
