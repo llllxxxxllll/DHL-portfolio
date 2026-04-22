@@ -110,14 +110,15 @@
                         subtitle: "品牌心智升级、设计语言重塑、核心链路优化", 
                         coverVideoBackground: `${COS_URL}/projects/vtn-brand/cover.mp4`, 
                         coverForeground: `${COS_URL}/projects/vtn-brand/cover.png`,      
+                        coverVideoPoster: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
                         cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
-                        // 👇 修改点：将 showreel.mp4 提到了数组的绝对第一位！
                         gallery: [ 
                             `${COS_URL}/projects/vtn-brand/showreel.mp4`, 
                             {
                                 type: 'double-layer-video',
                                 background: `${COS_URL}/projects/vtn-brand/cover.mp4`,
-                                foreground: `${COS_URL}/projects/vtn-brand/cover1.png`
+                                foreground: `${COS_URL}/projects/vtn-brand/cover1.png`,
+                                poster: `${COS_URL}/projects/vtn-brand/cover.jpg` 
                             },
                             ...generateGallery("vtn-brand")
                         ], 
@@ -204,7 +205,6 @@
                             decoding="async"
                             onLoad={() => { setIsLoaded(true); if (onLoadSuccess) onLoadSuccess(); }} 
                             onError={() => { 
-                                // 如果 cover.jpg 失败，自动尝试加载 cover.gif
                                 if (currentSrc.endsWith('cover.jpg')) {
                                     setCurrentSrc(currentSrc.replace('cover.jpg', 'cover.gif'));
                                 } else {
@@ -273,11 +273,10 @@
             const itemsToRender = gallery.slice(0, Math.min(renderCount, cutOffIndex));
 
             return (
-                <div className="flex flex-col gap-8 px-6 md:gap-8 md:px-20 mb-16">
+                <div className="flex flex-col gap-4 px-6 md:gap-[26px] md:px-20 mb-16">
                     {itemsToRender.map((item, idx) => {
                         if (failedIndices.has(idx)) return null;
 
-                        // 👇 新增：处理对象类型的双层循环背景
                         if (typeof item === 'object' && item !== null && item.type === 'double-layer-video') {
                             return (
                                 <ScrollReveal key={`complex-${idx}`} delay={50}>
@@ -285,10 +284,12 @@
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
                                                 <video 
-                                                    src={`${item.background}#t=0.001`} 
-                                                    autoPlay loop muted playsInline 
+                                                    src={item.background} 
+                                                    poster={item.poster}
+                                                    autoPlay loop muted playsInline preload="auto" 
                                                     className="w-full h-auto block object-cover z-0"
-                                                    onLoadedMetadata={() => handleSuccess(idx)}
+                                                    onLoadedData={() => handleSuccess(idx)}
+                                                    onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                     onError={() => handleError(idx)}
                                                 ></video>
                                                 {item.foreground && (
@@ -305,7 +306,6 @@
                             );
                         }
 
-                        // 👇 原有的字符串 URL 类型的处理
                         const src = item;
                         const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
                         if (isVideo) {
@@ -317,7 +317,8 @@
                                                 src={`${src}#t=0.001`} 
                                                 controls preload="metadata" playsInline 
                                                 className="w-full h-auto object-cover"
-                                                onLoadedMetadata={() => handleSuccess(idx)}
+                                                onLoadedData={() => handleSuccess(idx)}
+                                                onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                 onError={() => handleError(idx)}
                                             ></video>
                                         )}
@@ -342,7 +343,6 @@
             );
         };
 
-        // --- 3. 主应用 ---
         function App() {
             const [activeProject, setActiveProject] = useState(null);
             const [activeSection, setActiveSection] = useState('bio');
@@ -410,7 +410,6 @@
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                         {group.projects.map((p, i) => {
-                            // 👇 检查该项目是否配置了“双层动态封面”
                             const isDoubleLayerCover = !!p.coverVideoBackground;
 
                             return (
@@ -428,25 +427,22 @@
                                         
                                         <div className="aspect-video overflow-hidden bg-[#ededed] relative">
                                             {isDoubleLayerCover ? (
-                                                // 双层视频结构：内层负责缩放动效，包裹着背景和前景
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
-                                                    {/* z-0：底层背景，铺满裁切 (object-cover)，静音循环自动播放 */}
                                                     <video 
                                                         src={p.coverVideoBackground} 
-                                                        autoPlay loop muted playsInline 
+                                                        poster={p.coverVideoPoster || undefined}
+                                                        autoPlay loop muted playsInline preload="auto"
                                                         className="absolute inset-0 w-full h-full object-cover z-0"
                                                     ></video>
-                                                    {/* z-10：顶层前景，铺满裁切 (object-cover)，叠加在视频上方 */}
                                                     {p.coverForeground && (
                                                         <img 
                                                             src={p.coverForeground} 
                                                             alt={`${p.title} Foreground`}
-                                                            className="absolute inset-0 w-full h-full object-cover z-10"
+                                                            className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
                                                         />
                                                     )}
                                                 </div>
                                             ) : (
-                                                // 普通单张图片兜底
                                                 <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
                                             )}
                                         </div>
@@ -459,7 +455,6 @@
                 </section>
             );
 
-            // --- 详情页 ---
             if (activeProject) {
                 const isDarkMode = activeProject.title === "自研直播";
 
@@ -514,12 +509,11 @@
                 );
             }
 
-            // --- 首页 ---
             return (
                 <div className="min-h-screen bg-[#fafafa] text-black">
                     {toast && <div className="fixed top-12 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-4 rounded-full text-sm z-[1000] fade-in shadow-2xl">{toast}</div>}
                     <nav className="fixed top-0 left-0 w-full z-[100] bg-[#fafafa]/90 backdrop-blur-md py-5 border-b border-black/[0.05]">
-                        <div className="max-w-[90rem] mx-auto px-6 md:px-20 flex justify-between items-center">
+                        <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex justify-between items-center">
                             <div className="font-bold tracking-[0.2em] text-sm uppercase hidden md:block">DING HELIANG</div>
                             <div className="flex gap-8 text-sm md:text-sm tracking-widest mx-auto md:mx-0">
                                 <button onClick={() => scrollToSection('bio')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'bio' ? 'text-black' : 'text-black/30 hover:text-black'}`}>个人简介</button>
@@ -529,12 +523,11 @@
                         </div>
                     </nav>
                     
-                    {/* 个人简介 */}
-                    <header id="bio" className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-20 pt-32 pb-24 border-b border-black/[0.05]">
+                    <header id="bio" className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-24 border-b border-black/[0.05]">
                         <div className="absolute top-0 left-0 w-full flex justify-center pt-24 md:pt-32 overflow-hidden select-none pointer-events-none z-0">
                             <span className="text-[22vw] lg:text-[23vw] font-black text-black/[0.03] tracking-tighter leading-[0.8] whitespace-nowrap uppercase">PORTFOLIO</span>
                         </div>
-                        <div className="max-w-[90rem] mx-auto w-full grid lg:grid-cols-12 gap-12 items-center z-10 relative mt-12 md:mt-20">
+                        <div className="max-w-[90rem] mx-auto w-full grid lg:grid-cols-12 gap-6 lg:gap-12 items-center z-10 relative mt-12 md:mt-20">
                             <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1">
                                 <ScrollReveal className="pl-1">
                                     <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
@@ -564,15 +557,15 @@
                                     </div>
                                 </ScrollReveal>
                             </div>
-                            <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-end">
-                                <ScrollReveal delay={400} className="w-full max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed]">
+                            <div className="lg:col-span-5 relative order-1 lg:order-2 flex justify-start lg:justify-end pl-1 lg:pl-0">
+                                <ScrollReveal delay={400} className="w-[120px] md:w-full md:max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed]">
                                     <ProgressiveImage src={personalInfo.avatar} className="w-full h-full object-cover opacity-90 transition-transform duration-[2s] hover:scale-105" />
                                 </ScrollReveal>
                             </div>
                         </div>
                     </header>
 
-                    <main className="max-w-[90rem] mx-auto px-6 md:px-20">
+                    <main className="max-w-[90rem] mx-auto px-6 md:px-12">
                         {/* 工作履历 */}
                         <section id="experience" className="pt-24 md:pt-32">
                             <ScrollReveal>
