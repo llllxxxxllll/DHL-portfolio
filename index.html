@@ -127,7 +127,15 @@
                 groupId: "group-2", groupTitle: "AI赋能",
                 projects: [
                     { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai") },
-                    { id: 4, title: "VTN AI营养师", subtitle: "AI健康智能体", cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, gallery: generateGallery("vtn-ai") }
+                    { 
+                        id: 4, 
+                        title: "VTN AI营养师", 
+                        subtitle: "AI健康智能体", 
+                        cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, 
+                        coverVideoCenter: `${COS_URL}/projects/vtn-ai/cover.mp4`,
+                        coverForegroundPng: `${COS_URL}/projects/vtn-ai/cover.png`,
+                        gallery: generateGallery("vtn-ai") 
+                    }
                 ]
             },
             {
@@ -145,7 +153,7 @@
                         title: "怪兽App", 
                         subtitle: "基于区块链技术的社交娱乐平台", 
                         cover: `${COS_URL}/projects/monster/cover.jpg`, 
-                        // 👇 确立的 13/9 (69.23%) 高度动态适配 GIF
+                        // 👇 确立的 62.3% 高度动态适配 GIF
                         coverForegroundGif: `${COS_URL}/projects/monster/cover.gif`,
                         externalLink: "https://www.zcool.com.cn/work/ZMzcwMzgwMTI=.html" 
                     },
@@ -415,6 +423,7 @@
                         {group.projects.map((p, i) => {
                             const isDoubleLayerCover = !!p.coverVideoBackground;
                             const isGifForeground = !!p.coverForegroundGif;
+                            const isTripleLayerCover = !!p.coverVideoCenter;
 
                             return (
                                 <ScrollReveal key={p.id} delay={i * 100} className={p.fullWidth ? "md:col-span-2" : ""}>
@@ -434,8 +443,28 @@
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
                                                     {/* 底层背景图 */}
                                                     <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
-                                                    {/* 👇 修复：恢复为你最满意的 62.3% 高度，保留 5% 的左侧偏移 */}
+                                                    {/* 👇 怪兽App：确立的 62.3% 高度动态适配 GIF */}
                                                     <img src={p.coverForegroundGif} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" />
+                                                </div>
+                                            ) : isTripleLayerCover ? (
+                                                <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
+                                                    {/* 1. 最底层：静态 JPG 背景 */}
+                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
+                                                    
+                                                    {/* 2. 中间层：MP4 视频，高度缩至90%，靠底对齐，居中 */}
+                                                    <video 
+                                                        src={p.coverVideoCenter} 
+                                                        autoPlay loop muted playsInline preload="auto"
+                                                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none"
+                                                    ></video>
+                                                    
+                                                    {/* 修复：全局 4% 黑色遮罩，铺满全屏，完美消除顶部90%处的切割灰线！ */}
+                                                    <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-10 pointer-events-none"></div>
+                                                    
+                                                    {/* 3. 最顶层：PNG 前景遮挡 */}
+                                                    {p.coverForegroundPng && (
+                                                        <img src={p.coverForegroundPng} alt={`${p.title} Foreground`} className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" />
+                                                    )}
                                                 </div>
                                             ) : isDoubleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
