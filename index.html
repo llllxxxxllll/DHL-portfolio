@@ -434,7 +434,7 @@
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
                                                     {/* 底层背景图 */}
                                                     <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
-                                                    {/* 👇 恢复到你最满意的 62.3% (缩小十分之九) 大小，依然保留 5% 的左侧偏移 */}
+                                                    {/* 👇 修复：恢复为你最满意的 62.3% 高度，保留 5% 的左侧偏移 */}
                                                     <img src={p.coverForegroundGif} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" />
                                                 </div>
                                             ) : isDoubleLayerCover ? (
