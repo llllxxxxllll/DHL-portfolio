@@ -126,7 +126,6 @@
             {
                 groupId: "group-2", groupTitle: "AI赋能",
                 projects: [
-                    { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai") },
                     { 
                         id: 4, 
                         title: "VTN AI营养师", 
@@ -134,8 +133,27 @@
                         cover: `${COS_URL}/projects/vtn-ai/cover.jpg`, 
                         coverVideoCenter: `${COS_URL}/projects/vtn-ai/cover.mp4`,
                         coverForegroundPng: `${COS_URL}/projects/vtn-ai/cover.png`,
-                        gallery: generateGallery("vtn-ai") 
-                    }
+                        gallery: [
+                            // 针对AI营养师详情第一张图的特殊排版逻辑
+                            {
+                                type: 'triple-layer-top-video',
+                                background: `${COS_URL}/projects/vtn-ai/1.jpg`,
+                                video: `${COS_URL}/projects/vtn-ai/cover.mp4`
+                            },
+                            // 正常的 2.jpg 和 3.jpg
+                            `${COS_URL}/projects/vtn-ai/2.jpg`,
+                            `${COS_URL}/projects/vtn-ai/3.jpg`,
+                            // 针对 第四张图 的特殊排版逻辑
+                            {
+                                type: 'triple-layer-left-video',
+                                background: `${COS_URL}/projects/vtn-ai/4.jpg`,
+                                video: `${COS_URL}/projects/vtn-ai/cover.mp4`
+                            },
+                            // 剔除前4张，从 5.jpg 往后自动生成相册
+                            ...generateGallery("vtn-ai").slice(4)
+                        ]
+                    },
+                    { id: 3, title: "ABM AI获客中心", subtitle: "AI赋能B端营销中台", cover: `${COS_URL}/projects/abm-ai/cover.jpg`, gallery: generateGallery("abm-ai") }
                 ]
             },
             {
@@ -153,7 +171,6 @@
                         title: "怪兽App", 
                         subtitle: "基于区块链技术的社交娱乐平台", 
                         cover: `${COS_URL}/projects/monster/cover.jpg`, 
-                        // 👇 确立的 62.3% 高度动态适配 GIF
                         coverForegroundGif: `${COS_URL}/projects/monster/cover.gif`,
                         externalLink: "https://www.zcool.com.cn/work/ZMzcwMzgwMTI=.html" 
                     },
@@ -288,6 +305,7 @@
                     {itemsToRender.map((item, idx) => {
                         if (failedIndices.has(idx)) return null;
 
+                        // 渲染普通的 double-layer-video
                         if (typeof item === 'object' && item !== null && item.type === 'double-layer-video') {
                             return (
                                 <ScrollReveal key={`complex-${idx}`} delay={50}>
@@ -317,6 +335,71 @@
                             );
                         }
 
+                        // NEW: 渲染针对 AI营养师 定制的 triple-layer-top-video
+                        if (typeof item === 'object' && item !== null && item.type === 'triple-layer-top-video') {
+                            return (
+                                <ScrollReveal key={`complex-top-${idx}`} delay={50}>
+                                    <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
+                                        {startDownload && (
+                                            <div className="relative w-full flex items-center justify-center overflow-hidden">
+                                                {/* 1. 底图：静态 1.jpg */}
+                                                <img 
+                                                    src={item.background} 
+                                                    alt={`Detail ${idx + 1} Background`}
+                                                    className="w-full h-auto block object-cover z-0"
+                                                    onLoad={() => handleSuccess(idx)}
+                                                    onError={() => handleError(idx)}
+                                                />
+                                                {/* 2. 中间层：MP4视频，高度占2/3，通过 scale-[0.90] 整体缩小至90%，留出更多呼吸感 */}
+                                                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
+                                                    <video 
+                                                        src={item.video} 
+                                                        autoPlay loop muted playsInline preload="auto" 
+                                                        className="h-full w-auto block object-contain scale-[0.90]"
+                                                    ></video>
+                                                </div>
+                                                {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
+                                                <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-20 pointer-events-none"></div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </ScrollReveal>
+                            );
+                        }
+
+                        // NEW: 渲染针对 AI营养师 定制的 triple-layer-left-video (用于第4张图)
+                        if (typeof item === 'object' && item !== null && item.type === 'triple-layer-left-video') {
+                            return (
+                                <ScrollReveal key={`complex-left-${idx}`} delay={50}>
+                                    <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
+                                        {startDownload && (
+                                            <div className="relative w-full flex items-center justify-center overflow-hidden">
+                                                {/* 1. 底图：静态 4.jpg */}
+                                                <img 
+                                                    src={item.background} 
+                                                    alt={`Detail ${idx + 1} Background`}
+                                                    className="w-full h-auto block object-cover z-0"
+                                                    onLoad={() => handleSuccess(idx)}
+                                                    onError={() => handleError(idx)}
+                                                />
+                                                {/* 2. 中间层：MP4视频，上下居中，左边距5%，高度80%，通过 scale-[0.95] 缩小至当前的95% */}
+                                                <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
+                                                    <video 
+                                                        src={item.video} 
+                                                        autoPlay loop muted playsInline preload="auto" 
+                                                        className="h-full w-auto block object-contain scale-[0.95]"
+                                                    ></video>
+                                                </div>
+                                                {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
+                                                <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-20 pointer-events-none"></div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </ScrollReveal>
+                            );
+                        }
+
+                        // 渲染普通视频或图片
                         const src = item;
                         const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
                         if (isVideo) {
@@ -458,7 +541,7 @@
                                                         className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none"
                                                     ></video>
                                                     
-                                                    {/* 修复：全局 4% 黑色遮罩，铺满全屏，完美消除顶部90%处的切割灰线！ */}
+                                                    {/* 全局 4% 黑色遮罩 */}
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-10 pointer-events-none"></div>
                                                     
                                                     {/* 3. 最顶层：PNG 前景遮挡 */}
