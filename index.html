@@ -208,16 +208,6 @@
         const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
         const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
-        // 🚀 JS 视频循环修复函数 (解决移动端原生 Loop 闪屏顽疾)
-        const handleLoopFix = (e) => {
-            const video = e.target;
-            // 提前 0.1 秒强制回到 0.05 秒的位置，跳过系统底层的重置掉帧
-            if (video.duration && video.currentTime >= video.duration - 0.1) {
-                video.currentTime = 0.05;
-                video.play().catch(()=>{});
-            }
-        };
-
         const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess, onLoadError, isDarkMode = false }) => {
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
@@ -338,11 +328,11 @@
                                                     src={item.background} 
                                                     poster={item.poster}
                                                     autoPlay loop muted playsInline preload="auto" 
+                                                    webkit-playsinline="true" x5-playsinline="true"
                                                     className="w-full h-auto block object-cover z-0 video-fix"
                                                     onLoadedData={() => handleSuccess(idx)}
                                                     onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                     onError={() => handleError(idx)}
-                                                    onTimeUpdate={handleLoopFix}
                                                 ></video>
                                                 {item.foreground && (
                                                     <img 
@@ -378,8 +368,8 @@
                                                     <video 
                                                         src={item.video} 
                                                         autoPlay loop muted playsInline preload="auto" 
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.90] video-fix"
-                                                        onTimeUpdate={handleLoopFix}
                                                     ></video>
                                                 </div>
                                                 {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
@@ -411,8 +401,8 @@
                                                     <video 
                                                         src={item.video} 
                                                         autoPlay loop muted playsInline preload="auto" 
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.95] video-fix"
-                                                        onTimeUpdate={handleLoopFix}
                                                     ></video>
                                                 </div>
                                                 {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
@@ -564,8 +554,8 @@
                                                     <video 
                                                         src={p.coverVideoCenter} 
                                                         autoPlay loop muted playsInline preload="auto"
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none video-fix"
-                                                        onTimeUpdate={handleLoopFix}
                                                     ></video>
                                                     
                                                     {/* 全局 4% 黑色遮罩 */}
@@ -582,8 +572,8 @@
                                                         src={p.coverVideoBackground} 
                                                         poster={p.coverVideoPoster || undefined}
                                                         autoPlay loop muted playsInline preload="auto"
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="absolute inset-0 w-full h-full object-cover z-0 video-fix"
-                                                        onTimeUpdate={handleLoopFix}
                                                     ></video>
                                                     {p.coverForeground && (
                                                         <img 
