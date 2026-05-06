@@ -196,6 +196,60 @@
         const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
         const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
+        // 🚀 终极杀器：毫秒级 60Hz 刷新率无缝视频组件 (规避 iOS/微信 Loop 闪屏及卡死)
+        const SeamlessVideo = ({ src, poster, className, onLoadedData, onLoadStart, onError }) => {
+            const videoRef = useRef(null);
+
+            useEffect(() => {
+                const video = videoRef.current;
+                if (!video) return;
+                let animationId;
+
+                // 利用 RequestAnimationFrame 以 60帧/秒 监控视频时间
+                const checkTime = () => {
+                    // 核心魔法：如果距离视频结束还剩 0.05 秒以内，不动声色地将进度条拉回到 0.02 秒。
+                    // 整个过程由于在播放中发生，绝不调用 play()，完美避开浏览器拦截与底部缓存重置！
+                    if (video.duration > 0 && (video.duration - video.currentTime) <= 0.05) {
+                        video.currentTime = 0.02;
+                    }
+                    animationId = requestAnimationFrame(checkTime);
+                };
+
+                const handlePlay = () => {
+                    if (animationId) cancelAnimationFrame(animationId);
+                    animationId = requestAnimationFrame(checkTime);
+                };
+
+                const handlePause = () => {
+                    if (animationId) cancelAnimationFrame(animationId);
+                };
+
+                video.addEventListener('play', handlePlay);
+                video.addEventListener('pause', handlePause);
+
+                return () => {
+                    video.removeEventListener('play', handlePlay);
+                    video.removeEventListener('pause', handlePause);
+                    if (animationId) cancelAnimationFrame(animationId);
+                };
+            }, []);
+
+            return (
+                <video 
+                    ref={videoRef}
+                    src={src} 
+                    poster={poster}
+                    autoPlay loop muted playsInline preload="auto" 
+                    webkit-playsinline="true" x5-playsinline="true"
+                    className={className}
+                    onLoadedData={onLoadedData}
+                    onLoadStart={onLoadStart}
+                    onError={onError}
+                    style={{ transform: 'translate3d(0,0,0)', WebkitBackfaceVisibility: 'hidden' }}
+                ></video>
+            );
+        };
+
         const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess, onLoadError, isDarkMode = false }) => {
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
@@ -312,15 +366,15 @@
                                     <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
-                                                <video 
+                                                {/* 接入高级无缝循环组件 */}
+                                                <SeamlessVideo 
                                                     src={item.background} 
                                                     poster={item.poster}
-                                                    autoPlay loop muted playsInline preload="auto" 
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoadedData={() => handleSuccess(idx)}
                                                     onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                     onError={() => handleError(idx)}
-                                                ></video>
+                                                />
                                                 {item.foreground && (
                                                     <img 
                                                         src={item.foreground} 
@@ -350,15 +404,14 @@
                                                     onLoad={() => handleSuccess(idx)}
                                                     onError={() => handleError(idx)}
                                                 />
-                                                {/* 2. 中间层：MP4视频 */}
+                                                {/* 2. 中间层：高级无缝 MP4视频 */}
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
-                                                    <video 
+                                                    <SeamlessVideo 
                                                         src={item.video} 
-                                                        autoPlay loop muted playsInline preload="auto" 
                                                         className="h-full w-auto block object-contain scale-[0.90]"
-                                                    ></video>
+                                                    />
                                                 </div>
-                                                {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
+                                                {/* 3. 最顶层：4%的纯黑遮罩融合 */}
                                                 <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-20 pointer-events-none"></div>
                                             </div>
                                         )}
@@ -382,15 +435,14 @@
                                                     onLoad={() => handleSuccess(idx)}
                                                     onError={() => handleError(idx)}
                                                 />
-                                                {/* 2. 中间层：MP4视频 */}
+                                                {/* 2. 中间层：高级无缝 MP4视频 */}
                                                 <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
-                                                    <video 
+                                                    <SeamlessVideo 
                                                         src={item.video} 
-                                                        autoPlay loop muted playsInline preload="auto" 
                                                         className="h-full w-auto block object-contain scale-[0.95]"
-                                                    ></video>
+                                                    />
                                                 </div>
-                                                {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
+                                                {/* 3. 最顶层：4%的纯黑遮罩融合 */}
                                                 <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-20 pointer-events-none"></div>
                                             </div>
                                         )}
@@ -410,6 +462,7 @@
                                             <video 
                                                 src={`${src}#t=0.001`} 
                                                 controls preload="metadata" playsInline 
+                                                webkit-playsinline="true" x5-playsinline="true"
                                                 className="w-full h-auto object-cover"
                                                 onLoadedData={() => handleSuccess(idx)}
                                                 onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
@@ -534,12 +587,11 @@
                                                     {/* 1. 最底层：静态 JPG 背景 */}
                                                     <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
                                                     
-                                                    {/* 2. 中间层：MP4 视频，高度缩至90%，靠底对齐，居中 */}
-                                                    <video 
+                                                    {/* 2. 中间层：应用无缝循环 MP4 视频 */}
+                                                    <SeamlessVideo 
                                                         src={p.coverVideoCenter} 
-                                                        autoPlay loop muted playsInline preload="auto"
                                                         className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none"
-                                                    ></video>
+                                                    />
                                                     
                                                     {/* 全局 4% 黑色遮罩 */}
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-10 pointer-events-none"></div>
@@ -551,12 +603,11 @@
                                                 </div>
                                             ) : isDoubleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
-                                                    <video 
+                                                    <SeamlessVideo 
                                                         src={p.coverVideoBackground} 
                                                         poster={p.coverVideoPoster || undefined}
-                                                        autoPlay loop muted playsInline preload="auto"
                                                         className="absolute inset-0 w-full h-full object-cover z-0"
-                                                    ></video>
+                                                    />
                                                     {p.coverForeground && (
                                                         <img 
                                                             src={p.coverForeground} 
