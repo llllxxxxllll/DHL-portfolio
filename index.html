@@ -150,7 +150,8 @@
                             {
                                 type: 'triple-layer-top-video',
                                 background: `${COS_URL}/projects/vtn-ai/1.jpg`,
-                                video: `${COS_URL}/projects/vtn-ai/cover.mp4`
+                                // 🚀 修复核心：加上 ?v=1 欺骗浏览器引擎，分配独立解码通道
+                                video: `${COS_URL}/projects/vtn-ai/cover.mp4?v=1`
                             },
                             // 正常的 2.jpg 和 3.jpg
                             `${COS_URL}/projects/vtn-ai/2.jpg`,
@@ -159,7 +160,8 @@
                             {
                                 type: 'triple-layer-left-video',
                                 background: `${COS_URL}/projects/vtn-ai/4.jpg`,
-                                video: `${COS_URL}/projects/vtn-ai/cover.mp4`
+                                // 🚀 修复核心：加上 ?v=2 欺骗浏览器引擎，防止与第一张图的缓存打架导致卡死
+                                video: `${COS_URL}/projects/vtn-ai/cover.mp4?v=2`
                             },
                             // 剔除前4张，从 5.jpg 往后自动生成相册
                             ...generateGallery("vtn-ai").slice(4)
