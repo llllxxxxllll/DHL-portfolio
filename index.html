@@ -24,18 +24,6 @@
         .reveal-visible { opacity: 1; transform: translateY(0) scale(1); }
         @keyframes global-spin { to { transform: rotate(360deg); } }
         @media (max-width: 768px) { .desktop-only { display: none !important; } }
-        
-        /* 🚀 移动端视频循环播放防闪烁专属 Hack - 进阶版 */
-        .video-fix {
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-perspective: 1000;
-            perspective: 1000;
-            /* 解决 Safari 下的特殊图层裁剪闪屏 bug */
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-        }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white">
@@ -150,8 +138,7 @@
                             {
                                 type: 'triple-layer-top-video',
                                 background: `${COS_URL}/projects/vtn-ai/1.jpg`,
-                                // 🚀 修复核心：加上 ?v=1 欺骗浏览器引擎，分配独立解码通道
-                                video: `${COS_URL}/projects/vtn-ai/cover.mp4?v=1`
+                                video: `${COS_URL}/projects/vtn-ai/cover2.mp4`
                             },
                             // 正常的 2.jpg 和 3.jpg
                             `${COS_URL}/projects/vtn-ai/2.jpg`,
@@ -160,8 +147,7 @@
                             {
                                 type: 'triple-layer-left-video',
                                 background: `${COS_URL}/projects/vtn-ai/4.jpg`,
-                                // 🚀 修复核心：加上 ?v=2 欺骗浏览器引擎，防止与第一张图的缓存打架导致卡死
-                                video: `${COS_URL}/projects/vtn-ai/cover.mp4?v=2`
+                                video: `${COS_URL}/projects/vtn-ai/cover3.mp4`
                             },
                             // 剔除前4张，从 5.jpg 往后自动生成相册
                             ...generateGallery("vtn-ai").slice(4)
@@ -330,8 +316,7 @@
                                                     src={item.background} 
                                                     poster={item.poster}
                                                     autoPlay loop muted playsInline preload="auto" 
-                                                    webkit-playsinline="true" x5-playsinline="true"
-                                                    className="w-full h-auto block object-cover z-0 video-fix"
+                                                    className="w-full h-auto block object-cover z-0"
                                                     onLoadedData={() => handleSuccess(idx)}
                                                     onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                     onError={() => handleError(idx)}
@@ -370,8 +355,7 @@
                                                     <video 
                                                         src={item.video} 
                                                         autoPlay loop muted playsInline preload="auto" 
-                                                        webkit-playsinline="true" x5-playsinline="true"
-                                                        className="h-full w-auto block object-contain scale-[0.90] video-fix"
+                                                        className="h-full w-auto block object-contain scale-[0.90]"
                                                     ></video>
                                                 </div>
                                                 {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
@@ -403,8 +387,7 @@
                                                     <video 
                                                         src={item.video} 
                                                         autoPlay loop muted playsInline preload="auto" 
-                                                        webkit-playsinline="true" x5-playsinline="true"
-                                                        className="h-full w-auto block object-contain scale-[0.95] video-fix"
+                                                        className="h-full w-auto block object-contain scale-[0.95]"
                                                     ></video>
                                                 </div>
                                                 {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
@@ -427,11 +410,10 @@
                                             <video 
                                                 src={`${src}#t=0.001`} 
                                                 controls preload="metadata" playsInline 
-                                                className="w-full h-auto object-cover video-fix"
+                                                className="w-full h-auto object-cover"
                                                 onLoadedData={() => handleSuccess(idx)}
                                                 onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                 onError={() => handleError(idx)}
-                                                /* 这里是普通展示控件的视频，不加 loop 劫持 */
                                             ></video>
                                         )}
                                     </div>
@@ -556,8 +538,7 @@
                                                     <video 
                                                         src={p.coverVideoCenter} 
                                                         autoPlay loop muted playsInline preload="auto"
-                                                        webkit-playsinline="true" x5-playsinline="true"
-                                                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none video-fix"
+                                                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none"
                                                     ></video>
                                                     
                                                     {/* 全局 4% 黑色遮罩 */}
@@ -574,8 +555,7 @@
                                                         src={p.coverVideoBackground} 
                                                         poster={p.coverVideoPoster || undefined}
                                                         autoPlay loop muted playsInline preload="auto"
-                                                        webkit-playsinline="true" x5-playsinline="true"
-                                                        className="absolute inset-0 w-full h-full object-cover z-0 video-fix"
+                                                        className="absolute inset-0 w-full h-full object-cover z-0"
                                                     ></video>
                                                     {p.coverForeground && (
                                                         <img 
