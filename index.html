@@ -24,6 +24,16 @@
         .reveal-visible { opacity: 1; transform: translateY(0) scale(1); }
         @keyframes global-spin { to { transform: rotate(360deg); } }
         @media (max-width: 768px) { .desktop-only { display: none !important; } }
+        
+        /* 🚀 移动端视频循环播放防闪烁专属 Hack */
+        .video-fix {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000;
+            perspective: 1000;
+        }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white">
@@ -316,7 +326,7 @@
                                                     src={item.background} 
                                                     poster={item.poster}
                                                     autoPlay loop muted playsInline preload="auto" 
-                                                    className="w-full h-auto block object-cover z-0"
+                                                    className="w-full h-auto block object-cover z-0 video-fix"
                                                     onLoadedData={() => handleSuccess(idx)}
                                                     onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                     onError={() => handleError(idx)}
@@ -350,12 +360,12 @@
                                                     onLoad={() => handleSuccess(idx)}
                                                     onError={() => handleError(idx)}
                                                 />
-                                                {/* 2. 中间层：MP4视频，高度占2/3，通过 scale-[0.90] 整体缩小至90%，留出更多呼吸感 */}
+                                                {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
                                                     <video 
                                                         src={item.video} 
                                                         autoPlay loop muted playsInline preload="auto" 
-                                                        className="h-full w-auto block object-contain scale-[0.90]"
+                                                        className="h-full w-auto block object-contain scale-[0.90] video-fix"
                                                     ></video>
                                                 </div>
                                                 {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
@@ -382,12 +392,12 @@
                                                     onLoad={() => handleSuccess(idx)}
                                                     onError={() => handleError(idx)}
                                                 />
-                                                {/* 2. 中间层：MP4视频，上下居中，左边距5%，高度80%，通过 scale-[0.95] 缩小至当前的95% */}
+                                                {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
                                                     <video 
                                                         src={item.video} 
                                                         autoPlay loop muted playsInline preload="auto" 
-                                                        className="h-full w-auto block object-contain scale-[0.95]"
+                                                        className="h-full w-auto block object-contain scale-[0.95] video-fix"
                                                     ></video>
                                                 </div>
                                                 {/* 3. 最顶层：4%的纯黑遮罩融合，覆盖整个容器(包含底图和视频) */}
@@ -410,7 +420,7 @@
                                             <video 
                                                 src={`${src}#t=0.001`} 
                                                 controls preload="metadata" playsInline 
-                                                className="w-full h-auto object-cover"
+                                                className="w-full h-auto object-cover video-fix"
                                                 onLoadedData={() => handleSuccess(idx)}
                                                 onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
                                                 onError={() => handleError(idx)}
@@ -538,7 +548,7 @@
                                                     <video 
                                                         src={p.coverVideoCenter} 
                                                         autoPlay loop muted playsInline preload="auto"
-                                                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none"
+                                                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] w-auto block object-contain z-10 pointer-events-none video-fix"
                                                     ></video>
                                                     
                                                     {/* 全局 4% 黑色遮罩 */}
@@ -555,7 +565,7 @@
                                                         src={p.coverVideoBackground} 
                                                         poster={p.coverVideoPoster || undefined}
                                                         autoPlay loop muted playsInline preload="auto"
-                                                        className="absolute inset-0 w-full h-full object-cover z-0"
+                                                        className="absolute inset-0 w-full h-full object-cover z-0 video-fix"
                                                     ></video>
                                                     {p.coverForeground && (
                                                         <img 
