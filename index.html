@@ -250,13 +250,20 @@
         const ScrollReveal = ({ children, delay = 0, className = "" }) => {
             const ref = useRef(null);
             const [isVisible, setIsVisible] = useState(false);
+            
             useEffect(() => {
+                // 兼容逻辑：如果老浏览器没有 IntersectionObserver，直接让它显示，避免一直隐藏
+                if (!window.IntersectionObserver) {
+                    setIsVisible(true);
+                    return;
+                }
                 const observer = new IntersectionObserver(([entry]) => {
                     if (entry.isIntersecting) { setIsVisible(true); observer.unobserve(entry.target); }
                 }, { threshold: 0.05 });
                 if (ref.current) observer.observe(ref.current);
                 return () => { if (ref.current) observer.unobserve(ref.current); };
             }, []);
+            
             return ( <div ref={ref} className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "reveal-visible" : "reveal-hidden"} ${className}`} style={{ transitionDelay: `${delay}ms` }}> {children} </div> );
         };
 
@@ -450,7 +457,12 @@
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
 
-            const allProjects = useMemo(() => [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)], []);
+            // 兼容逻辑：原本的 flatMap() 是非常新的 JS API，这里改用更老更安全的 reduce + concat，作用一模一样
+            const allProjects = useMemo(() => {
+                const core = corePortfolioData.reduce((acc, g) => acc.concat(g.projects), []);
+                const mgmt = managementData.reduce((acc, g) => acc.concat(g.projects), []);
+                return [...core, ...mgmt];
+            }, []);
             
             const prevProject = useMemo(() => {
                 if (!activeProject) return null;
@@ -483,8 +495,15 @@
             const scrollToSection = (id) => {
                 setActiveSection(id);
                 const el = document.getElementById(id);
-                if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-                else if (el) { window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
+                
+                // 兼容逻辑：老版本浏览器的 window.scrollTo 不支持传 Object 参数对象，必须加 try-catch 降级
+                try {
+                    if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                    else if (el) { window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
+                } catch (err) {
+                    if (id === 'bio') { window.scrollTo(0, 0); }
+                    else if (el) { window.scrollTo(0, el.offsetTop - 80); }
+                }
             };
 
             const handleCopy = (txt) => {
@@ -608,7 +627,13 @@
                     <div className={`${isDarkMode ? 'bg-[#222222] text-white' : 'bg-[#ffffff] text-black'} min-h-screen fade-in`}>
                         <header className={`sticky top-0 z-50 ${isDarkMode ? 'bg-[#222222]/90 border-white/[0.05]' : 'bg-[#ffffff]/90 border-black/[0.05]'} backdrop-blur-md py-6 px-6 md:px-20 border-b`}>
                             <div className="max-w-[90rem] mx-auto flex items-center justify-between">
-                                <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
+                                <button onClick={() => { 
+                                            setActiveProject(null); 
+                                            setTimeout(() => {
+                                                try { window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}); }
+                                                catch (err) { window.scrollTo(0, scrollPosRef.current); }
+                                            }, 50); 
+                                        }} 
                                         className="group flex items-center gap-3 text-sm font-light uppercase tracking-widest hover:opacity-60 transition-opacity">
                                     <span className={`w-8 h-8 rounded-full border ${isDarkMode ? 'border-white/20 group-hover:border-white' : 'border-black/20 group-hover:border-black'} flex items-center justify-center transition-colors`}><ArrowLeftIcon size={16} /></span> 返回作品集列表
                                 </button>
@@ -643,7 +668,13 @@
                                         </div>
                                     </button>
                                 ) : (
-                                    <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
+                                    <button onClick={() => { 
+                                                setActiveProject(null); 
+                                                setTimeout(() => {
+                                                    try { window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}); }
+                                                    catch (err) { window.scrollTo(0, scrollPosRef.current); }
+                                                }, 50); 
+                                            }} 
                                             className={`group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-8 md:py-20 transition-all duration-700 text-center w-full bg-transparent border border-transparent hover:-translate-y-3 ${isDarkMode ? 'hover:bg-[#333333] hover:border-white/10 hover:shadow-[0_50px_100px_rgba(255,255,255,0.03)]' : 'hover:bg-white hover:border-black/5 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)]'}`}>
                                         <span className={`${isDarkMode ? 'text-white/50' : 'text-black/50'} text-sm md:text-sm tracking-widest md:tracking-[0.5em] uppercase font-light`}>End</span>
                                         <div className="text-xl md:text-2xl lg:text-3xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-8 decoration-1 uppercase leading-tight">返回作品集列表</div>
