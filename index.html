@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 🚀 大陆网络加速引擎：预解析与预连接 -->
+    <!-- 大陆网络加速引擎：预解析与预连接 -->
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="dns-prefetch" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com">
     <link rel="preconnect" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.staticfile.net">
-    <link rel="preconnect" href="https://cdn.staticfile.net" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.staticfile.org">
+    <link rel="preconnect" href="https://cdn.staticfile.org" crossorigin>
+    <link rel="dns-prefetch" href="https://s4.zstatic.net">
+    <link rel="preconnect" href="https://s4.zstatic.net" crossorigin>
 
     <style>
         body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
@@ -28,7 +28,7 @@
 </head>
 <body class="selection:bg-black selection:text-white">
 
-    <!-- 🚀 纯净 The One 骨架屏 -->
+    <!-- 纯净 The One 骨架屏 -->
     <div id="root">
         <div style="min-height: 100vh; background-color: #fafafa; color: #000; display: flex; flex-direction: column;">
             <nav style="position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background-color: rgba(250, 250, 250, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 1.25rem 0;">
@@ -46,20 +46,23 @@
         </div>
     </div>
 
-    <!-- 🚀 核心库与微信X5引擎优化 -->
-    <meta name="format-detection" content="telephone=no" />
-    <meta itemprop="name" content="丁贺亮-作品集" />
-    <meta itemprop="description" content="丁贺亮UX设计师核心作品集" />
-    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
-    <!-- 使用最稳定的 V3 静态版本 -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.staticfile.org/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/7.23.1/babel.min.js"></script>
+    <script src="https://s4.zstatic.net/npm/@tailwindcss/browser@4"></script>
 
     <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef, useMemo } = React;
 
         const COS_URL = "https://dhl-1420296989.cos.ap-shanghai.myqcloud.com";
+
+        // 核心优化 1：利用腾讯云 COS 图片处理，转换为 WebP 格式并压缩质量，大幅降低体积 (减小70%+)
+        const getOptimizedUrl = (url) => {
+            if (!url) return url;
+            if (url.includes('.mp4') || url.includes('.gif')) return url;
+            if (url.includes('?') || !url.startsWith(COS_URL)) return url;
+            return `${url}?imageMogr2/format/webp/q/80/interlace/1`;
+        };
 
         const generateGallery = (folder, maxCount = 100) => {
             return Array.from({ length: maxCount }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.jpg`);
@@ -140,18 +143,22 @@
                         coverVideoCenter: `${COS_URL}/projects/vtn-ai/cover.mp4`,
                         coverForegroundPng: `${COS_URL}/projects/vtn-ai/cover.png`,
                         gallery: [
+                            // 针对AI营养师详情第一张图的特殊排版逻辑
                             {
                                 type: 'triple-layer-top-video',
                                 background: `${COS_URL}/projects/vtn-ai/1.jpg`,
                                 video: `${COS_URL}/projects/vtn-ai/cover2.mp4`
                             },
+                            // 正常的 2.jpg 和 3.jpg
                             `${COS_URL}/projects/vtn-ai/2.jpg`,
                             `${COS_URL}/projects/vtn-ai/3.jpg`,
+                            // 针对 第四张图 的特殊排版逻辑
                             {
                                 type: 'triple-layer-left-video',
                                 background: `${COS_URL}/projects/vtn-ai/4.jpg`,
                                 video: `${COS_URL}/projects/vtn-ai/cover3.mp4`
                             },
+                            // 剔除前4张，从 5.jpg 往后自动生成相册
                             ...generateGallery("vtn-ai").slice(4)
                         ]
                     },
@@ -198,26 +205,48 @@
         const ArrowUpRightIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>);
         const CopyIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>);
 
-        // 🚀 终极图片懒加载优化：只在视口内触发网络请求，极大释放首屏带宽
-        const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess, onLoadError, isDarkMode = false }) => {
-            const containerRef = useRef(null);
-            const [isLoaded, setIsLoaded] = useState(false);
-            const [isError, setIsError] = useState(false);
-            const [startDownload, setStartDownload] = useState(false);
-            const [currentSrc, setCurrentSrc] = useState(src);
+        // 核心优化 2：视频懒加载组件，只有视频进入视口（或快进入时）才开始加载，避免几十个视频同时抢占带宽
+        const LazyVideo = ({ src, poster, className, ...props }) => {
+            const ref = useRef(null);
+            const [shouldLoad, setShouldLoad] = useState(false);
 
             useEffect(() => {
                 const observer = new IntersectionObserver(([entry]) => {
                     if (entry.isIntersecting) {
-                        setStartDownload(true); // 只有滑到了才开始下载
+                        setShouldLoad(true);
                         observer.disconnect();
                     }
-                }, { rootMargin: "400px" }); // 提前 400px 下载
-
-                if (containerRef.current) {
-                    observer.observe(containerRef.current);
-                }
+                }, { rootMargin: '400px' }); // 提前 400px 加载
+                
+                if (ref.current) observer.observe(ref.current);
                 return () => observer.disconnect();
+            }, []);
+
+            return (
+                <video 
+                    ref={ref}
+                    src={shouldLoad ? src : ""} 
+                    poster={poster}
+                    className={className} 
+                    {...props} 
+                />
+            );
+        };
+
+        const ProgressiveImage = ({ src, alt, className = "", onLoadSuccess, onLoadError, isDarkMode = false }) => {
+            const [isLoaded, setIsLoaded] = useState(false);
+            const [isError, setIsError] = useState(false);
+            const [startDownload, setStartDownload] = useState(false);
+            
+            // 应用 WebP 压缩参数
+            const optimizedSrc = useMemo(() => getOptimizedUrl(src), [src]);
+            const [currentSrc, setCurrentSrc] = useState(optimizedSrc);
+
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    setStartDownload(true);
+                }, 100);
+                return () => clearTimeout(timer);
             }, []);
 
             const bgClass = isDarkMode ? 'bg-[#111111]' : 'bg-[#f2f4f6]';
@@ -226,7 +255,7 @@
             
             if (isError) return null;
             return (
-                <div ref={containerRef} className={`relative w-full overflow-hidden flex items-center justify-center ${className} ${!isLoaded ? `${bgClass} min-h-[30vh] md:min-h-[50vh]` : ''}`}>
+                <div className={`relative w-full overflow-hidden flex items-center justify-center ${className} ${!isLoaded ? `${bgClass} min-h-[30vh] md:min-h-[50vh]` : ''}`}>
                     {!isLoaded && (
                         <div className={`absolute inset-0 ${bgClass} flex flex-col items-center justify-center gap-3`}>
                             <svg className={`w-5 h-5 md:w-6 md:h-6 ${spinnerClass} animate-spin`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -244,8 +273,8 @@
                             decoding="async"
                             onLoad={() => { setIsLoaded(true); if (onLoadSuccess) onLoadSuccess(); }} 
                             onError={() => { 
-                                if (currentSrc.endsWith('cover.jpg')) {
-                                    setCurrentSrc(currentSrc.replace('cover.jpg', 'cover.gif'));
+                                if (currentSrc.includes('cover.jpg')) {
+                                    setCurrentSrc(getOptimizedUrl(src.replace('cover.jpg', 'cover.gif')));
                                 } else {
                                     setIsError(true); 
                                     if (onLoadError) onLoadError(); 
@@ -255,38 +284,6 @@
                         />
                     )}
                 </div>
-            );
-        };
-
-        // 🚀 核心优化：智能视频懒加载组件 (列表页封面也全量使用)
-        const LazyVideo = ({ src, className, onCanPlay, ...props }) => {
-            const videoRef = useRef(null);
-            const [actualSrc, setActualSrc] = useState(null);
-
-            useEffect(() => {
-                const observer = new IntersectionObserver(([entry]) => {
-                    if (entry.isIntersecting) {
-                        setActualSrc(src); // 只有滑到了才赋 src，不抢占首屏任何网速！
-                        observer.disconnect();
-                    }
-                }, { rootMargin: "400px" }); 
-                if (videoRef.current) observer.observe(videoRef.current);
-                return () => observer.disconnect();
-            }, [src]);
-
-            return (
-                <video
-                    ref={videoRef}
-                    src={actualSrc || ""}
-                    className={className}
-                    webkit-playsinline="true"
-                    x5-playsinline="true"
-                    x5-video-player-type="h5"
-                    x5-video-player-fullscreen="false"
-                    playsInline
-                    onCanPlay={onCanPlay}
-                    {...props}
-                />
             );
         };
 
@@ -355,12 +352,11 @@
                                     <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
-                                                {/* 画廊内视频懒加载 */}
                                                 <LazyVideo 
                                                     src={item.background} 
-                                                    poster={item.poster}
-                                                    autoPlay loop muted
-                                                    preload="metadata" 
+                                                    poster={getOptimizedUrl(item.poster)}
+                                                    autoPlay loop muted playsInline preload="none" 
+                                                    webkit-playsinline="true" x5-playsinline="true"
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoadedData={() => handleSuccess(idx)}
                                                     onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
@@ -368,8 +364,9 @@
                                                 />
                                                 {item.foreground && (
                                                     <img 
-                                                        src={item.foreground} 
+                                                        src={getOptimizedUrl(item.foreground)} 
                                                         alt={`Overlay ${idx + 1}`}
+                                                        loading="lazy" decoding="async"
                                                         className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
                                                     />
                                                 )}
@@ -380,7 +377,7 @@
                             );
                         }
 
-                        // 渲染针对 AI营养师 定制的 triple-layer-top-video
+                        // NEW: 渲染针对 AI营养师 定制的 triple-layer-top-video
                         if (typeof item === 'object' && item !== null && item.type === 'triple-layer-top-video') {
                             return (
                                 <ScrollReveal key={`complex-top-${idx}`} delay={50}>
@@ -388,18 +385,20 @@
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
                                                 {/* 1. 底图：静态 1.jpg */}
-                                                <ProgressiveImage 
-                                                    src={item.background} 
+                                                <img 
+                                                    src={getOptimizedUrl(item.background)} 
                                                     alt={`Detail ${idx + 1} Background`}
-                                                    onLoadSuccess={() => handleSuccess(idx)}
-                                                    onLoadError={() => handleError(idx)}
+                                                    loading="lazy" decoding="async"
+                                                    className="w-full h-auto block object-cover z-0"
+                                                    onLoad={() => handleSuccess(idx)}
+                                                    onError={() => handleError(idx)}
                                                 />
                                                 {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
                                                     <LazyVideo 
                                                         src={item.video} 
-                                                        autoPlay loop muted
-                                                        preload="metadata" 
+                                                        autoPlay loop muted playsInline preload="none" 
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.90]"
                                                     />
                                                 </div>
@@ -412,27 +411,32 @@
                             );
                         }
 
-                        // 渲染针对 AI营养师 定制的 triple-layer-left-video
+                        // NEW: 渲染针对 AI营养师 定制的 triple-layer-left-video (用于第4张图)
                         if (typeof item === 'object' && item !== null && item.type === 'triple-layer-left-video') {
                             return (
                                 <ScrollReveal key={`complex-left-${idx}`} delay={50}>
                                     <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
-                                                <ProgressiveImage 
-                                                    src={item.background} 
+                                                {/* 1. 底图：静态 4.jpg */}
+                                                <img 
+                                                    src={getOptimizedUrl(item.background)} 
                                                     alt={`Detail ${idx + 1} Background`}
-                                                    onLoadSuccess={() => handleSuccess(idx)}
-                                                    onLoadError={() => handleError(idx)}
+                                                    loading="lazy" decoding="async"
+                                                    className="w-full h-auto block object-cover z-0"
+                                                    onLoad={() => handleSuccess(idx)}
+                                                    onError={() => handleError(idx)}
                                                 />
+                                                {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
                                                     <LazyVideo 
                                                         src={item.video} 
-                                                        autoPlay loop muted
-                                                        preload="metadata" 
+                                                        autoPlay loop muted playsInline preload="none" 
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.95]"
                                                     />
                                                 </div>
+                                                {/* 3. 最顶层：4%的纯黑遮罩融合 */}
                                                 <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-20 pointer-events-none"></div>
                                             </div>
                                         )}
@@ -441,7 +445,7 @@
                             );
                         }
 
-                        // 渲染普通独立视频
+                        // 渲染普通视频或图片
                         const src = item;
                         const isVideo = typeof src === 'string' && src.toLowerCase().endsWith('.mp4');
                         if (isVideo) {
@@ -451,8 +455,8 @@
                                         {startDownload && (
                                             <LazyVideo 
                                                 src={`${src}#t=0.001`} 
-                                                controls 
-                                                preload="metadata" 
+                                                controls playsInline preload="none"
+                                                webkit-playsinline="true" x5-playsinline="true"
                                                 className="w-full h-auto object-cover"
                                                 onLoadedData={() => handleSuccess(idx)}
                                                 onLoadStart={() => setTimeout(() => handleSuccess(idx), 800)}
@@ -567,28 +571,28 @@
                                         <div className="aspect-video overflow-hidden bg-[#ededed] relative">
                                             {isGifForeground ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
-                                                    <ProgressiveImage src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
-                                                    <ProgressiveImage src={p.coverForegroundGif} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" />
+                                                    <img src={getOptimizedUrl(p.cover)} alt={`${p.title} Background`} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0" />
+                                                    <img src={getOptimizedUrl(p.coverForegroundGif)} alt={`${p.title} Foreground GIF`} loading="lazy" decoding="async" className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" />
                                                 </div>
                                             ) : isTripleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
                                                     {p.cover0 && (
                                                         <img 
                                                             id={`cover0-img-${p.id}`}
-                                                            src={p.cover0} 
+                                                            src={getOptimizedUrl(p.cover0)} 
                                                             alt={`${p.title} Initial Cover`} 
+                                                            loading="lazy" decoding="async"
                                                             className="absolute inset-0 w-full h-full object-cover z-30 transition-opacity duration-[1.5s] ease-in-out pointer-events-none" 
                                                         />
                                                     )}
 
-                                                    <ProgressiveImage src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
+                                                    <img src={getOptimizedUrl(p.cover)} alt={`${p.title} Background`} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0" />
                                                     
                                                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] z-10 flex pointer-events-none">
-                                                        {/* 🚀 终极优化：列表封面视频也全部接入视差懒加载，滑到了才下载！ */}
                                                         <LazyVideo 
                                                             src={p.coverVideoCenter} 
-                                                            autoPlay loop muted
-                                                            preload="auto"
+                                                            autoPlay loop muted playsInline preload="none"
+                                                            webkit-playsinline="true" x5-playsinline="true"
                                                             className="h-full w-auto block object-contain"
                                                             onCanPlay={(e) => {
                                                                 const cover0 = document.getElementById(`cover0-img-${p.id}`);
@@ -600,26 +604,27 @@
                                                         />
                                                     </div>
 
+                                                    {/* 🚀 修复点：将全局遮罩移出视频容器，放到外面，使其覆盖整个 16:9 封面 */}
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-[15] pointer-events-none"></div>
 
                                                     {p.coverForegroundPng && (
-                                                        <ProgressiveImage src={p.coverForegroundPng} alt={`${p.title} Foreground`} className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" />
+                                                        <img src={getOptimizedUrl(p.coverForegroundPng)} alt={`${p.title} Foreground`} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" />
                                                     )}
                                                 </div>
                                             ) : isDoubleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
-                                                    {/* 🚀 终极优化：列表封面视频也全部接入视差懒加载 */}
                                                     <LazyVideo 
                                                         src={p.coverVideoBackground} 
-                                                        poster={p.coverVideoPoster || undefined}
-                                                        autoPlay loop muted
-                                                        preload="auto"
+                                                        poster={p.coverVideoPoster ? getOptimizedUrl(p.coverVideoPoster) : undefined}
+                                                        autoPlay loop muted playsInline preload="none"
+                                                        webkit-playsinline="true" x5-playsinline="true"
                                                         className="absolute inset-0 w-full h-full object-cover z-0"
                                                     />
                                                     {p.coverForeground && (
-                                                        <ProgressiveImage 
-                                                            src={p.coverForeground} 
+                                                        <img 
+                                                            src={getOptimizedUrl(p.coverForeground)} 
                                                             alt={`${p.title} Foreground`}
+                                                            loading="lazy" decoding="async"
                                                             className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
                                                         />
                                                     )}
