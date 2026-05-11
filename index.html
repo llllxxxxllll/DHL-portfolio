@@ -9,10 +9,8 @@
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="dns-prefetch" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com">
     <link rel="preconnect" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.staticfile.net">
-    <link rel="preconnect" href="https://cdn.staticfile.net" crossorigin>
-    <link rel="dns-prefetch" href="https://fastly.jsdelivr.net">
-    <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <style>
         body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
@@ -46,10 +44,11 @@
         </div>
     </div>
 
-    <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- 替换为加载速度更快、节点更密集的 jsDelivr CDN，并添加 defer 以不阻塞渲染 -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.1/babel.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
 
     <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef, useMemo } = React;
@@ -316,7 +315,7 @@
                                                 <video 
                                                     src={item.background} 
                                                     poster={item.poster}
-                                                    autoPlay loop muted playsInline preload="auto" 
+                                                    autoPlay loop muted playsInline preload="metadata" 
                                                     webkit-playsinline="true" x5-playsinline="true"
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoadedData={() => handleSuccess(idx)}
@@ -328,6 +327,7 @@
                                                         src={item.foreground} 
                                                         alt={`Overlay ${idx + 1}`}
                                                         className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                                                        loading="lazy" decoding="async"
                                                     />
                                                 )}
                                             </div>
@@ -351,12 +351,13 @@
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoad={() => handleSuccess(idx)}
                                                     onError={() => handleError(idx)}
+                                                    loading="lazy" decoding="async"
                                                 />
                                                 {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
                                                     <video 
                                                         src={item.video} 
-                                                        autoPlay loop muted playsInline preload="auto" 
+                                                        autoPlay loop muted playsInline preload="metadata" 
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.90]"
                                                     ></video>
@@ -384,12 +385,13 @@
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoad={() => handleSuccess(idx)}
                                                     onError={() => handleError(idx)}
+                                                    loading="lazy" decoding="async"
                                                 />
                                                 {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
                                                     <video 
                                                         src={item.video} 
-                                                        autoPlay loop muted playsInline preload="auto" 
+                                                        autoPlay loop muted playsInline preload="metadata" 
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.95]"
                                                     ></video>
@@ -529,8 +531,8 @@
                                         <div className="aspect-video overflow-hidden bg-[#ededed] relative">
                                             {isGifForeground ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
-                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
-                                                    <img src={p.coverForegroundGif} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" />
+                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" loading="lazy" decoding="async" />
+                                                    <img src={p.coverForegroundGif} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" loading="lazy" decoding="async" />
                                                 </div>
                                             ) : isTripleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
@@ -540,15 +542,16 @@
                                                             src={p.cover0} 
                                                             alt={`${p.title} Initial Cover`} 
                                                             className="absolute inset-0 w-full h-full object-cover z-30 transition-opacity duration-[1.5s] ease-in-out pointer-events-none" 
+                                                            loading="lazy" decoding="async"
                                                         />
                                                     )}
 
-                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
+                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" loading="lazy" decoding="async" />
                                                     
                                                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] z-10 flex pointer-events-none">
                                                         <video 
                                                             src={p.coverVideoCenter} 
-                                                            autoPlay loop muted playsInline preload="auto"
+                                                            autoPlay loop muted playsInline preload="metadata"
                                                             webkit-playsinline="true" x5-playsinline="true"
                                                             className="h-full w-auto block object-contain"
                                                             onCanPlay={(e) => {
@@ -565,7 +568,7 @@
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-[15] pointer-events-none"></div>
 
                                                     {p.coverForegroundPng && (
-                                                        <img src={p.coverForegroundPng} alt={`${p.title} Foreground`} className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" />
+                                                        <img src={p.coverForegroundPng} alt={`${p.title} Foreground`} className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" loading="lazy" decoding="async" />
                                                     )}
                                                 </div>
                                             ) : isDoubleLayerCover ? (
@@ -573,7 +576,7 @@
                                                     <video 
                                                         src={p.coverVideoBackground} 
                                                         poster={p.coverVideoPoster || undefined}
-                                                        autoPlay loop muted playsInline preload="auto"
+                                                        autoPlay loop muted playsInline preload="metadata"
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="absolute inset-0 w-full h-full object-cover z-0"
                                                     ></video>
@@ -582,6 +585,7 @@
                                                             src={p.coverForeground} 
                                                             alt={`${p.title} Foreground`}
                                                             className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                                                            loading="lazy" decoding="async"
                                                         />
                                                     )}
                                                 </div>
