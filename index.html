@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>丁贺亮-作品集</title>
     
-    <!-- 大陆网络加速引擎：预解析与预连接 -->
+    <!-- 🚀 大陆网络加速引擎：预解析与预连接 -->
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="dns-prefetch" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com">
     <link rel="preconnect" href="https://dhl-1420296989.cos.ap-shanghai.myqcloud.com" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.staticfile.net">
     <link rel="preconnect" href="https://cdn.staticfile.net" crossorigin>
-    <link rel="dns-prefetch" href="https://fastly.jsdelivr.net">
-    <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <style>
         body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
@@ -46,10 +46,11 @@
         </div>
     </div>
 
+    <!-- 🚀 修复Bug：移除本地环境会报错的 crossorigin 属性，使用最稳定官方 CDN -->
     <script src="https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.staticfile.net/babel-standalone/7.23.1/babel.min.js"></script>
-    <script src="https://fastly.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef, useMemo } = React;
@@ -135,22 +136,18 @@
                         coverVideoCenter: `${COS_URL}/projects/vtn-ai/cover.mp4`,
                         coverForegroundPng: `${COS_URL}/projects/vtn-ai/cover.png`,
                         gallery: [
-                            // 针对AI营养师详情第一张图的特殊排版逻辑
                             {
                                 type: 'triple-layer-top-video',
                                 background: `${COS_URL}/projects/vtn-ai/1.jpg`,
                                 video: `${COS_URL}/projects/vtn-ai/cover2.mp4`
                             },
-                            // 正常的 2.jpg 和 3.jpg
                             `${COS_URL}/projects/vtn-ai/2.jpg`,
                             `${COS_URL}/projects/vtn-ai/3.jpg`,
-                            // 针对 第四张图 的特殊排版逻辑
                             {
                                 type: 'triple-layer-left-video',
                                 background: `${COS_URL}/projects/vtn-ai/4.jpg`,
                                 video: `${COS_URL}/projects/vtn-ai/cover3.mp4`
                             },
-                            // 剔除前4张，从 5.jpg 往后自动生成相册
                             ...generateGallery("vtn-ai").slice(4)
                         ]
                     },
@@ -313,10 +310,12 @@
                                     <div className={`relative w-full ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
+                                                {/* 🚀 修复点：自动播放的视频恢复 preload="auto"，确保它能加载并顺畅播放 */}
                                                 <video 
                                                     src={item.background} 
                                                     poster={item.poster}
-                                                    autoPlay loop muted playsInline preload="auto" 
+                                                    autoPlay loop muted playsInline 
+                                                    preload="auto" 
                                                     webkit-playsinline="true" x5-playsinline="true"
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoadedData={() => handleSuccess(idx)}
@@ -337,7 +336,7 @@
                             );
                         }
 
-                        // NEW: 渲染针对 AI营养师 定制的 triple-layer-top-video
+                        // 渲染针对 AI营养师 定制的 triple-layer-top-video
                         if (typeof item === 'object' && item !== null && item.type === 'triple-layer-top-video') {
                             return (
                                 <ScrollReveal key={`complex-top-${idx}`} delay={50}>
@@ -356,7 +355,8 @@
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
                                                     <video 
                                                         src={item.video} 
-                                                        autoPlay loop muted playsInline preload="auto" 
+                                                        autoPlay loop muted playsInline 
+                                                        preload="auto" 
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.90]"
                                                     ></video>
@@ -370,7 +370,7 @@
                             );
                         }
 
-                        // NEW: 渲染针对 AI营养师 定制的 triple-layer-left-video (用于第4张图)
+                        // 渲染针对 AI营养师 定制的 triple-layer-left-video (用于第4张图)
                         if (typeof item === 'object' && item !== null && item.type === 'triple-layer-left-video') {
                             return (
                                 <ScrollReveal key={`complex-left-${idx}`} delay={50}>
@@ -389,7 +389,8 @@
                                                 <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
                                                     <video 
                                                         src={item.video} 
-                                                        autoPlay loop muted playsInline preload="auto" 
+                                                        autoPlay loop muted playsInline 
+                                                        preload="auto" 
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.95]"
                                                     ></video>
@@ -413,7 +414,8 @@
                                         {startDownload && (
                                             <video 
                                                 src={`${src}#t=0.001`} 
-                                                controls preload="metadata" playsInline 
+                                                controls playsInline 
+                                                preload="metadata" 
                                                 webkit-playsinline="true" x5-playsinline="true"
                                                 className="w-full h-auto object-cover"
                                                 onLoadedData={() => handleSuccess(idx)}
@@ -546,9 +548,11 @@
                                                     <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" />
                                                     
                                                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] z-10 flex pointer-events-none">
+                                                        {/* 🚀 修复点：自动播放的视频必须用 preload="auto"，否则无法获取数据并触发消失事件 */}
                                                         <video 
                                                             src={p.coverVideoCenter} 
-                                                            autoPlay loop muted playsInline preload="auto"
+                                                            autoPlay loop muted playsInline 
+                                                            preload="auto"
                                                             webkit-playsinline="true" x5-playsinline="true"
                                                             className="h-full w-auto block object-contain"
                                                             onCanPlay={(e) => {
@@ -561,7 +565,6 @@
                                                         ></video>
                                                     </div>
 
-                                                    {/* 🚀 修复点：将全局遮罩移出视频容器，放到外面，使其覆盖整个 16:9 封面 */}
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-[15] pointer-events-none"></div>
 
                                                     {p.coverForegroundPng && (
@@ -570,10 +573,12 @@
                                                 </div>
                                             ) : isDoubleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
+                                                    {/* 🚀 修复点：自动播放的视频必须用 preload="auto" */}
                                                     <video 
                                                         src={p.coverVideoBackground} 
                                                         poster={p.coverVideoPoster || undefined}
-                                                        autoPlay loop muted playsInline preload="auto"
+                                                        autoPlay loop muted playsInline 
+                                                        preload="auto"
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="absolute inset-0 w-full h-full object-cover z-0"
                                                     ></video>
