@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <!-- 替换为加载速度更快、节点更密集的 jsDelivr CDN，并添加 defer 以不阻塞渲染 -->
+    <!-- 核心依赖包 -->
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin defer></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.1/babel.min.js" defer></script>
@@ -566,7 +566,6 @@
                                                         ></video>
                                                     </div>
 
-                                                    {/* 🚀 修复点：将全局遮罩移出视频容器，放到外面，使其覆盖整个 16:9 封面 */}
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-[15] pointer-events-none"></div>
 
                                                     {p.coverForegroundPng && (
