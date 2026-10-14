@@ -272,33 +272,124 @@
             .fig-support-grid { grid-template-columns:calc(50% - 16px) calc(50% - 16px); }
             .fig-support-card { width:100%; }
         }
+        /* ===== Mobile layout — desktop rules above remain untouched ===== */
         @media (max-width:900px) {
+            html { scroll-padding-top:64px; }
             .fig-home { overflow-x:hidden; padding-bottom:0; }
+            .fig-nav { height:64px; }
             .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 32px); }
-            .fig-nav-links { width:auto; gap:20px; }
-            .fig-nav-link { font-size:12px; }
-            .fig-nav-link:nth-child(3) { display:none; }
-            .fig-hero { height:760px; }
-            .fig-hero-content { height:760px; }
-            .fig-hero-name { top:150px; width:auto; height:auto; font-size:78px; line-height:1.35; letter-spacing:normal; }
-            .fig-hero-title { top:278px; width:auto; height:auto; font-size:20px; line-height:1.4; letter-spacing:.10em; }
-            .fig-hero-exp { top:354px; font-size:13px; width:auto; }
-            .fig-hero-tags { top:414px; gap:8px; transform:scale(.72); transform-origin:left top; }
-            .fig-hero-scroll-label { top:574px; font-size:16px; width:auto; }
-            .fig-hero-arrow { top:635px; height:58px; width:auto; }
-            .fig-projects { padding-top:60px; }
-            .fig-section-title { font-size:30px; height:42px; line-height:42px; }
-            .fig-main-card { height:620px; }
-            .fig-main-content { transform:scale(.78); transform-origin:left top; left:28px; top:48px; }
-            .fig-support-grid { height:auto; grid-template-columns:1fr; grid-template-rows:none; gap:16px; margin-top:16px; }
-            .fig-support-card { height:374px; }
-            .fig-gap-168 { height:96px; }
-            .fig-lead-card { height:580px; }
-            .fig-lead-content { transform:scale(.76); transform-origin:left top; left:28px; top:42px; }
-            .fig-exp-card { overflow-x:auto; }
-            .fig-contact { height:760px; }
-            .fig-contact-group { transform:translateX(-50%) scale(.78); transform-origin:center top; top:120px; }
-            .fig-footer-line { width:25vw; }
+            .fig-nav-inner { height:64px; }
+            .fig-logo { top:12px; width:58px; height:40px; font-size:13px; line-height:18px; }
+            .fig-nav-links { left:auto; right:0; top:22px; width:auto; height:20px; gap:14px; justify-content:flex-start; }
+            .fig-nav-link { height:20px; font-size:11px; line-height:20px; }
+            .fig-nav-link:nth-child(3) { display:block; }
+            .fig-nav-link::after { top:24px; width:20px; }
+
+            /* Hero: preserve the desktop visual hierarchy, but allow the longer bio line to wrap. */
+            .fig-hero { height:690px; }
+            .fig-hero-content { height:690px; }
+            .fig-hero-bg { object-position:center; }
+            .fig-hero-name { left:0; top:132px; width:auto; height:auto; font-size:clamp(64px, 19vw, 82px); line-height:1.08; letter-spacing:normal; }
+            .fig-hero-title { left:0; top:238px; width:auto; height:auto; font-size:22px; line-height:1.35; letter-spacing:.06em; }
+            .fig-hero-exp { left:0; top:300px; width:min(100%, 390px); height:auto; font-size:13px; line-height:22px; font-weight:300; white-space:normal; }
+            .fig-hero-tags { left:0; top:386px; width:100%; height:auto; display:flex; flex-wrap:wrap; gap:8px; transform:none; }
+            .fig-hero-tag, .fig-hero-tag:first-child { width:auto !important; height:28px; min-width:0; padding:0 14px; transform:none; font-size:11px; line-height:28px; }
+            .fig-hero-scroll-label { left:0; top:548px; width:auto; height:auto; font-size:14px; line-height:18px; }
+            .fig-hero-arrow { left:-2px; top:586px; width:6px; height:54px; }
+
+            /* Section rhythm */
+            .fig-projects { padding-top:56px; }
+            .fig-section-title { width:100%; height:auto; font-size:30px; line-height:42px; }
+            .fig-projects-title, .fig-lead-title, .fig-exp-title { margin-bottom:20px; }
+            .fig-gap-168 { height:80px; }
+
+            /* Featured VTN card: keep the desktop composition, scaled only inside the mobile card. */
+            .fig-main-card { width:100%; height:540px; }
+            .fig-main-content { left:24px; top:46px; transform:scale(.64); transform-origin:left top; }
+
+            /* Supporting projects: one-column cards with readable content and touch-friendly spacing. */
+            .fig-support-grid { width:100%; height:auto; margin-top:16px; grid-template-columns:1fr; grid-template-rows:none; gap:16px; }
+            .fig-support-card { width:100%; height:320px; }
+            .fig-support-content { left:24px; top:54px; width:calc(100% - 48px); height:auto; }
+            .fig-support-title { width:100%; height:auto; font-size:22px; line-height:31px; }
+            .fig-support-sub { top:44px; max-width:100%; height:auto; font-size:12px; line-height:18px; overflow:hidden; text-overflow:ellipsis; }
+            .fig-support-tags, .fig-support-tags.wrap { top:78px; width:100%; min-height:19px; flex-wrap:wrap; gap:8px; row-gap:8px; }
+            .fig-support-tag { height:19px; padding:2px 10px; font-size:10px; line-height:15px; }
+            .fig-support-btn { left:24px; top:auto; bottom:28px; }
+            .legacy-ai-cover-video-wrap { height:88%; }
+
+            /* Leadership becomes a true mobile layout instead of a shrunken desktop canvas. */
+            .fig-lead-card { width:100%; height:520px; }
+            .fig-lead-content { left:24px; right:24px; top:46px; width:auto; height:auto; transform:none; }
+            .fig-lead-h3 { position:relative; left:auto; top:auto; width:100%; height:auto; font-size:36px; line-height:1.2; }
+            .fig-lead-body { position:relative; left:auto; top:auto; width:100%; height:auto; margin:22px 0 0; font-size:15px; line-height:24px; }
+            .fig-lead-tags { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:22px; display:flex; flex-wrap:wrap; gap:8px; }
+            .fig-lead-tag, .fig-lead-tag:nth-child(1), .fig-lead-tag:nth-child(n+2) { width:auto; height:26px; padding:4px 12px; font-size:11px; line-height:17px; }
+            .fig-lead-metrics { position:relative; left:auto; top:auto; width:100%; height:62px; margin-top:28px; display:grid; grid-template-columns:repeat(3, 1fr); }
+            .fig-lead-item, .fig-lead-item.i1, .fig-lead-item.i2, .fig-lead-item.i3 { position:relative; left:auto; top:auto; width:auto; height:62px; }
+            .fig-lead-item:not(:last-child) { border-right:.5px solid rgba(0,0,0,.20); }
+            .fig-lead-sep { display:none; }
+            .fig-lead-num { font-size:22px; }
+            .fig-lead-label { margin-top:9px; font-size:10px; line-height:14px; }
+            .fig-lead-btn { position:relative; left:auto; top:auto; margin-top:30px; }
+            .fig-lead-ambient { inset:-4px; }
+
+            /* Work experience: vertical timeline, no horizontal scrolling. */
+            .fig-exp-card { width:100%; height:auto; min-height:0; overflow:visible; padding:32px 24px 28px; }
+            .fig-exp-row { position:relative; left:auto; top:auto; width:100%; height:auto; display:flex; flex-direction:column; }
+            .fig-exp-item { position:relative; height:98px; min-height:98px; padding-left:22px; }
+            .fig-exp-time { left:22px; top:0; font-size:13px; line-height:18px; }
+            .fig-exp-dot { left:0; top:6px; width:6px; height:6px; }
+            .fig-exp-line { left:2.75px; top:16px; right:auto; bottom:-2px; width:.5px; height:auto; background:rgba(0,0,0,.22); }
+            .fig-exp-item:last-child .fig-exp-line { display:none; }
+            .fig-exp-company { left:22px; top:28px; max-width:calc(100% - 22px); font-size:15px; line-height:21px; white-space:normal; }
+            .fig-exp-role { left:22px; top:55px; max-width:calc(100% - 22px); font-size:13px; line-height:19px; white-space:normal; }
+
+            /* Contact: centered mobile composition with safe wrapping. */
+            .fig-contact { height:620px; }
+            .fig-contact-group { left:50%; top:92px; width:calc(100% - 32px); height:430px; transform:translateX(-50%); }
+            .fig-contact-title { left:0; top:0; width:100%; height:auto; font-size:48px; line-height:1.15; }
+            .fig-contact-sub { left:0; top:72px; width:100%; height:auto; font-size:18px; line-height:1.45; letter-spacing:1.2px; white-space:normal; }
+            .fig-contact-email { left:0; top:166px; width:100%; height:auto; }
+            .fig-contact-phone { left:0; top:248px; width:100%; height:auto; }
+            .fig-contact-label { font-size:13px; line-height:19px; }
+            .fig-contact-value { margin-top:6px; font-size:15px; line-height:21px; }
+            .fig-contact-back { left:50%; top:338px; transform:translateX(-50%); }
+            .fig-footer-brand { top:auto; bottom:22px; gap:16px; }
+            .fig-footer-line { width:calc((100vw - 185px) / 2); max-width:120px; }
+            .fig-footer-name { width:121px; font-size:12px; letter-spacing:.14em; }
+        }
+
+        @media (max-width:480px) {
+            .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 28px); }
+            .fig-logo { width:52px; font-size:12px; line-height:17px; }
+            .fig-nav-links { gap:10px; }
+            .fig-nav-link { font-size:10px; }
+            .fig-nav-link::after { width:18px; }
+            .fig-hero { height:670px; }
+            .fig-hero-content { height:670px; }
+            .fig-hero-name { top:128px; font-size:clamp(58px, 18vw, 72px); }
+            .fig-hero-title { top:226px; font-size:20px; letter-spacing:.04em; }
+            .fig-hero-exp { top:286px; font-size:12px; line-height:21px; }
+            .fig-hero-tags { top:374px; }
+            .fig-hero-tag, .fig-hero-tag:first-child { height:27px; padding:0 12px; line-height:27px; }
+            .fig-hero-scroll-label { top:534px; }
+            .fig-hero-arrow { top:572px; }
+            .fig-main-card { height:520px; }
+            .fig-main-content { left:22px; top:44px; transform:scale(.60); }
+            .fig-support-card { height:310px; }
+            .fig-support-content { left:22px; top:50px; width:calc(100% - 44px); }
+            .fig-support-btn { left:22px; bottom:24px; }
+            .fig-lead-card { height:510px; }
+            .fig-lead-content { left:22px; right:22px; top:42px; }
+            .fig-lead-h3 { font-size:34px; }
+            .fig-lead-body { margin-top:20px; font-size:14px; line-height:22px; }
+            .fig-lead-tags { margin-top:20px; }
+            .fig-lead-metrics { margin-top:26px; }
+            .fig-lead-btn { margin-top:28px; }
+            .fig-exp-card { padding-left:22px; padding-right:22px; }
+            .fig-contact-title { font-size:44px; }
+            .fig-contact-sub { font-size:17px; }
         }
 
     </style>
