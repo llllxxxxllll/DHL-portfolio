@@ -13,59 +13,343 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <style>
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; scroll-behavior: smooth; background-color: #fafafa; }
+        :root { color-scheme: light; }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; background: #fff; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif; background-color: #fff; color: #111; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+        button, a { -webkit-tap-highlight-color: transparent; }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .reveal-hidden { opacity: 0; transform: translateY(30px) scale(0.98); }
+        .reveal-hidden { opacity: 0; transform: translateY(24px) scale(0.995); }
         .reveal-visible { opacity: 1; transform: translateY(0) scale(1); }
         @keyframes global-spin { to { transform: rotate(360deg); } }
-        @media (max-width: 768px) { .desktop-only { display: none !important; } }
+        .home-shell { width: min(1360px, calc(100vw - 72px)); margin: 0 auto; }
+        .home-section { padding-top: clamp(88px, 5.2vw, 104px); }
+        .soft-card { border: 1px solid rgba(0,0,0,.045); box-shadow: 0 20px 70px rgba(0,0,0,.035); }
+        .metric-rule > div + div { border-left: 1px solid rgba(0,0,0,.08); }
+
+        .home-img { display: block; }
+        #root { min-height: 100vh; background: #fff; }
+        .home-nav { transition: background-color .28s ease, backdrop-filter .28s ease, box-shadow .28s ease, border-color .28s ease; }
+        .home-nav.scrolled { background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%); border-bottom: 1px solid rgba(0,0,0,.055); box-shadow: 0 10px 32px rgba(0,0,0,.025); }
+        .home-nav-link { position: relative; padding-bottom: 9px; color: rgba(0,0,0,.40); transition: color .2s ease; font-size:16pt; line-height:1; }
+        .home-nav-link::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 20px; height: 1px; background: #111; transform: translateX(-50%) scaleX(0); transform-origin: center; transition: transform .2s ease; }
+        .home-nav-link.active { color: #111; }
+        .home-nav-link.active::after { transform: translateX(-50%) scaleX(1); }
+        @media (max-width: 768px) {
+            .desktop-only { display: none !important; }
+            .home-shell { width: min(100% - 32px, 1360px); }
+            .home-section { padding-top: 72px; }
+            .metric-rule > div + div { border-left: 0; }
+        }
+
+
+        /* ===== Figma source fidelity layer — 作品集(5).fig / 1920px master ===== */
+        .fig-home { width:100%; background:#fff; overflow-x:clip; padding-bottom:0; }
+        .fig-shell { width:1360px; margin:0 auto; position:relative; }
+        .fig-pf { font-family:"PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+        .fig-inter { font-family:Inter, "Helvetica Neue", Arial, sans-serif; }
+        .fig-brown { font-family:Brown, "Brown Bold", "Arial Black", "Helvetica Neue", Arial, sans-serif; }
+        .fig-button-reset { appearance:none; -webkit-appearance:none; border:0; margin:0; padding:0; background:none; color:inherit; font:inherit; text-align:left; }
+
+        /* NAV / Figma: 1920×80, shell x=280..1640 */
+        .fig-nav { position:fixed; inset:0 0 auto 0; height:80px; z-index:100; transition:background .24s ease, backdrop-filter .24s ease, border-color .24s ease; }
+        .fig-nav.scrolled { background:rgba(255,255,255,.72); -webkit-backdrop-filter:blur(18px) saturate(150%); backdrop-filter:blur(18px) saturate(150%); border-bottom:.5px solid rgba(0,0,0,.08); }
+        .fig-nav-inner { width:1360px; height:80px; margin:0 auto; position:relative; }
+        .fig-logo { position:absolute; left:0; top:18px; width:71px; height:44px; font-size:16px; line-height:22px; font-weight:600; letter-spacing:0; color:#010101; }
+        .fig-nav-links { position:absolute; left:850px; top:30px; width:510px; height:20px; display:flex; justify-content:space-between; align-items:flex-start; }
+        .fig-nav-link { position:relative; height:20px; font-size:14px; line-height:20px; font-weight:400; color:rgba(1,1,1,.34); white-space:nowrap; }
+        .fig-nav-link::after { content:""; position:absolute; left:50%; top:27.4131px; width:27.6055px; height:1px; background:#000; transform:translateX(-50%) scaleX(0); transform-origin:center; transition:transform .18s ease; }
+        .fig-nav-link.active { color:#010101; font-weight:600; }
+        .fig-nav-link.active::after { transform:translateX(-50%) scaleX(1); }
+
+        /* HERO / Figma 1920×1195 */
+        .fig-hero { height:1195px; position:relative; overflow:hidden; background:#f4f5f6; }
+        .fig-hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+        .fig-hero-content { position:relative; width:1360px; height:1195px; margin:0 auto; }
+        .fig-hero-name { position:absolute; left:0; top:240.4615px; width:544px; height:224px; font-size:160px; line-height:224px; font-weight:600; letter-spacing:normal; color:#010101; white-space:nowrap; }
+        .fig-hero-title { position:absolute; left:0; top:488.4615px; width:755px; height:78px; font-size:48px; line-height:78px; font-weight:600; letter-spacing:.10em; color:#000; white-space:nowrap; }
+        .fig-hero-exp { position:absolute; left:0; top:630.4615px; width:355px; height:28px; font-size:20px; line-height:28px; font-weight:300; letter-spacing:0; color:#010101; white-space:nowrap; }
+        .fig-hero-tags { position:absolute; left:0; top:722.4615px; width:755px; height:35px; display:flex; gap:24px; align-items:flex-start; }
+        .fig-hero-tag { height:35px; border:.5px solid #000; background:#000; display:flex; align-items:center; justify-content:center; font-size:13px; line-height:18.2px; font-weight:600; color:#fff; white-space:nowrap; }
+        .fig-hero-tag:first-child { height:34px; transform:translateY(.5px); }
+        /* LOCKED USER FIXES:
+           - Hero “向下查看作品集”相对 Figma 基准上移 40px；箭头不动。
+           - Leadership 三组数据整体左边缘与正文/标签/按钮对齐；组间 +8px，组内居中。
+           后续版本不要从旧基线覆盖这两项。 */
+        .fig-hero-scroll-label { position:absolute; left:0; top:965.4615px; width:112px; height:15px; font-family:Brown, "Brown Light", "Helvetica Neue", Arial, sans-serif; font-size:16px; line-height:15.2px; font-weight:300; letter-spacing:0; color:#010101; white-space:nowrap; }
+        .fig-hero-arrow { position:absolute; left:-3.6816px; top:1028.5156px; width:7.3632px; height:79.4598px; object-fit:contain; }
+
+        /* PROJECTS / section starts at y=1275 */
+        .fig-projects { padding-top:80px; }
+        .fig-section-title { width:1360px; height:56px; font-size:40px; line-height:56px; font-weight:600; letter-spacing:0; margin:0; color:#000; }
+        .fig-projects-title { margin-bottom:32px; }
+        .fig-main-card { position:relative; width:1360px; height:765px; overflow:hidden; background:#eef0f2; }
+        .fig-cover-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+        .legacy-ai-cover { position:absolute; inset:0; width:100%; height:100%; overflow:hidden; }
+        .legacy-ai-cover-bg, .legacy-ai-cover-initial, .legacy-ai-cover-fg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+        .legacy-ai-cover-bg { z-index:0; }
+        .legacy-ai-cover-video-wrap { position:absolute; bottom:0; left:50%; transform:translateX(-50%); height:90%; z-index:10; display:flex; pointer-events:none; }
+        .legacy-ai-cover-video { height:100%; width:auto; display:block; object-fit:contain; object-position:bottom; transform:scale(.94); transform-origin:bottom center; }
+        .legacy-ai-cover-video.abm-ai { transform:scale(1.05); }
+        .legacy-ai-cover-fg { z-index:20; pointer-events:none; }
+        .legacy-ai-cover-shade { position:absolute; inset:0; background:#000; opacity:.04; z-index:25; pointer-events:none; }
+        .legacy-ai-cover-initial { z-index:30; transition:opacity 1.5s ease-in-out; pointer-events:none; }
+        /* Keep homepage project copy above all animated AI cover layers. */
+        .fig-main-content { position:absolute; left:80px; top:94.9695px; width:481.3095px; height:573.0305px; z-index:2; }
+        .fig-vtn-head { position:absolute; left:0; top:0; width:270.67px; height:80px; }
+        .fig-vtn-icon { position:absolute; left:0; top:1.75px; width:76.5px; height:76.5px; object-fit:contain; }
+        .fig-vtn-title { position:absolute; left:94.9167px; top:0; width:175.7531px; height:56px; font-size:39.6667px; line-height:56px; font-weight:600; letter-spacing:0; color:#000; }
+        .fig-vtn-platform { position:absolute; left:94.9167px; top:56px; width:175.7531px; height:24px; font-size:17px; line-height:24px; font-weight:400; color:#666; letter-spacing:0; white-space:nowrap; }
+        .fig-vtn-headline { position:absolute; left:0; top:101.0959px; width:397px; height:79px; font-size:56.6667px; line-height:79px; font-weight:600; letter-spacing:0; color:#000; white-space:nowrap; }
+        .fig-vtn-role { position:absolute; left:0; top:196.2759px; width:133px; height:22px; font-size:15.5833px; line-height:22px; font-weight:600; color:#008080; letter-spacing:0; white-space:nowrap; }
+        .fig-vtn-rule { position:absolute; left:0; top:250.3557px; width:56.6667px; height:.7083px; background:rgba(0,0,0,.5); }
+        .fig-vtn-desc { position:absolute; left:0; top:281.8293px; width:481.3095px; height:40px; font-size:14.1667px; line-height:20px; font-weight:400; color:rgba(0,0,0,.5); letter-spacing:0; margin:0; }
+        .fig-metrics { position:absolute; left:0; top:362.0034px; width:405.3333px; height:120px; display:flex; gap:22.6667px; font-family:Inter, "Helvetica Neue", Arial, sans-serif; }
+        .fig-metric { position:relative; width:120px; height:120px; flex:0 0 120px; background:rgba(255,255,255,.24); }
+        .fig-metric-value { position:absolute; left:0; top:31.5px; width:100%; height:25px; margin:0; text-align:center; font-family:"PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; font-size:18px; line-height:25px; font-weight:600; color:#008080; white-space:nowrap; }
+        .fig-metric-label { position:absolute; left:0; top:73.5px; width:100%; height:15px; margin:0; text-align:center; font-family:Inter, "Helvetica Neue", Arial, sans-serif; font-size:12px; line-height:15px; font-weight:400; color:#000; white-space:nowrap; }
+        .fig-main-btn { position:absolute; left:0; top:537.0305px; width:153.207px; height:36px; background:#000; color:#fff; cursor:pointer; }
+        .fig-main-btn-label { position:absolute; left:40px; top:8px; width:56px; height:20px; font-size:14px; line-height:20px; font-weight:400; white-space:nowrap; }
+        .fig-main-btn-arrow { position:absolute; left:112px; top:15.688px; width:17.207px; height:4.624px; object-fit:fill; filter:brightness(0) invert(1); }
+
+        /* Supporting cards / 664×374, 32px grid gaps — 精选项目同步 作品集(6).fig */
+        .fig-support-grid { width:1360px; height:1186px; margin-top:32px; display:grid; grid-template-columns:664px 664px; grid-template-rows:374px 374px 374px; gap:32px; }
+        .fig-support-card { position:relative; width:664px; height:374px; overflow:hidden; background:#f2f4f6; cursor:pointer; }
+        .fig-support-content { position:absolute; left:64px; top:79px; width:536px; height:140px; z-index:50; }
+        .fig-support-title { position:absolute; left:0; top:0; width:536px; height:34px; font-size:24px; line-height:34px; font-weight:600; margin:0; letter-spacing:0; color:#000; }
+        .fig-support-sub { position:absolute; left:0; top:50px; height:18px; font-size:13px; line-height:18px; font-weight:300; color:rgba(0,0,0,.5); margin:0; white-space:nowrap; }
+        .fig-support-tags { position:absolute; left:0; top:84px; width:440px; min-height:19px; display:flex; flex-wrap:nowrap; align-items:flex-start; gap:12px; overflow:visible; }
+        .fig-support-tags.wrap { width:260px; flex-wrap:wrap; row-gap:12px; }
+        .fig-support-tag { position:relative; flex:0 0 auto; height:19px; min-width:0; padding:2px 16px; border:0; background:rgba(255,255,255,.50); display:flex; align-items:center; justify-content:center; font-size:11px; line-height:15px; font-weight:400; color:#666; white-space:nowrap; }
+        .fig-support-btn { position:absolute; left:64px; top:267px; width:114px; height:28px; background:transparent; border:.5px solid #000; color:#000; cursor:pointer; z-index:51; }
+        .fig-support-btn-label { position:absolute; left:21px; top:5.5px; width:48px; height:17px; font-size:12px; line-height:17px; font-weight:400; }
+        .fig-support-btn-arrow { position:absolute; left:77px; top:12.1148px; width:16px; height:3.7705px; object-fit:fill; filter:brightness(0); }
+
+        .fig-gap-168 { height:168px; }
+
+        /* LEADERSHIP */
+        .fig-lead-title { margin-bottom:32px; }
+        .fig-lead-card { position:relative; width:1360px; height:653px; overflow:hidden; background:#eef0f2; cursor:pointer; }
+        .fig-lead-content { position:absolute; left:80px; top:84px; width:651.166px; height:485px; z-index:2; }
+        .fig-lead-h3 { position:absolute; left:0; top:0; width:651.166px; height:79px; margin:0; font-size:56.6667px; line-height:79px; font-weight:600; letter-spacing:0; color:#000; }
+        .fig-lead-body { position:absolute; left:0; top:124px; width:402.9707px; height:56px; margin:0; font-size:20px; line-height:28px; font-weight:300; color:#000; letter-spacing:0; }
+        .fig-lead-tags { position:absolute; left:0; top:225px; width:396px; height:26px; display:flex; gap:16px; }
+        .fig-lead-tag { height:26px; padding:4px 16px; border:.5px solid rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; font-size:12px; line-height:17px; font-weight:600; color:#000; white-space:nowrap; }
+        .fig-lead-tag:nth-child(1) { width:105px; }
+        .fig-lead-tag:nth-child(n+2) { width:81px; }
+        .fig-lead-metrics { position:absolute; left:0; top:296px; width:401px; height:60px; font-family:Inter, "Helvetica Neue", Arial, sans-serif; }
+        .fig-lead-item { position:absolute; top:0; height:60px; text-align:center; }
+        .fig-lead-item.i1 { left:0; width:116px; }
+        .fig-lead-item.i2 { left:124px; width:153px; }
+        .fig-lead-item.i3 { left:285px; width:116px; }
+        .fig-lead-sep { position:absolute; top:1px; width:.5px; height:58px; background:rgba(0,0,0,.20); }
+        .fig-lead-sep.s1 { left:120px; } .fig-lead-sep.s2 { left:281px; }
+        .fig-lead-numline { height:32px; line-height:32px; white-space:nowrap; display:flex; align-items:flex-start; justify-content:center; }
+        .fig-lead-num { font-size:22.6667px; line-height:27px; font-weight:700; }
+        .fig-lead-unit { font-size:12px; line-height:15px; font-weight:700; margin-left:4px; padding-top:7px; }
+        .fig-lead-label { margin:12px 0 0; width:100%; text-align:center; font-size:11.3333px; line-height:16px; font-weight:400; white-space:nowrap; color:#000; }
+        .fig-lead-btn { position:absolute; left:0; top:449px; width:153.207px; height:36px; background:#000; color:#fff; cursor:pointer; }
+        .fig-lead-btn-label { position:absolute; left:40px; top:8px; width:56px; height:20px; font-size:14px; line-height:20px; font-weight:400; }
+        .fig-lead-btn-arrow { position:absolute; left:112px; top:15.688px; width:17.207px; height:4.624px; object-fit:fill; filter:brightness(0) invert(1); }
+
+        /* Leadership ambient motion — subtle and always-on, without changing layout. */
+        .fig-lead-ambient {
+            position:absolute; inset:-8px; z-index:0; pointer-events:none; overflow:hidden;
+            transform-origin:68% 52%;
+            animation:figLeadAmbientFloat 18s cubic-bezier(.45,0,.55,1) infinite alternate;
+            will-change:transform;
+        }
+        .fig-lead-ambient .fig-cover-img { inset:0; width:100%; height:100%; }
+        .fig-lead-card::after {
+            content:""; position:absolute; inset:-18%; z-index:1; pointer-events:none;
+            background:radial-gradient(circle at 72% 48%, rgba(255,255,255,.22) 0%, rgba(255,255,255,.08) 22%, rgba(255,255,255,0) 48%);
+            opacity:.34; transform:translate3d(-2.5%, 0, 0);
+            animation:figLeadAmbientGlow 15s ease-in-out infinite alternate;
+            will-change:transform, opacity;
+        }
+        @keyframes figLeadAmbientFloat {
+            0%   { transform:translate3d(-3px, 2px, 0) scale(1.006); }
+            45%  { transform:translate3d(2px, -2px, 0) scale(1.011); }
+            100% { transform:translate3d(6px, 1px, 0) scale(1.008); }
+        }
+        @keyframes figLeadAmbientGlow {
+            0%   { transform:translate3d(-3.5%, .5%, 0) scale(1); opacity:.24; }
+            55%  { transform:translate3d(1.5%, -1%, 0) scale(1.025); opacity:.42; }
+            100% { transform:translate3d(4%, .5%, 0) scale(1.01); opacity:.30; }
+        }
+
+        /* EXPERIENCE */
+        .fig-exp-title { margin-bottom:32px; }
+        .fig-exp-card { width:1360px; height:374px; position:relative; background:#f7f7f8; }
+        .fig-exp-row { position:absolute; left:80px; top:124px; width:1200px; height:126px; display:grid; grid-template-columns:280px 248px 224px 224px 224px; }
+        .fig-exp-item { position:relative; height:126px; }
+        .fig-exp-time { position:absolute; left:0; top:0; margin:0; font-size:16px; line-height:22px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
+        .fig-exp-dot { position:absolute; left:0; top:46px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
+        .fig-exp-line { position:absolute; left:6px; top:49px; height:.5px; right:0; background:rgba(0,0,0,.5); }
+        .fig-exp-item:last-child .fig-exp-line { background:linear-gradient(90deg, rgba(0,0,0,.5) 0%, rgba(102,102,102,0) 100%); }
+        .fig-exp-company { position:absolute; left:0; top:76px; margin:0; font-size:16px; line-height:22px; font-weight:600; color:#000; white-space:nowrap; }
+        .fig-exp-role { position:absolute; left:0; top:106px; margin:0; font-size:14px; line-height:20px; font-weight:300; color:#000; white-space:nowrap; }
+
+        /* CONTACT / Figma 1920×841 */
+        .fig-contact { position:relative; width:100%; height:841px; overflow:hidden; background:#000; }
+        .fig-contact-bg { display:none; }
+        .fig-contact-group { position:absolute; left:50%; top:168px; transform:translateX(-50%); width:644px; height:509px; z-index:2; }
+        .fig-contact-title { position:absolute; left:0; top:0; width:644px; height:112px; margin:0; text-align:center; font-size:80px; line-height:112px; font-weight:600; letter-spacing:0; color:#fff; }
+        .fig-contact-sub { position:absolute; left:0; top:128px; width:644px; height:39px; margin:0; text-align:center; font-size:28px; line-height:39.2px; font-weight:300; letter-spacing:2.8px; white-space:nowrap; color:#fff; }
+        .fig-contact-email { position:absolute; left:190px; top:231px; width:264px; height:52px; text-align:center; }
+        .fig-contact-phone { position:absolute; left:233px; top:347px; width:178px; height:52px; text-align:center; }
+        .fig-contact-label { margin:0; font-size:16px; line-height:22.4px; color:rgba(255,255,255,.5); font-weight:400; }
+        .fig-contact-value { margin:8px 0 0; font-size:16px; line-height:22.4px; font-weight:400; color:#fff; white-space:nowrap; }
+        .fig-contact-back { position:absolute; left:234.4468px; top:463px; width:175.1065px; height:46px; background:#fff; color:#000; cursor:pointer; }
+        .fig-contact-back-label { position:absolute; left:56px; top:12px; width:64px; height:22px; font-size:16px; line-height:22px; font-weight:400; white-space:nowrap; }
+        .fig-contact-up { position:absolute; left:136px; top:13px; width:14px; height:20px; display:block; }
+        .fig-footer-brand { position:absolute; left:0; right:0; top:797px; height:20px; display:flex; align-items:center; justify-content:center; gap:41px; z-index:2; }
+        .fig-footer-line { width:637.0801px; height:.5px; opacity:.20; background:#fff; }
+        .fig-footer-line.left { background:#fff; }
+        .fig-footer-line.right { background:#fff; }
+        .fig-footer-name { width:129px; height:20px; font-size:14px; line-height:20px; font-weight:300; letter-spacing:.20em; color:rgba(255,255,255,.5); white-space:nowrap; text-align:center; }
+
+
+        /* ===== Interaction layer — subtle portfolio hover, desktop pointer only ===== */
+        .fig-logo, .fig-main-card, .fig-support-card, .fig-lead-card, .fig-contact-back,
+        .fig-main-btn, .fig-support-btn, .fig-lead-btn,
+        .fig-main-btn-arrow, .fig-support-btn-arrow, .fig-lead-btn-arrow, .fig-contact-up,
+        .fig-cover-img { transition-timing-function:cubic-bezier(.22,.72,.22,1); }
+        .fig-main-card, .fig-support-card, .fig-lead-card { transition:transform .34s cubic-bezier(.22,.72,.22,1), box-shadow .34s cubic-bezier(.22,.72,.22,1); }
+        .fig-cover-img { transition:transform .52s cubic-bezier(.22,.72,.22,1), filter .34s ease; }
+        .fig-main-btn, .fig-support-btn, .fig-lead-btn { transition:background-color .24s ease, transform .24s ease; }
+        .fig-main-btn-arrow, .fig-support-btn-arrow, .fig-lead-btn-arrow { transition:transform .28s cubic-bezier(.22,.72,.22,1); }
+        .fig-contact-back { transition:background-color .24s ease, transform .28s cubic-bezier(.22,.72,.22,1), box-shadow .28s ease; }
+        .fig-contact-up { transition:transform .28s cubic-bezier(.22,.72,.22,1); }
+        .fig-logo { transition:opacity .22s ease, transform .22s ease; }
+        .fig-nav-link { cursor:pointer; }
+        .fig-main-card:focus-visible, .fig-support-card:focus-visible, .fig-lead-card:focus-visible,
+        .fig-contact-back:focus-visible, .fig-nav-link:focus-visible, .fig-logo:focus-visible {
+            outline:2px solid rgba(0,0,0,.55); outline-offset:4px;
+        }
+        @media (hover:hover) and (pointer:fine) {
+            .fig-logo:hover { opacity:.58; transform:translateY(-1px); }
+            .fig-nav-link:hover { color:#010101; }
+            .fig-nav-link:hover::after { transform:translateX(-50%) scaleX(.55); }
+            .fig-nav-link.active:hover::after { transform:translateX(-50%) scaleX(1); }
+            .fig-main-card:hover, .fig-support-card:hover, .fig-lead-card:hover {
+                transform:translateY(-4px);
+                box-shadow:none;
+            }
+            .fig-main-card:hover .fig-cover-img, .fig-support-card:hover .fig-cover-img, .fig-lead-card:hover .fig-cover-img {
+                transform:scale(1.012);
+            }
+            .fig-main-card:hover .fig-main-btn, .fig-lead-card:hover .fig-lead-btn {
+                background:#181818;
+                transform:translateY(-1px);
+            }
+            .fig-support-card:hover .fig-support-btn {
+                background:transparent;
+                transform:translateY(-1px);
+            }
+            .fig-main-card:hover .fig-main-btn-arrow, .fig-support-card:hover .fig-support-btn-arrow, .fig-lead-card:hover .fig-lead-btn-arrow {
+                transform:translateX(4px);
+            }
+            .fig-contact-back:hover { background:#f0f0f0; transform:translateY(-2px); box-shadow:0 12px 28px rgba(255,255,255,.12); }
+            .fig-contact-back:hover .fig-contact-up { transform:translateY(-3px); }
+            .fig-contact-value { transition:opacity .2s ease; }
+            .fig-contact-value:hover { opacity:.62; }
+        }
+        @media (prefers-reduced-motion:reduce) {
+            .fig-main-card, .fig-support-card, .fig-lead-card, .fig-cover-img, .fig-logo,
+            .fig-contact-back, .fig-main-btn, .fig-support-btn, .fig-lead-btn,
+            .fig-main-btn-arrow, .fig-support-btn-arrow, .fig-lead-btn-arrow, .fig-contact-up { transition:none !important; }
+            .fig-lead-ambient, .fig-lead-card::after { animation:none !important; transform:none !important; }
+        }
+
+        @media (max-width:1499px) {
+            .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 64px); }
+            .fig-nav-links { left:auto; right:0; }
+            .fig-main-card, .fig-lead-card, .fig-exp-card, .fig-support-grid { width:100%; }
+            .fig-support-grid { grid-template-columns:calc(50% - 16px) calc(50% - 16px); }
+            .fig-support-card { width:100%; }
+        }
+        @media (max-width:900px) {
+            .fig-home { overflow-x:hidden; padding-bottom:0; }
+            .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 32px); }
+            .fig-nav-links { width:auto; gap:20px; }
+            .fig-nav-link { font-size:12px; }
+            .fig-nav-link:nth-child(3) { display:none; }
+            .fig-hero { height:760px; }
+            .fig-hero-content { height:760px; }
+            .fig-hero-name { top:150px; width:auto; height:auto; font-size:78px; line-height:1.35; letter-spacing:normal; }
+            .fig-hero-title { top:278px; width:auto; height:auto; font-size:20px; line-height:1.4; letter-spacing:.10em; }
+            .fig-hero-exp { top:354px; font-size:13px; width:auto; }
+            .fig-hero-tags { top:414px; gap:8px; transform:scale(.72); transform-origin:left top; }
+            .fig-hero-scroll-label { top:574px; font-size:16px; width:auto; }
+            .fig-hero-arrow { top:635px; height:58px; width:auto; }
+            .fig-projects { padding-top:60px; }
+            .fig-section-title { font-size:30px; height:42px; line-height:42px; }
+            .fig-main-card { height:620px; }
+            .fig-main-content { transform:scale(.78); transform-origin:left top; left:28px; top:48px; }
+            .fig-support-grid { height:auto; grid-template-columns:1fr; grid-template-rows:none; gap:16px; margin-top:16px; }
+            .fig-support-card { height:374px; }
+            .fig-gap-168 { height:96px; }
+            .fig-lead-card { height:580px; }
+            .fig-lead-content { transform:scale(.76); transform-origin:left top; left:28px; top:42px; }
+            .fig-exp-card { overflow-x:auto; }
+            .fig-contact { height:760px; }
+            .fig-contact-group { transform:translateX(-50%) scale(.78); transform-origin:center top; top:120px; }
+            .fig-footer-line { width:25vw; }
+        }
+
     </style>
 </head>
 <body class="selection:bg-black selection:text-white">
 
-    <!-- 纯净 The One 骨架屏 -->
-    <div id="root">
-        <div style="min-height: 100vh; background-color: #fafafa; color: #000; display: flex; flex-direction: column;">
-            <nav style="position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background-color: rgba(250, 250, 250, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 1.25rem 0;">
-                <div style="max-width: 90rem; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center;">
-                    <div class="desktop-only" style="font-weight: bold; letter-spacing: 0.2em; font-size: 0.875rem; text-transform: uppercase;">DING HELIANG</div>
-                    <div style="display: flex; gap: 2rem; font-size: 0.875rem; letter-spacing: 0.1em; color: rgba(0,0,0,0.3); text-transform: uppercase; margin: 0 auto;">
-                        <span>个人简介</span><span class="desktop-only">工作履历</span><span class="desktop-only">核心项目</span>
-                    </div>
-                </div>
-            </nav>
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 5rem;">
-                <div style="width: 84px; height: 84px; border: 1px solid rgba(0,0,0,0.05); border-top-color: rgba(0,0,0,0.8); border-radius: 50%; animation: global-spin 1s linear infinite;"></div>
-                <p style="margin-top: 40px; font-size: 15px; font-weight: 300; color: #333333; text-transform: uppercase; letter-spacing: normal;">正在对齐最后一像素</p>
-            </div>
-        </div>
-    </div>
+    <div id="root"></div>
 
-    <!-- 核心依赖包 -->
-    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.1/babel.min.js" defer></script>
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <!-- 核心依赖包：保持同步加载，避免预览环境先执行 JSX 而依赖尚未就绪 -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.1/babel.min.js"></script>
 
     <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef, useMemo } = React;
 
         const COS_URL = "https://dhl-1420296989.cos.ap-shanghai.myqcloud.com";
+        // 每次打开/刷新页面都生成新的资源参数，确保 COS 同名覆盖后的图片/视频立即更新。
+        const ASSET_VERSION = Date.now();
+        const freshAssetUrl = (url) => {
+            if (!url || typeof url !== 'string' || !url.startsWith(COS_URL)) return url;
+            const [baseWithQuery, hash = ''] = url.split('#');
+            // 去掉旧的 v 参数，避免重复叠加。
+            const [pathname, query = ''] = baseWithQuery.split('?');
+            const params = new URLSearchParams(query);
+            params.set('v', ASSET_VERSION);
+            const next = `${pathname}?${params.toString()}`;
+            return hash ? `${next}#${hash}` : next;
+        };
 
         const generateGallery = (folder, maxCount = 100) => {
-            return Array.from({ length: maxCount }, (_, i) => `${COS_URL}/projects/${folder}/${i + 1}.jpg`);
+            return Array.from({ length: maxCount }, (_, i) => freshAssetUrl(`${COS_URL}/projects/${folder}/${i + 1}.jpg`));
         };
 
         const personalInfo = {
             name: "丁贺亮", enName: "HELIANG", lastName: "DING",
-            motto: "“伟大的体验往往隐于无形。我主张‘极简的交互逻辑’与‘极细腻的情感触点’并存。多年的项目一线的沉淀，让我学会在错综复杂的业务中通过设计建立秩序，化繁为简，让商业意图自然发生”",
-            phone: "156-6990-7825", email: "578458461@qq.com",
+            title: "产品体验设计 · 设计领导力",
+            experience: "15年产品设计经验",
+            management: "6+年团队管理经验",
+            tags: ["C端电商", "复杂b端", "AI产品", "商业增长", "全球化"],
+            phone: "15669907825", email: "578458461@qq.com",
             school: "厦门大学", degree: "本科", major: "数字媒体艺术专业",
-            avatar: `${COS_URL}/assets/avatar.jpg` 
+            avatar: freshAssetUrl(`${COS_URL}/assets/avatar.jpg`)
         };
+
+        const HOME_ASSETS = `${COS_URL}/assets/home`;
+        // Homepage AI cover cache-buster: increment when COS files are replaced in-place.
+        // 每次页面打开/刷新生成新的资源参数，强制读取 COS 最新的 AI 项目封面资源。
+        // 同一次页面会话内保持不变，避免 React 重渲染时重复下载。
+        const AI_COVER_VERSION = ASSET_VERSION;
 
         const workExperienceData = [
             { 
@@ -100,26 +384,29 @@
                 projects: [
                     { 
                         id: 1, 
-                        title: "VTN App", 
+                        title: "VTN 品牌与体验升级", 
                         subtitle: "品牌心智升级、设计语言重塑、核心链路优化", 
                         coverVideoBackground: `${COS_URL}/projects/vtn-brand/cover.mp4`, 
                         coverForeground: `${COS_URL}/projects/vtn-brand/cover.png`,      
                         coverVideoPoster: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
                         cover: `${COS_URL}/projects/vtn-brand/cover.jpg`, 
                         gallery: [ 
-                            `${COS_URL}/projects/vtn-brand/showreel.mp4`, 
+                            ...generateGallery("vtn-brand").slice(0, 3),
+                            `${COS_URL}/projects/vtn-brand/showreel.mp4`,
+                            ...generateGallery("vtn-brand").slice(3, 7),
                             {
                                 type: 'double-layer-video',
                                 background: `${COS_URL}/projects/vtn-brand/cover.mp4`,
-                                foreground: `${COS_URL}/projects/vtn-brand/cover1.png`,
+                                foreground: `${COS_URL}/projects/vtn-brand/8.png`,
                                 poster: `${COS_URL}/projects/vtn-brand/cover.jpg` 
                             },
-                            ...generateGallery("vtn-brand")
+                            // 跳过 8.jpg，从 9.jpg 继续
+                            ...generateGallery("vtn-brand").slice(8)
                         ], 
                         fullWidth: true 
                     },
-                    { id: 2, title: "海外体系-NTX&NTXBiz", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") },
-                    { id: 7, title: "ABM体验建设", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b") }
+                    { id: 2, title: "NTX东南亚海外市场", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") },
+                    { id: 7, title: "ABM经销商", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b") }
                 ]
             },
             {
@@ -143,12 +430,8 @@
                             // 正常的 2.jpg 和 3.jpg
                             `${COS_URL}/projects/vtn-ai/2.jpg`,
                             `${COS_URL}/projects/vtn-ai/3.jpg`,
-                            // 针对 第四张图 的特殊排版逻辑
-                            {
-                                type: 'triple-layer-left-video',
-                                background: `${COS_URL}/projects/vtn-ai/4.jpg`,
-                                video: `${COS_URL}/projects/vtn-ai/cover3.mp4`
-                            },
+                            // 第四张图：仅保留静态图，不叠加视频
+                            `${COS_URL}/projects/vtn-ai/4.jpg`,
                             // 剔除前4张，从 5.jpg 往后自动生成相册
                             ...generateGallery("vtn-ai").slice(4)
                         ]
@@ -170,8 +453,8 @@
             {
                 groupId: "group-3", groupTitle: "频道差异化建设",
                 projects: [
-                    { id: 5, title: "福利甄选", subtitle: "常态化闪购体验设计", cover: `${COS_URL}/projects/vtn-selection/cover.jpg`, gallery: generateGallery("vtn-selection") },
-                    { id: 6, title: "自研直播", subtitle: "沉浸式电商直播购物及互动体验", cover: `${COS_URL}/projects/vtn-live/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-live/showreel.mp4`, ...generateGallery("vtn-live") ] }
+                    { id: 5, title: "VTN福利甄选", subtitle: "常态化闪购体验设计", cover: `${COS_URL}/projects/vtn-selection/cover.jpg`, gallery: generateGallery("vtn-selection") },
+                    { id: 6, title: "VTN直播", subtitle: "沉浸式电商直播购物及互动体验", cover: `${COS_URL}/projects/vtn-live/cover.jpg`, gallery: [ `${COS_URL}/projects/vtn-live/showreel.mp4`, ...generateGallery("vtn-live") ] }
                 ]
             },
             {
@@ -195,9 +478,74 @@
         const managementData = [
             {
                 groupId: "group-6", projects: [
-                    { id: 9, title: "UED 团队管理与体系建设", subtitle: "人才与文化建设、体系构建、价值量化", cover: `${COS_URL}/projects/management/cover.jpg`, gallery: generateGallery("management"), fullWidth: true }
+                    { id: 9, title: "设计领导力", subtitle: "人才与文化建设、体系构建、价值量化", cover: `${COS_URL}/projects/management/cover.jpg`, gallery: generateGallery("management"), fullWidth: true }
                 ]
             }
+        ];
+
+        // 首页展示数据与详情数据解耦：首页只负责讲清能力层级，详情沿用旧项目图库。
+        const featuredProjects = [
+            {
+                id: 1,
+                title: "VTN",
+                platform: "ACCESS核心电商平台",
+                headline: "品牌与体验升级",
+                role: "设计统筹/项目主设",
+                description: "将“源健康”业务战略与“主流之前”品牌价值转化为产品体验，从品牌设计语言、核心用户旅程到设计体系完成全链路升级。",
+                metrics: [["8.43", "升级满意度调研"], ["+33.68%", "分类商品CTR"], ["+11.52%", "商详加购下单率"]],
+                visual: `${HOME_ASSETS}/vtn-visual.png`,
+                featured: true
+            },
+            {
+                id: 4,
+                title: "VTN AI营养师",
+                subtitle: "项目主设 (UI+交互) ",
+                tags: ["AI产品", "多模态", "多工具"],
+                visual: `${HOME_ASSETS}/ai-nutritionist.png`
+            },
+            {
+                id: 7,
+                title: "ABM 经销商平台",
+                subtitle: "设计统筹/部分项目主设 ",
+                tags: ["复杂B端", "经营数据", "客户管理", "营销支持", "能力成长"],
+                visual: `${HOME_ASSETS}/abm-platform.png`
+            },
+            {
+                id: 5,
+                title: "VTN福利甄选",
+                subtitle: "项目主设 (UI+交互) ",
+                tags: ["营销频道", "业务升级", "流量勾子"],
+                visual: `${HOME_ASSETS}/welfare-selection.png`
+            },
+            {
+                id: 2,
+                title: "NTX东南亚海外市场",
+                subtitle: "项目主设 (UI+交互) ",
+                tags: ["0～1", "海外设计体系", "多语言"],
+                visual: `${HOME_ASSETS}/ntx-overseas.png`
+            },
+            {
+                id: 6,
+                title: "VTN直播",
+                subtitle: "项目主设 (UI+交互) ",
+                tags: ["自研直播", "常态/大促", "多工具"],
+                visual: `${HOME_ASSETS}/vtn-live.png`
+            },
+            {
+                id: 3,
+                title: "ABM AI获客中心",
+                subtitle: "项目主设 (UI+交互) ",
+                tags: ["AI产品", "工作流", "经销商IP打造"],
+                visual: `${HOME_ASSETS}/ai-acquisition.png`
+            }
+        ];
+
+        const homeExperienceData = [
+            { time: "2026～2019", company: "ACCESS品牌管理集团", role: "UED经理" },
+            { time: "2019～2016", company: "杭州金诚集团", role: "设计组负责人" },
+            { time: "2016～2014", company: "墨仕（厦门）", role: "体验设计师" },
+            { time: "2014～2011", company: "联想移动", role: "UI设计师" },
+            { time: "2011～2007", company: "厦门大学", role: "本科 数字媒体艺术" }
         ];
 
         // --- 交互组件 ---
@@ -211,7 +559,9 @@
             const [isLoaded, setIsLoaded] = useState(false);
             const [isError, setIsError] = useState(false);
             const [startDownload, setStartDownload] = useState(false);
-            const [currentSrc, setCurrentSrc] = useState(src);
+            const [currentSrc, setCurrentSrc] = useState(() => freshAssetUrl(src));
+
+            useEffect(() => { setCurrentSrc(freshAssetUrl(src)); setIsLoaded(false); setIsError(false); }, [src]);
 
             useEffect(() => {
                 const timer = setTimeout(() => {
@@ -251,8 +601,8 @@
                             decoding="async"
                             onLoad={() => { setIsLoaded(true); if (onLoadSuccess) onLoadSuccess(); }} 
                             onError={() => { 
-                                if (currentSrc.endsWith('cover.jpg')) {
-                                    setCurrentSrc(currentSrc.replace('cover.jpg', 'cover.gif'));
+                                if (/cover\.jpg(?:\?|$)/.test(currentSrc)) {
+                                    setCurrentSrc(currentSrc.replace(/cover\.jpg(?=\?|$)/, 'cover.gif'));
                                 } else {
                                     setIsError(true); 
                                     if (onLoadError) onLoadError(); 
@@ -344,8 +694,8 @@
                                         {startDownload && (
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
                                                 <video 
-                                                    src={item.background} 
-                                                    poster={item.poster}
+                                                    src={freshAssetUrl(item.background)} 
+                                                    poster={freshAssetUrl(item.poster)}
                                                     autoPlay loop muted playsInline preload="metadata" 
                                                     webkit-playsinline="true" x5-playsinline="true"
                                                     className="w-full h-auto block object-cover z-0"
@@ -355,7 +705,7 @@
                                                 ></video>
                                                 {item.foreground && (
                                                     <img 
-                                                        src={item.foreground} 
+                                                        src={freshAssetUrl(item.foreground)} 
                                                         alt={`Overlay ${idx + 1}`}
                                                         className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
                                                         loading="lazy" decoding="async"
@@ -377,7 +727,7 @@
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
                                                 {/* 1. 底图：静态 1.jpg */}
                                                 <img 
-                                                    src={item.background} 
+                                                    src={freshAssetUrl(item.background)} 
                                                     alt={`Detail ${idx + 1} Background`}
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoad={() => handleSuccess(idx)}
@@ -387,7 +737,7 @@
                                                 {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 h-2/3 z-10 flex items-center justify-center pt-[1%]">
                                                     <video 
-                                                        src={item.video} 
+                                                        src={freshAssetUrl(item.video)} 
                                                         autoPlay loop muted playsInline preload="metadata" 
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.90]"
@@ -411,7 +761,7 @@
                                             <div className="relative w-full flex items-center justify-center overflow-hidden">
                                                 {/* 1. 底图：静态 4.jpg */}
                                                 <img 
-                                                    src={item.background} 
+                                                    src={freshAssetUrl(item.background)} 
                                                     alt={`Detail ${idx + 1} Background`}
                                                     className="w-full h-auto block object-cover z-0"
                                                     onLoad={() => handleSuccess(idx)}
@@ -421,7 +771,7 @@
                                                 {/* 2. 中间层：MP4视频 */}
                                                 <div className="absolute top-1/2 left-[5%] -translate-y-1/2 h-[80%] z-10 flex items-center justify-center">
                                                     <video 
-                                                        src={item.video} 
+                                                        src={freshAssetUrl(item.video)} 
                                                         autoPlay loop muted playsInline preload="metadata" 
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="h-full w-auto block object-contain scale-[0.95]"
@@ -445,7 +795,7 @@
                                     <div className={`relative w-full flex items-center justify-center ${isDarkMode ? 'bg-[#111111]' : 'bg-[#ededed]'}`}>
                                         {startDownload && (
                                             <video 
-                                                src={`${src}#t=0.001`} 
+                                                src={`${freshAssetUrl(src)}#t=0.001`} 
                                                 controls preload="metadata" playsInline 
                                                 webkit-playsinline="true" x5-playsinline="true"
                                                 className="w-full h-auto object-cover"
@@ -476,39 +826,74 @@
         };
 
         function App() {
-            const [activeProject, setActiveProject] = useState(null);
-            const [activeSection, setActiveSection] = useState('bio');
+            const [activeProject, setActiveProject] = useState(() => {
+                const requestedId = Number(new URLSearchParams(window.location.search).get('project'));
+                if (!requestedId) return null;
+                const projects = [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)];
+                return projects.find(p => p.id === requestedId && !p.externalLink) || null;
+            });
+            const [activeSection, setActiveSection] = useState('projects');
+            const [navScrolled, setNavScrolled] = useState(false);
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
 
             const allProjects = useMemo(() => [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)], []);
-            
+
+            // 二级页项目顺序严格跟随首页当前顺序，且名称统一使用首页命名。
+            const detailProjectSequence = useMemo(() => [
+                { id: 1, title: "VTN 品牌与体验升级" },
+                { id: 4, title: "VTN AI营养师" },
+                { id: 7, title: "ABM经销商" },
+                { id: 5, title: "VTN福利甄选" },
+                { id: 2, title: "NTX东南亚海外市场" },
+                { id: 6, title: "VTN直播" },
+                { id: 3, title: "ABM AI获客中心" },
+                { id: 9, title: "设计领导力" }
+            ].map(item => {
+                const project = allProjects.find(p => p.id === item.id);
+                return project ? { ...project, detailTitle: item.title } : null;
+            }).filter(Boolean), [allProjects]);
+
             const prevProject = useMemo(() => {
                 if (!activeProject) return null;
-                const idx = allProjects.findIndex(p => p.id === activeProject.id);
-                return idx > 0 ? allProjects[idx - 1] : null;
-            }, [activeProject, allProjects]);
+                const idx = detailProjectSequence.findIndex(p => p.id === activeProject.id);
+                return idx > 0 ? detailProjectSequence[idx - 1] : null;
+            }, [activeProject, detailProjectSequence]);
 
             const nextProject = useMemo(() => {
                 if (!activeProject) return null;
-                const idx = allProjects.findIndex(p => p.id === activeProject.id);
-                return allProjects[idx + 1] || null;
-            }, [activeProject, allProjects]);
+                const idx = detailProjectSequence.findIndex(p => p.id === activeProject.id);
+                return idx >= 0 ? (detailProjectSequence[idx + 1] || null) : null;
+            }, [activeProject, detailProjectSequence]);
 
             useEffect(() => {
                 if (activeProject) return;
+                let ticking = false;
                 const handler = () => {
-                    const sections = ['bio', 'experience', 'projects'];
-                    for (const id of sections) {
-                        const el = document.getElementById(id);
-                        if (el) {
-                            const rect = el.getBoundingClientRect();
-                            if (rect.top <= 160 && rect.bottom >= 160) { setActiveSection(id); break; }
-                        }
-                    }
+                    if (ticking) return;
+                    ticking = true;
+                    window.requestAnimationFrame(() => {
+                        const y = window.scrollY;
+                        setNavScrolled(y > 18);
+                        const sections = ['projects', 'leadership', 'experience', 'contact'];
+                        const marker = y + 150;
+                        let current = 'projects';
+                        sections.forEach((id) => {
+                            const el = document.getElementById(id);
+                            if (el && el.offsetTop <= marker) current = id;
+                        });
+                        if (window.innerHeight + y >= document.documentElement.scrollHeight - 100) current = 'contact';
+                        setActiveSection(current);
+                        ticking = false;
+                    });
                 };
+                handler();
                 window.addEventListener('scroll', handler, { passive: true });
-                return () => window.removeEventListener('scroll', handler);
+                window.addEventListener('resize', handler);
+                return () => {
+                    window.removeEventListener('scroll', handler);
+                    window.removeEventListener('resize', handler);
+                };
             }, [activeProject]);
 
             const scrollToSection = (id) => {
@@ -529,6 +914,139 @@
                 try { document.execCommand('copy'); setToast("复制成功"); } catch (err) { setToast("复制失败"); }
                 document.body.removeChild(textArea);
                 setTimeout(() => setToast(""), 2000);
+            };
+
+            const projectUrlFor = (id) => {
+                const url = new URL(window.location.href);
+                url.searchParams.set('project', String(id));
+                url.hash = '';
+                return url.toString();
+            };
+
+            const openProjectById = (id) => {
+                const project = allProjects.find(p => p.id === id);
+                if (!project) return;
+                if (project.externalLink) {
+                    window.open(project.externalLink, '_blank', 'noopener,noreferrer');
+                    return;
+                }
+                window.open(projectUrlFor(id), '_blank', 'noopener,noreferrer');
+            };
+
+            const showProjectInCurrentTab = (project) => {
+                if (!project) return;
+                if (project.externalLink) {
+                    window.open(project.externalLink, '_blank', 'noopener,noreferrer');
+                    return;
+                }
+                const url = new URL(window.location.href);
+                url.searchParams.set('project', String(project.id));
+                url.hash = '';
+                window.history.replaceState({}, '', url.toString());
+                setActiveProject(project);
+                window.scrollTo(0, 0);
+            };
+
+            const returnToPortfolio = () => {
+                setActiveProject(null);
+                const url = new URL(window.location.href);
+                url.searchParams.delete('project');
+                url.hash = '';
+                window.history.replaceState({}, '', url.toString());
+                setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50);
+            };
+
+            const HomeImage = ({ src, fallback, alt = "", className = "", priority = false }) => {
+                const [currentSrc, setCurrentSrc] = useState(() => freshAssetUrl(src));
+                useEffect(() => { setCurrentSrc(freshAssetUrl(src)); }, [src]);
+                return (
+                    <img
+                        src={currentSrc}
+                        alt={alt}
+                        loading={priority ? "eager" : "eager"}
+                        fetchPriority={priority ? "high" : "auto"}
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        onError={() => {
+                            if (fallback && currentSrc !== freshAssetUrl(fallback)) setCurrentSrc(freshAssetUrl(fallback));
+                            else console.error('Home image failed:', currentSrc);
+                        }}
+                        className={className}
+                    />
+                );
+            };
+
+            const ButtonArrow = ({ light = false, className = "" }) => (
+                <img
+                    aria-hidden="true"
+                    src={freshAssetUrl(`${HOME_ASSETS}/btn-arrow.svg`)}
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                    className={`inline-block shrink-0 w-[42px] h-[12px] object-contain ${className}`}
+                    style={{ filter: light ? 'brightness(0) invert(1)' : 'brightness(0)' }}
+                />
+            );
+
+            // Restore the original animated homepage cover treatment for the two AI projects only.
+            const LegacyAIHomepageCover = ({ projectId, title }) => {
+                const isABMAI = projectId === 3;
+                const folder = isABMAI ? 'abm-ai' : 'vtn-ai';
+                const initialId = `home-legacy-cover0-${projectId}`;
+                return (
+                    <div className="fig-cover-img legacy-ai-cover">
+                        <img
+                            src={`${COS_URL}/projects/${folder}/cover.jpg?v=${AI_COVER_VERSION}`}
+                            alt={`${title} Background`}
+                            className="legacy-ai-cover-bg"
+                            loading="eager"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                        />
+                        <div
+                            className="legacy-ai-cover-video-wrap"
+                            style={{ left: isABMAI ? 'calc(55% + 20px)' : 'calc(50% + 40px)' }}
+                        >
+                            <video
+                                src={`${COS_URL}/projects/${folder}/cover.mp4?v=${AI_COVER_VERSION}`}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                preload="metadata"
+                                className={`legacy-ai-cover-video ${isABMAI ? 'abm-ai' : ''}`}
+                                onCanPlay={() => {
+                                    const cover0 = document.getElementById(initialId);
+                                    if (cover0) {
+                                        cover0.style.opacity = '0';
+                                        window.setTimeout(() => {
+                                            cover0.style.display = 'none';
+                                        }, 1500);
+                                    }
+                                }}
+                            />
+                        </div>
+                        <img
+                            src={`${COS_URL}/projects/${folder}/cover.png?v=${AI_COVER_VERSION}`}
+                            alt=""
+                            className="legacy-ai-cover-fg"
+                            loading="eager"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                        />
+                        <div className="legacy-ai-cover-shade"></div>
+                        <img
+                            id={initialId}
+                            src={`${COS_URL}/projects/${folder}/cover0.jpg?v=${AI_COVER_VERSION}`}
+                            alt={`${title} Initial Cover`}
+                            className="legacy-ai-cover-initial"
+                            loading="eager"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                        />
+                    </div>
+                );
             };
 
             const renderProjectGroup = (group) => (
@@ -562,26 +1080,26 @@
                                         <div className="aspect-video overflow-hidden bg-[#ededed] relative">
                                             {isGifForeground ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
-                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" loading="lazy" decoding="async" />
-                                                    <img src={p.coverForegroundGif} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" loading="lazy" decoding="async" />
+                                                    <img src={freshAssetUrl(p.cover)} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" loading="lazy" decoding="async" />
+                                                    <img src={freshAssetUrl(p.coverForegroundGif)} alt={`${p.title} Foreground GIF`} className="absolute left-[5%] top-1/2 -translate-y-1/2 h-[62.3%] w-auto object-contain z-10 pointer-events-none" loading="lazy" decoding="async" />
                                                 </div>
                                             ) : isTripleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
                                                     {p.cover0 && (
                                                         <img 
                                                             id={`cover0-img-${p.id}`}
-                                                            src={p.cover0} 
+                                                            src={freshAssetUrl(p.cover0)} 
                                                             alt={`${p.title} Initial Cover`} 
                                                             className="absolute inset-0 w-full h-full object-cover z-30 transition-opacity duration-[1.5s] ease-in-out pointer-events-none" 
                                                             loading="lazy" decoding="async"
                                                         />
                                                     )}
 
-                                                    <img src={p.cover} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" loading="lazy" decoding="async" />
+                                                    <img src={freshAssetUrl(p.cover)} alt={`${p.title} Background`} className="absolute inset-0 w-full h-full object-cover z-0" loading="lazy" decoding="async" />
                                                     
                                                     <div className="absolute bottom-0 -translate-x-1/2 h-[90%] z-10 flex pointer-events-none" style={{ left: p.coverVideoLeftOffset || '50%' }}>
                                                         <video 
-                                                            src={p.coverVideoCenter} 
+                                                            src={freshAssetUrl(p.coverVideoCenter)} 
                                                             autoPlay loop muted playsInline preload="metadata"
                                                             webkit-playsinline="true" x5-playsinline="true"
                                                             className={`h-full w-auto block object-contain object-bottom ${p.coverVideoScale || 'scale-[0.94]'} origin-bottom`}
@@ -596,7 +1114,7 @@
                                                     </div>
 
                                                     {p.coverForegroundPng && (
-                                                        <img src={p.coverForegroundPng} alt={`${p.title} Foreground`} className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" loading="lazy" decoding="async" />
+                                                        <img src={freshAssetUrl(p.coverForegroundPng)} alt={`${p.title} Foreground`} className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none" loading="lazy" decoding="async" />
                                                     )}
 
                                                     <div className="absolute inset-0 bg-[#000000] opacity-[0.04] z-[25] pointer-events-none"></div>
@@ -604,15 +1122,15 @@
                                             ) : isDoubleLayerCover ? (
                                                 <div className="w-full h-full relative transition-transform duration-1000 md:group-hover:scale-105">
                                                     <video 
-                                                        src={p.coverVideoBackground} 
-                                                        poster={p.coverVideoPoster || undefined}
+                                                        src={freshAssetUrl(p.coverVideoBackground)} 
+                                                        poster={freshAssetUrl(p.coverVideoPoster) || undefined}
                                                         autoPlay loop muted playsInline preload="metadata"
                                                         webkit-playsinline="true" x5-playsinline="true"
                                                         className="absolute inset-0 w-full h-full object-cover z-0"
                                                     ></video>
                                                     {p.coverForeground && (
                                                         <img 
-                                                            src={p.coverForeground} 
+                                                            src={freshAssetUrl(p.coverForeground)} 
                                                             alt={`${p.title} Foreground`}
                                                             className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
                                                             loading="lazy" decoding="async"
@@ -620,7 +1138,7 @@
                                                     )}
                                                 </div>
                                             ) : (
-                                                <ProgressiveImage src={p.cover} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
+                                                <ProgressiveImage src={freshAssetUrl(p.cover)} alt={p.title} className="w-full h-full md:group-hover:scale-105 transition-transform duration-1000" />
                                             )}
                                         </div>
                                     </div>
@@ -632,13 +1150,13 @@
             );
 
             if (activeProject) {
-                const isDarkMode = activeProject.title === "自研直播";
+                const isDarkMode = activeProject.id === 6;
 
                 return (
                     <div className={`${isDarkMode ? 'bg-[#222222] text-white' : 'bg-[#ffffff] text-black'} min-h-screen fade-in`}>
                         <header className={`sticky top-0 z-50 ${isDarkMode ? 'bg-[#222222]/90 border-white/[0.05]' : 'bg-[#ffffff]/90 border-black/[0.05]'} backdrop-blur-md py-6 px-6 md:px-20 border-b`}>
                             <div className="max-w-[90rem] mx-auto flex items-center justify-between">
-                                <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
+                                <button onClick={returnToPortfolio} 
                                         className="group flex items-center gap-3 text-sm font-light uppercase tracking-widest hover:opacity-60 transition-opacity">
                                     <span className={`w-8 h-8 rounded-full border ${isDarkMode ? 'border-white/20 group-hover:border-white' : 'border-black/20 group-hover:border-black'} flex items-center justify-center transition-colors`}><ArrowLeftIcon size={16} /></span> 返回作品集列表
                                 </button>
@@ -650,30 +1168,24 @@
 
                             <div className="pt-12 pb-24 md:pb-40 flex flex-row justify-center items-stretch gap-3 md:gap-6 px-4 md:px-6 max-w-5xl mx-auto">
                                 {prevProject && (
-                                    <button onClick={() => { 
-                                        if (prevProject.externalLink) window.open(prevProject.externalLink, '_blank');
-                                        else { setActiveProject(prevProject); window.scrollTo(0,0); }
-                                    }} 
+                                    <button onClick={() => showProjectInCurrentTab(prevProject)} 
                                             className={`group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-8 md:py-20 transition-all duration-700 text-center w-full bg-transparent border border-transparent hover:-translate-y-3 ${isDarkMode ? 'hover:bg-[#333333] hover:border-white/10 hover:shadow-[0_50px_100px_rgba(255,255,255,0.03)]' : 'hover:bg-white hover:border-black/5 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)]'}`}>
                                         <span className={`${isDarkMode ? 'text-white/50' : 'text-black/50'} text-sm md:text-sm tracking-widest md:tracking-[0.5em] uppercase font-light`}>上一个作品</span>
                                         <div className="text-xl md:text-2xl lg:text-3xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-8 decoration-1 flex items-center justify-center leading-tight">
-                                            {prevProject.title}
+                                            {prevProject.detailTitle || prevProject.title}
                                         </div>
                                     </button>
                                 )}
                                 {nextProject ? (
-                                    <button onClick={() => { 
-                                        if (nextProject.externalLink) window.open(nextProject.externalLink, '_blank');
-                                        else { setActiveProject(nextProject); window.scrollTo(0,0); }
-                                    }} 
+                                    <button onClick={() => showProjectInCurrentTab(nextProject)} 
                                             className={`group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-8 md:py-20 transition-all duration-700 text-center w-full bg-transparent border border-transparent hover:-translate-y-3 ${isDarkMode ? 'hover:bg-[#333333] hover:border-white/10 hover:shadow-[0_50px_100px_rgba(255,255,255,0.03)]' : 'hover:bg-white hover:border-black/5 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)]'}`}>
                                         <span className={`${isDarkMode ? 'text-white/50' : 'text-black/50'} text-sm md:text-sm tracking-widest md:tracking-[0.5em] uppercase font-light`}>下一个作品</span>
                                         <div className="text-xl md:text-2xl lg:text-3xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-8 decoration-1 flex items-center justify-center leading-tight">
-                                            {nextProject.title}
+                                            {nextProject.detailTitle || nextProject.title}
                                         </div>
                                     </button>
                                 ) : (
-                                    <button onClick={() => { setActiveProject(null); setTimeout(() => window.scrollTo({top: scrollPosRef.current, behavior: 'instant'}), 50); }} 
+                                    <button onClick={returnToPortfolio} 
                                             className={`group flex-1 flex flex-col items-center justify-center gap-2 md:gap-6 px-2 md:px-16 py-8 md:py-20 transition-all duration-700 text-center w-full bg-transparent border border-transparent hover:-translate-y-3 ${isDarkMode ? 'hover:bg-[#333333] hover:border-white/10 hover:shadow-[0_50px_100px_rgba(255,255,255,0.03)]' : 'hover:bg-white hover:border-black/5 hover:shadow-[0_50px_100px_rgba(0,0,0,0.06)]'}`}>
                                         <span className={`${isDarkMode ? 'text-white/50' : 'text-black/50'} text-sm md:text-sm tracking-widest md:tracking-[0.5em] uppercase font-light`}>End</span>
                                         <div className="text-xl md:text-2xl lg:text-3xl font-light tracking-tight transition-all underline md:no-underline md:group-hover:underline underline-offset-8 decoration-1 uppercase leading-tight">返回作品集列表</div>
@@ -686,179 +1198,183 @@
             }
 
             return (
-                <div className="min-h-screen bg-[#fafafa] text-black fade-in">
-                    {toast && <div className="fixed top-12 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-4 rounded-full text-sm z-[1000] fade-in shadow-2xl">{toast}</div>}
-                    <nav className="fixed top-0 left-0 w-full z-[100] bg-[#fafafa]/90 backdrop-blur-md py-5 border-b border-black/[0.05]">
-                        <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex justify-between items-center">
-                            <div className="font-bold tracking-[0.2em] text-sm uppercase hidden md:block">DING HELIANG</div>
-                            <div className="flex gap-8 text-sm md:text-sm tracking-widest mx-auto md:mx-0">
-                                <button onClick={() => scrollToSection('bio')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'bio' ? 'text-black' : 'text-black/30 hover:text-black'}`}>个人简介</button>
-                                <button onClick={() => scrollToSection('experience')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'experience' ? 'text-black' : 'text-black/30 hover:text-black'}`}>工作履历</button>
-                                <button onClick={() => scrollToSection('projects')} className={`uppercase font-light transition-all duration-300 ${activeSection === 'projects' ? 'text-black' : 'text-black/30 hover:text-black'}`}>核心项目</button>
+                <div className="min-h-screen bg-white text-[#111] fade-in">
+                    {toast && <div className="fixed top-8 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full text-xs z-[1000] fade-in shadow-2xl">{toast}</div>}
+
+                    {/* NAV — exact Figma geometry */}
+                    <nav className={`fig-nav ${navScrolled ? 'scrolled' : ''}`}>
+                        <div className="fig-nav-inner fig-pf">
+                            <button onClick={() => scrollToSection('bio')} className="fig-button-reset fig-logo">
+                                <span className="block">DING</span><span className="block">HELIANG</span>
+                            </button>
+                            <div className="fig-nav-links">
+                                <button onClick={() => scrollToSection('projects')} className={`fig-button-reset fig-nav-link ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
+                                <button onClick={() => scrollToSection('leadership')} className={`fig-button-reset fig-nav-link ${activeSection === 'leadership' ? 'active' : ''}`}>设计领导力</button>
+                                <button onClick={() => scrollToSection('experience')} className={`fig-button-reset fig-nav-link ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
+                                <button onClick={() => scrollToSection('contact')} className={`fig-button-reset fig-nav-link ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
                             </div>
                         </div>
                     </nav>
-                    
-                    <header id="bio" className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-12 md:pb-24 border-b-0 md:border-b border-black/[0.05]">
-                        <div className="absolute top-0 left-0 w-full flex justify-center pt-24 md:pt-32 overflow-hidden select-none pointer-events-none z-0">
-                            <span className="text-[22vw] lg:text-[23vw] font-black text-black/[0.03] tracking-tighter leading-[0.8] whitespace-nowrap uppercase">PORTFOLIO</span>
-                        </div>
-                        <div className="max-w-[90rem] mx-auto w-full grid lg:grid-cols-12 gap-6 lg:gap-12 items-center z-10 relative mt-12 md:mt-20">
-                            <div className="lg:col-span-7 flex flex-col justify-center relative z-20 order-2 lg:order-1 pt-[45vw] sm:pt-[38vw] md:pt-0">
-                                <ScrollReveal className="pl-1">
-                                    <h1 className="leading-[0.85] uppercase m-0 p-0 text-black flex flex-col tracking-tighter">
-                                        <span className="hidden md:block font-light tracking-[0.3em] text-black/30 text-xs md:text-sm mb-8 ml-1">SELECTED WORKS</span>
-                                        <span className="font-black text-[22vw] lg:text-[13vw] ml-[-1vw]">{personalInfo.lastName}</span>
-                                        <span className="font-thin italic text-[16vw] lg:text-[9.5vw] mt-2">{personalInfo.enName}</span>
-                                        <span className="font-medium not-italic text-4xl md:text-6xl tracking-[0.2em] text-black mt-6 lg:mt-10 opacity-80 ml-1">{personalInfo.name}</span>
-                                    </h1>
-                                </ScrollReveal>
-                                <ScrollReveal delay={200} className="mt-16 lg:mt-24 max-w-xl pl-1">
-                                    <div className="flex flex-col gap-y-10">
-                                        <div>
-                                            <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em]">Education</p>
-                                            <p className="text-xl font-thin tracking-tight">{personalInfo.school}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.degree}<span className="font-thin mx-2 opacity-20">/</span>{personalInfo.major}</p>
-                                        </div>
-                                        
-                                        <div className="flex flex-wrap gap-x-16 gap-y-6">
-                                            <div onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))} className="cursor-pointer group">
-                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Phone <span className="normal-case tracking-normal opacity-70 ml-1 font-thin">(Wechat)</span></p>
-                                                <div className="flex items-center gap-3"><p className="text-xl font-thin tracking-tight">{personalInfo.phone}</p><span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span></div>
-                                            </div>
-                                            <div onClick={() => handleCopy(personalInfo.email)} className="cursor-pointer group">
-                                                <p className="text-black/30 mb-3 text-xs font-light uppercase tracking-[0.2em] group-hover:text-black transition-colors">Email</p>
-                                                <div className="flex items-center gap-3"><p className="text-xl font-thin tracking-tight lowercase">{personalInfo.email}</p><span className="text-black/30 group-hover:text-black transition-colors"><CopyIcon/></span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ScrollReveal>
-                            </div>
-                            <div className="lg:col-span-5 order-1 lg:order-2 absolute right-0 -top-8 md:relative md:top-auto md:right-auto flex justify-end md:justify-start lg:justify-end md:pl-1 lg:pl-0 z-10">
-                                <ScrollReveal delay={400} className="w-[65vw] sm:w-[55vw] md:w-full md:max-w-[380px] lg:max-w-[420px] aspect-[3/4] overflow-hidden bg-[#ededed]">
-                                    <ProgressiveImage src={personalInfo.avatar} className="w-full h-full object-cover opacity-90 transition-transform duration-[2s] hover:scale-105" />
-                                </ScrollReveal>
-                            </div>
-                        </div>
-                    </header>
 
-                    <main className="max-w-[90rem] mx-auto px-6 md:px-12">
-                        {/* 工作履历 */}
-                        <section id="experience" className="pt-12 md:pt-32">
-                            <ScrollReveal>
-                                <div className="mb-6 md:mb-8 pl-1">
-                                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">工作履历</h2>
-                                    <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Professional Experience</p>
+                    <div className="fig-home fig-pf">
+                        {/* HERO — 1920 × 1195 */}
+                        <header id="bio" className="fig-hero">
+                            <HomeImage src={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="fig-hero-bg" />
+                            <div className="fig-hero-content">
+                                <div className="fig-hero-name">丁贺亮</div>
+                                <div className="fig-hero-title">产品体验设计 · 设计领导力</div>
+                                <div className="fig-hero-exp">15+年体验设计&nbsp;&nbsp;|&nbsp;&nbsp;6+年团队管理&nbsp;&nbsp;|&nbsp;&nbsp;厦门大学&nbsp;&nbsp;|&nbsp;&nbsp;数字媒体艺术专业</div>
+                                <div className="fig-hero-tags">
+                                    {[
+                                        ['C端电商',113],['复杂b端',112],['AI产品',104],['商业增长',117],['全球化',104]
+                                    ].map(([t,w]) => <span key={t} className="fig-hero-tag" style={{width:`${w}px`}}>{t}</span>)}
                                 </div>
-                            </ScrollReveal>
-                            
-                            {/* PC端：时间轴整体容器 */}
-                            <div className="hidden md:block w-full py-4">
-                                <div className="grid grid-cols-4 gap-0 relative">
-                                    {/* 第一行：内容 (上部) */}
-                                    {workExperienceData.map((exp, idx) => (
-                                        <div key={`top-${idx}`} className="flex flex-col justify-end pb-1.5 px-0.5 min-h-[220px]">
-                                            {idx % 2 === 0 ? (
-                                                <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <h3 className="text-lg xl:text-xl font-bold tracking-tight mb-2">{exp.company}</h3>
-                                                    <p className="text-[13px] font-normal text-black mb-2">{exp.role}</p>
-                                                    <p className="text-[13px] font-light leading-relaxed text-black/60 text-justify whitespace-pre-line">{exp.description}</p>
-                                                </ScrollReveal>
-                                            ) : (
-                                                <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <p className="text-[12px] font-thin tracking-[0.1em] text-black/50 uppercase text-center pb-1.5">{exp.time}</p>
-                                                </ScrollReveal>
-                                            )}
-                                        </div>
-                                    ))}
+                                <div className="fig-hero-scroll-label">向下查看作品集</div>
+                                <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="fig-hero-arrow" />
+                            </div>
+                        </header>
 
-                                    {/* 实心小黑点和普通线条轴线 */}
-                                    <div className="col-span-4 h-px bg-black/10 relative my-4 flex items-center">
-                                        <div className="absolute inset-0 grid grid-cols-4 pointer-events-none">
-                                            {[0, 1, 2, 3].map(i => (
-                                                <div key={`dot-${i}`} className="flex justify-center relative items-center h-full">
-                                                    <div className="w-2 h-2 rounded-full bg-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"></div>
-                                                    <div className={`absolute w-px h-5 bg-black/5 ${i % 2 === 0 ? 'bottom-1/2 mb-1.5' : 'top-1/2 mt-1.5'}`}></div>
+                        {/* SELECTED WORK */}
+                        <section id="projects" className="fig-projects">
+                            <div className="fig-shell">
+                                <h2 className="fig-section-title fig-projects-title">精选项目</h2>
+
+                                <button onClick={() => openProjectById(1)} className="fig-button-reset fig-main-card">
+                                    <HomeImage src={`${HOME_ASSETS}/vtn-visual.png`} alt="" className="fig-cover-img" />
+                                    <div className="fig-main-content">
+                                        <div className="fig-vtn-head">
+                                            <HomeImage src={`${HOME_ASSETS}/vtn-app-icon.png`} alt="VTN" className="fig-vtn-icon" />
+                                            <div className="fig-vtn-title">VTN</div>
+                                            <div className="fig-vtn-platform">ACCESS核心电商平台</div>
+                                        </div>
+                                        <div className="fig-vtn-headline">品牌与体验升级</div>
+                                        <div className="fig-vtn-role">设计统筹/项目主设</div>
+                                        <span className="fig-vtn-rule"></span>
+                                        <p className="fig-vtn-desc">将“源健康”业务战略与“主流之前”品牌价值转化为产品体验，从品牌设计语言、核心用户旅程到设计体系完成全链路升级。</p>
+                                        <div className="fig-metrics fig-inter">
+                                            {featuredProjects[0].metrics.map(([v,l]) => (
+                                                <div key={l} className="fig-metric">
+                                                    <p className="fig-metric-value">{v}</p>
+                                                    <p className="fig-metric-label">{l}</p>
                                                 </div>
                                             ))}
                                         </div>
+                                        <span className="fig-main-btn">
+                                            <span className="fig-main-btn-label">查看详情</span>
+                                            <img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="fig-main-btn-arrow" />
+                                        </span>
                                     </div>
+                                </button>
 
-                                    {/* 第三行：内容 (下部) */}
-                                    {workExperienceData.map((exp, idx) => (
-                                        <div key={`bottom-${idx}`} className="flex flex-col justify-start pt-1.5 px-0.5 min-h-[220px]">
-                                            {idx % 2 !== 0 ? (
-                                                <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <h3 className="text-lg xl:text-xl font-bold tracking-tight mb-2">{exp.company}</h3>
-                                                    <p className="text-[13px] font-normal text-black mb-2">{exp.role}</p>
-                                                    <p className="text-[13px] font-light leading-relaxed text-black/60 text-justify whitespace-pre-line">{exp.description}</p>
-                                                </ScrollReveal>
-                                            ) : (
-                                                <ScrollReveal delay={idx * 100} className="w-full">
-                                                    <p className="text-[12px] font-thin tracking-[0.1em] text-black/50 uppercase text-center pt-1.5">{exp.time}</p>
-                                                </ScrollReveal>
-                                            )}
-                                        </div>
+                                <div className="fig-support-grid">
+                                    {featuredProjects.filter(p => !p.featured).map((p) => (
+                                        <button key={p.id} onClick={() => openProjectById(p.id)} className="fig-button-reset fig-support-card">
+                                            {(p.id === 4 || p.id === 3)
+                                                ? <LegacyAIHomepageCover projectId={p.id} title={p.title} />
+                                                : <HomeImage src={p.visual} alt="" className="fig-cover-img" />
+                                            }
+                                            <div className="fig-support-content">
+                                                <h3 className="fig-support-title">{p.title}</h3>
+                                                <p className="fig-support-sub">{p.subtitle}</p>
+                                                <div className={`fig-support-tags ${p.id === 7 ? 'wrap' : ''}`}>
+                                                    {p.tags.map((t) => <span key={t} className="fig-support-tag">{t}</span>)}
+                                                </div>
+                                            </div>
+                                            <span className="fig-support-btn">
+                                                <span className="fig-support-btn-label">查看详情</span>
+                                                <img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="fig-support-btn-arrow" />
+                                            </span>
+                                        </button>
                                     ))}
                                 </div>
-                                <div className="h-12 md:h-16"></div>
-                            </div>
-                            
-                            {/* 移动端履历结构 */}
-                            <div className="block md:hidden relative ml-2 mt-8 mb-16">
-                                <div className="absolute w-px bg-black/10 left-0 top-[10px] bottom-0 z-0"></div>
-                                
-                                {workExperienceData.map((exp, idx) => (
-                                    <ScrollReveal key={idx} delay={idx * 100} className="relative pl-6 mb-12 last:mb-0 group z-10">
-                                        <div className="absolute w-3 h-3 bg-black rounded-full -left-[5.5px] top-1"></div>
-                                        <p className="text-[14px] font-thin tracking-[0.1em] text-black/70 uppercase mb-2">{exp.time}</p>
-                                        <h3 className="text-lg font-bold tracking-tight mb-2">{exp.company}</h3>
-                                        <p className="text-[13px] font-normal text-black mb-2">{exp.role}</p>
-                                        <p className="text-[13px] font-light leading-relaxed text-black/60 whitespace-pre-line">{exp.description}</p>
-                                    </ScrollReveal>
-                                ))}
                             </div>
                         </section>
 
-                        {/* 核心项目展示 */}
-                        <section id="projects" className="pt-8 md:pt-16">
-                            <ScrollReveal>
-                                <div className="mb-12 md:mb-16 pl-1">
-                                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">核心项目展示</h2>
-                                    <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Selected Core Projects</p>
-                                </div>
-                            </ScrollReveal>
-                            
-                            <div className="mb-12">
-                                {corePortfolioData.map(renderProjectGroup)}
-                            </div>
+                        <div className="fig-gap-168"></div>
 
-                            {/* 团队管理 */}
-                            <div className="pt-4 md:pt-8">
-                                <ScrollReveal>
-                                    <div className="mb-12 md:mb-16 pl-1">
-                                        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-black mb-4 uppercase">团队管理</h2>
-                                        <p className="text-black/30 text-xs md:text-sm font-light uppercase tracking-[0.3em]">Team Management & Leadership</p>
+                        {/* LEADERSHIP */}
+                        <section id="leadership">
+                            <div className="fig-shell">
+                                <h2 className="fig-section-title fig-lead-title">团队管理</h2>
+                                <button onClick={() => openProjectById(9)} className="fig-button-reset fig-lead-card">
+                                    <div className="fig-lead-ambient" aria-hidden="true">
+                                        <HomeImage src={`${HOME_ASSETS}/leadership-team.png`} alt="" className="fig-cover-img" />
                                     </div>
-                                </ScrollReveal>
-                                <div className="mb-12">
-                                    {managementData.map(renderProjectGroup)}
+                                    <div className="fig-lead-content">
+                                        <h3 className="fig-lead-h3">设计领导力</h3>
+                                        <p className="fig-lead-body">从设计交付团队到业务共创伙伴，将个人能力逐步沉淀为可持续的组织能力。</p>
+                                        <div className="fig-lead-tags">
+                                            {['人才文化建设','协作机制','设计资产','业务影响'].map(t => <span key={t} className="fig-lead-tag">{t}</span>)}
+                                        </div>
+                                        <div className="fig-lead-metrics fig-inter">
+                                            <span className="fig-lead-sep s1"></span><span className="fig-lead-sep s2"></span>
+                                            {[
+                                                ['i1','11','人','设计团队规模'],['i2','3','条','核心业务线'],['i3','5','大','设计语言体系']
+                                            ].map(([cls,n,u,l]) => (
+                                                <div key={l} className={`fig-lead-item ${cls}`}>
+                                                    <div className="fig-lead-numline"><span className="fig-lead-num">{n}</span><span className="fig-lead-unit">{u}</span></div>
+                                                    <p className="fig-lead-label fig-pf">{l}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <span className="fig-lead-btn">
+                                            <span className="fig-lead-btn-label">查看详情</span>
+                                            <img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="fig-lead-btn-arrow" />
+                                        </span>
+                                    </div>
+                                </button>
+                            </div>
+                        </section>
+
+                        <div className="fig-gap-168"></div>
+
+                        {/* EXPERIENCE */}
+                        <section id="experience">
+                            <div className="fig-shell">
+                                <h2 className="fig-section-title fig-exp-title">工作经历</h2>
+                                <div className="fig-exp-card">
+                                    <div className="fig-exp-row">
+                                        {homeExperienceData.map((exp, idx) => (
+                                            <div key={exp.company} className="fig-exp-item">
+                                                <p className="fig-exp-time">{exp.time}</p>
+                                                <span className="fig-exp-dot"></span>
+                                                <span className="fig-exp-line"></span>
+                                                <p className="fig-exp-company">{exp.company}</p>
+                                                <p className="fig-exp-role">{exp.role}</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </section>
-                    </main>
 
-                    <footer className="bg-black text-white py-24 mt-8 border-t border-white/5">
-                        <div className="max-w-[90rem] mx-auto px-6 md:px-20 flex flex-col lg:flex-row justify-between items-start gap-16">
-                            <ScrollReveal>
-                                <h2 className="text-6xl md:text-8xl tracking-tighter mb-16 leading-[0.9]"><span className="font-thin">LET'S CREATE</span><br/><span className="font-black text-white/40">SOMETHING</span><br/><span className="font-thin">TOGETHER.</span></h2>
-                                <div className="flex flex-wrap gap-10">
-                                    <div className="flex items-center gap-4 text-sm md:text-base font-light tracking-widest hover:text-white/60 transition-colors cursor-pointer" onClick={() => handleCopy(personalInfo.email)}><span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><MailIcon /></span>{personalInfo.email}</div>
-                                    <div className="flex items-center gap-4 text-sm md:text-base font-light tracking-widest hover:text-white/60 transition-colors cursor-pointer" onClick={() => handleCopy(personalInfo.phone.replace(/-/g, ''))}><span className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center"><PhoneIcon /></span><span>{personalInfo.phone} <span className="text-white/40 text-xs md:text-sm ml-1 font-thin">(Wechat)</span></span></div>
+                        <div className="fig-gap-168"></div>
+
+                        {/* CONTACT */}
+                        <footer id="contact" className="fig-contact">
+                            {/* Figma v4: contact is a solid black section; no background image */}
+                            <div className="fig-contact-group">
+                                <h2 className="fig-contact-title">联系我</h2>
+                                <p className="fig-contact-sub">欢迎就产品体验、设计管理与合作机会与我交流</p>
+                                <div className="fig-contact-email">
+                                    <p className="fig-contact-label">邮箱</p>
+                                    <button onClick={() => handleCopy(personalInfo.email)} className="fig-button-reset fig-contact-value">{personalInfo.email}</button>
                                 </div>
-                            </ScrollReveal>
-                            <div className="flex flex-col lg:items-end text-white/40 text-sm font-light uppercase tracking-[0.2em] mt-12"><p>Based in China</p><p className="mt-12 text-xs opacity-30 font-sans tracking-normal">© {new Date().getFullYear()} Heliang Ding.</p></div>
-                        </div>
-                    </footer>
+                                <div className="fig-contact-phone">
+                                    <p className="fig-contact-label">电话</p>
+                                    <button onClick={() => handleCopy(personalInfo.phone)} className="fig-button-reset fig-contact-value">{personalInfo.phone}</button>
+                                </div>
+                                <button onClick={() => window.scrollTo({top:0, behavior:'smooth'})} className="fig-button-reset fig-contact-back">
+                                    <span className="fig-contact-back-label">返回顶部</span><svg className="fig-contact-up" viewBox="0 0 14 20" aria-hidden="true"><path d="M7 19V3.5M2.5 8L7 3.5 11.5 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" /></svg>
+                                </button>
+                            </div>
+                            <div className="fig-footer-brand">
+                                <span className="fig-footer-line left"></span>
+                                <span className="fig-footer-name">DING HELIANG</span>
+                                <span className="fig-footer-line right"></span>
+                            </div>
+                        </footer>
+                    </div>
                 </div>
             );
         }
