@@ -124,9 +124,9 @@
         .fig-support-tags { position:absolute; left:0; top:84px; width:440px; min-height:19px; display:flex; flex-wrap:nowrap; align-items:flex-start; gap:12px; overflow:visible; }
         .fig-support-tags.wrap { width:260px; flex-wrap:wrap; row-gap:12px; }
         .fig-support-tag { position:relative; flex:0 0 auto; height:19px; min-width:0; padding:2px 16px; border:0; background:rgba(255,255,255,.50); display:flex; align-items:center; justify-content:center; font-size:11px; line-height:15px; font-weight:400; color:#666; white-space:nowrap; }
-        .fig-support-btn { position:absolute; left:64px; top:267px; width:114px; height:28px; background:transparent; border:.5px solid #000; color:#000; cursor:pointer; z-index:51; }
+        .fig-support-btn { position:absolute; left:64px; top:267px; width:114px; height:28px; background:#000; border:.5px solid #000; color:#fff; cursor:pointer; z-index:51; }
         .fig-support-btn-label { position:absolute; left:21px; top:5.5px; width:48px; height:17px; font-size:12px; line-height:17px; font-weight:400; }
-        .fig-support-btn-arrow { position:absolute; left:77px; top:12.1148px; width:16px; height:3.7705px; object-fit:fill; filter:brightness(0); }
+        .fig-support-btn-arrow { position:absolute; left:77px; top:12.1148px; width:16px; height:3.7705px; object-fit:fill; filter:brightness(0) invert(1); }
 
         .fig-gap-168 { height:168px; }
 
@@ -184,7 +184,7 @@
         /* EXPERIENCE */
         .fig-exp-title { margin-bottom:32px; }
         .fig-exp-card { width:1360px; height:374px; position:relative; background:#f7f7f8; }
-        .fig-exp-row { position:absolute; left:80px; top:124px; width:1200px; height:126px; display:grid; grid-template-columns:280px 248px 224px 224px 224px; }
+        .fig-exp-row { position:absolute; left:80px; top:124px; width:1200px; height:126px; display:grid; grid-template-columns:repeat(4, 1fr); }
         .fig-exp-item { position:relative; height:126px; }
         .fig-exp-time { position:absolute; left:0; top:0; margin:0; font-size:16px; line-height:22px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
         .fig-exp-dot { position:absolute; left:0; top:46px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
@@ -199,11 +199,11 @@
         .fig-contact-group { position:absolute; left:50%; top:168px; transform:translateX(-50%); width:644px; height:509px; z-index:2; }
         .fig-contact-title { position:absolute; left:0; top:0; width:644px; height:112px; margin:0; text-align:center; font-size:80px; line-height:112px; font-weight:600; letter-spacing:0; color:#fff; }
         .fig-contact-sub { position:absolute; left:0; top:128px; width:644px; height:39px; margin:0; text-align:center; font-size:28px; line-height:39.2px; font-weight:300; letter-spacing:2.8px; white-space:nowrap; color:#fff; }
-        .fig-contact-email { position:absolute; left:190px; top:231px; width:264px; height:52px; text-align:center; }
-        .fig-contact-phone { position:absolute; left:233px; top:347px; width:178px; height:52px; text-align:center; }
+        .fig-contact-email { position:absolute; left:190px; top:176px; width:264px; height:52px; text-align:center; }
+        .fig-contact-phone { position:absolute; left:233px; top:292px; width:178px; height:52px; text-align:center; }
         .fig-contact-label { margin:0; font-size:16px; line-height:22.4px; color:rgba(255,255,255,.5); font-weight:400; }
         .fig-contact-value { margin:8px 0 0; font-size:16px; line-height:22.4px; font-weight:400; color:#fff; white-space:nowrap; }
-        .fig-contact-back { position:absolute; left:234.4468px; top:463px; width:175.1065px; height:46px; background:#fff; color:#000; cursor:pointer; }
+        .fig-contact-back { position:absolute; left:234.4468px; top:408px; width:175.1065px; height:46px; background:#fff; color:#000; cursor:pointer; }
         .fig-contact-back-label { position:absolute; left:56px; top:12px; width:64px; height:22px; font-size:16px; line-height:22px; font-weight:400; white-space:nowrap; }
         .fig-contact-up { position:absolute; left:136px; top:13px; width:14px; height:20px; display:block; }
         .fig-footer-brand { position:absolute; left:0; right:0; top:797px; height:20px; display:flex; align-items:center; justify-content:center; gap:41px; z-index:2; }
@@ -247,7 +247,7 @@
                 transform:translateY(-1px);
             }
             .fig-support-card:hover .fig-support-btn {
-                background:transparent;
+                background:#181818;
                 transform:translateY(-1px);
             }
             .fig-main-card:hover .fig-main-btn-arrow, .fig-support-card:hover .fig-support-btn-arrow, .fig-lead-card:hover .fig-lead-btn-arrow {
@@ -272,25 +272,24 @@
             .fig-support-grid { grid-template-columns:calc(50% - 16px) calc(50% - 16px); }
             .fig-support-card { width:100%; }
         }
-        /* ===== Mobile layout — desktop rules above remain untouched ===== */
+        /* ===== Mobile layout v2 — desktop rules above remain untouched ===== */
         @media (max-width:900px) {
             html { scroll-padding-top:64px; }
             .fig-home { overflow-x:hidden; padding-bottom:0; }
             .fig-nav { height:64px; }
             .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 32px); }
-            .fig-nav-inner { height:64px; }
+            .fig-nav-inner { width:calc(100% - 48px); height:64px; }
             .fig-logo { top:12px; width:58px; height:40px; font-size:13px; line-height:18px; }
             .fig-nav-links { left:auto; right:0; top:22px; width:auto; height:20px; gap:14px; justify-content:flex-start; }
             .fig-nav-link { height:20px; font-size:11px; line-height:20px; }
-            .fig-nav-link:nth-child(3) { display:block; }
             .fig-nav-link::after { top:24px; width:20px; }
 
-            /* Hero: preserve the desktop visual hierarchy, but allow the longer bio line to wrap. */
+            /* Hero: mobile composition, not a scaled desktop canvas. */
             .fig-hero { height:690px; }
             .fig-hero-content { height:690px; }
-            .fig-hero-bg { object-position:center; }
+            .fig-hero-bg { inset:0 auto auto 0; width:100%; height:auto; object-fit:contain; object-position:center top; }
             .fig-hero-name { left:0; top:132px; width:auto; height:auto; font-size:clamp(64px, 19vw, 82px); line-height:1.08; letter-spacing:normal; }
-            .fig-hero-title { left:0; top:238px; width:auto; height:auto; font-size:22px; line-height:1.35; letter-spacing:.06em; }
+            .fig-hero-title { left:0; top:238px; width:auto; height:auto; font-size:22px; line-height:1.35; letter-spacing:.045em; white-space:nowrap; }
             .fig-hero-exp { left:0; top:300px; width:min(100%, 390px); height:auto; font-size:13px; line-height:22px; font-weight:300; white-space:normal; }
             .fig-hero-tags { left:0; top:386px; width:100%; height:auto; display:flex; flex-wrap:wrap; gap:8px; transform:none; }
             .fig-hero-tag, .fig-hero-tag:first-child { width:auto !important; height:28px; min-width:0; padding:0 14px; transform:none; font-size:11px; line-height:28px; }
@@ -303,93 +302,152 @@
             .fig-projects-title, .fig-lead-title, .fig-exp-title { margin-bottom:20px; }
             .fig-gap-168 { height:80px; }
 
-            /* Featured VTN card: keep the desktop composition, scaled only inside the mobile card. */
-            .fig-main-card { width:100%; height:540px; }
-            .fig-main-content { left:24px; top:46px; transform:scale(.64); transform-origin:left top; }
+            /* Featured project: rebuild the information hierarchy for mobile. */
+            .fig-main-card { width:100%; height:520px; }
+            .fig-main-card > .fig-cover-img { inset:0 auto auto 0; width:100%; height:auto; object-fit:contain; object-position:center top; }
+            .fig-main-content { left:24px; right:24px; top:36px; width:auto; height:auto; transform:none; }
+            .fig-vtn-head { position:relative; left:auto; top:auto; width:100%; height:56px; }
+            .fig-vtn-icon { left:0; top:1px; width:52px; height:52px; }
+            .fig-vtn-title { left:64px; top:0; width:auto; height:auto; font-size:28px; line-height:34px; }
+            .fig-vtn-platform { left:64px; top:33px; width:auto; height:auto; font-size:12px; line-height:18px; }
+            .fig-vtn-headline { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:18px; font-size:22px; line-height:31px; white-space:nowrap; }
+            .fig-vtn-role { position:relative; left:auto; top:auto; width:auto; height:auto; margin-top:10px; font-size:12px; line-height:18px; }
+            .fig-vtn-rule { position:relative; left:auto; top:auto; display:block; width:44px; height:.5px; margin-top:18px; }
+            .fig-vtn-desc { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:15px; font-size:12px; line-height:19px; }
+            .fig-metrics { position:relative; left:auto; top:auto; width:100%; height:90px; margin-top:21px; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; }
+            .fig-metric { width:auto; height:90px; min-width:0; flex:none; }
+            .fig-metric-value { top:20px; height:auto; font-size:16px; line-height:22px; }
+            .fig-metric-label { top:51px; height:auto; padding:0 4px; font-size:10px; line-height:14px; white-space:normal; }
+            .fig-main-btn { position:relative; left:auto; top:auto; display:block; width:114px; height:28px; margin-top:22px; }
+            .fig-main-btn-label { left:21px; top:5.5px; width:48px; height:17px; font-size:12px; line-height:17px; }
+            .fig-main-btn-arrow { left:77px; top:12.1148px; width:16px; height:3.7705px; }
 
-            /* Supporting projects: one-column cards with readable content and touch-friendly spacing. */
+            /* Supporting projects: single-column, full information visible by default. */
             .fig-support-grid { width:100%; height:auto; margin-top:16px; grid-template-columns:1fr; grid-template-rows:none; gap:16px; }
-            .fig-support-card { width:100%; height:320px; }
-            .fig-support-content { left:24px; top:54px; width:calc(100% - 48px); height:auto; }
+            .fig-support-card { width:100%; height:330px; }
+            .fig-support-content { left:24px; top:48px; width:calc(100% - 48px); height:auto; }
             .fig-support-title { width:100%; height:auto; font-size:22px; line-height:31px; }
-            .fig-support-sub { top:44px; max-width:100%; height:auto; font-size:12px; line-height:18px; overflow:hidden; text-overflow:ellipsis; }
+            .fig-support-sub { top:43px; max-width:100%; height:auto; font-size:12px; line-height:18px; overflow:visible; text-overflow:clip; white-space:normal; }
             .fig-support-tags, .fig-support-tags.wrap { top:78px; width:100%; min-height:19px; flex-wrap:wrap; gap:8px; row-gap:8px; }
-            .fig-support-tag { height:19px; padding:2px 10px; font-size:10px; line-height:15px; }
-            .fig-support-btn { left:24px; top:auto; bottom:28px; }
-            .legacy-ai-cover-video-wrap { height:88%; }
+            .fig-support-tag { height:20px; padding:2px 10px; font-size:10px; line-height:16px; }
+            .fig-support-btn { left:24px; top:auto; bottom:26px; }
 
-            /* Leadership becomes a true mobile layout instead of a shrunken desktop canvas. */
+            /* AI covers: mobile-specific framing; desktop positioning stays untouched. */
+            .legacy-ai-cover-video-wrap { height:84%; }
+            .legacy-ai-cover-video { transform:scale(.90); }
+            .legacy-ai-cover-video.abm-ai { transform:scale(.98); }
+            .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:calc(50% + 20px) !important; }
+            .legacy-ai-cover-video-wrap.abm-ai-wrap { left:calc(55% + 8px) !important; }
+
+            /* Team management: genuine vertical mobile composition. */
             .fig-lead-card { width:100%; height:520px; }
-            .fig-lead-content { left:24px; right:24px; top:46px; width:auto; height:auto; transform:none; }
-            .fig-lead-h3 { position:relative; left:auto; top:auto; width:100%; height:auto; font-size:36px; line-height:1.2; }
-            .fig-lead-body { position:relative; left:auto; top:auto; width:100%; height:auto; margin:22px 0 0; font-size:15px; line-height:24px; }
-            .fig-lead-tags { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:22px; display:flex; flex-wrap:wrap; gap:8px; }
+            .fig-lead-content { left:24px; right:24px; top:42px; width:auto; height:auto; transform:none; }
+            .fig-lead-h3 { position:relative; left:auto; top:auto; width:100%; height:auto; font-size:22px; line-height:31px; }
+            .fig-lead-body { position:relative; left:auto; top:auto; width:100%; height:auto; margin:20px 0 0; font-size:14px; line-height:22px; }
+            .fig-lead-tags { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:20px; display:flex; flex-wrap:wrap; gap:8px; }
             .fig-lead-tag, .fig-lead-tag:nth-child(1), .fig-lead-tag:nth-child(n+2) { width:auto; height:26px; padding:4px 12px; font-size:11px; line-height:17px; }
-            .fig-lead-metrics { position:relative; left:auto; top:auto; width:100%; height:62px; margin-top:28px; display:grid; grid-template-columns:repeat(3, 1fr); }
-            .fig-lead-item, .fig-lead-item.i1, .fig-lead-item.i2, .fig-lead-item.i3 { position:relative; left:auto; top:auto; width:auto; height:62px; }
+            .fig-lead-metrics { position:relative; left:auto; top:auto; width:100%; height:64px; margin-top:27px; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); }
+            .fig-lead-item, .fig-lead-item.i1, .fig-lead-item.i2, .fig-lead-item.i3 { position:relative; left:auto; top:auto; width:auto; height:64px; }
             .fig-lead-item:not(:last-child) { border-right:.5px solid rgba(0,0,0,.20); }
             .fig-lead-sep { display:none; }
             .fig-lead-num { font-size:22px; }
-            .fig-lead-label { margin-top:9px; font-size:10px; line-height:14px; }
-            .fig-lead-btn { position:relative; left:auto; top:auto; margin-top:30px; }
-            .fig-lead-ambient { inset:-4px; }
+            .fig-lead-label { margin-top:9px; font-size:10px; line-height:14px; white-space:normal; }
+            .fig-lead-btn { position:relative; left:auto; top:auto; display:block; width:114px; height:28px; margin-top:28px; }
+            .fig-lead-btn-label { left:21px; top:5.5px; width:48px; height:17px; font-size:12px; line-height:17px; }
+            .fig-lead-btn-arrow { left:77px; top:12.1148px; width:16px; height:3.7705px; }
+            .fig-lead-ambient { inset:0; animation:none; transform:none; }
+            .fig-lead-ambient .fig-cover-img { inset:0 auto auto 0; width:100%; height:auto; object-fit:contain; object-position:center top; }
+            .fig-lead-card::after { display:none; }
 
-            /* Work experience: vertical timeline, no horizontal scrolling. */
-            .fig-exp-card { width:100%; height:auto; min-height:0; overflow:visible; padding:32px 24px 28px; }
+            /* Work experience: horizontal desktop timeline becomes vertical on mobile. */
+            .fig-exp-card { width:100%; height:auto; min-height:0; overflow:visible; padding:34px 24px 28px; }
             .fig-exp-row { position:relative; left:auto; top:auto; width:100%; height:auto; display:flex; flex-direction:column; }
-            .fig-exp-item { position:relative; height:98px; min-height:98px; padding-left:22px; }
+            .fig-exp-item { position:relative; height:102px; min-height:102px; padding-left:22px; }
             .fig-exp-time { left:22px; top:0; font-size:13px; line-height:18px; }
             .fig-exp-dot { left:0; top:6px; width:6px; height:6px; }
             .fig-exp-line { left:2.75px; top:16px; right:auto; bottom:-2px; width:.5px; height:auto; background:rgba(0,0,0,.22); }
             .fig-exp-item:last-child .fig-exp-line { display:none; }
             .fig-exp-company { left:22px; top:28px; max-width:calc(100% - 22px); font-size:15px; line-height:21px; white-space:normal; }
-            .fig-exp-role { left:22px; top:55px; max-width:calc(100% - 22px); font-size:13px; line-height:19px; white-space:normal; }
+            .fig-exp-role { left:22px; top:56px; max-width:calc(100% - 22px); font-size:13px; line-height:19px; white-space:normal; }
 
-            /* Contact: centered mobile composition with safe wrapping. */
-            .fig-contact { height:620px; }
-            .fig-contact-group { left:50%; top:92px; width:calc(100% - 32px); height:430px; transform:translateX(-50%); }
+            /* Contact: compact mobile footer after the explanatory sentence was removed. */
+            .fig-contact { height:520px; }
+            .fig-contact-group { left:50%; top:74px; width:calc(100% - 32px); height:340px; transform:translateX(-50%); }
             .fig-contact-title { left:0; top:0; width:100%; height:auto; font-size:48px; line-height:1.15; }
-            .fig-contact-sub { left:0; top:72px; width:100%; height:auto; font-size:18px; line-height:1.45; letter-spacing:1.2px; white-space:normal; }
-            .fig-contact-email { left:0; top:166px; width:100%; height:auto; }
-            .fig-contact-phone { left:0; top:248px; width:100%; height:auto; }
+            .fig-contact-email { left:0; top:94px; width:100%; height:auto; }
+            .fig-contact-phone { left:0; top:168px; width:100%; height:auto; }
             .fig-contact-label { font-size:13px; line-height:19px; }
             .fig-contact-value { margin-top:6px; font-size:15px; line-height:21px; }
-            .fig-contact-back { left:50%; top:338px; transform:translateX(-50%); }
+            .fig-contact-back { left:50%; top:252px; transform:translateX(-50%); }
             .fig-footer-brand { top:auto; bottom:22px; gap:16px; }
             .fig-footer-line { width:calc((100vw - 185px) / 2); max-width:120px; }
             .fig-footer-name { width:121px; font-size:12px; letter-spacing:.14em; }
+
+            /* Touch feedback only; no mobile-only information depends on hover. */
+            .fig-main-card:active, .fig-support-card:active, .fig-lead-card:active { transform:scale(.995); }
         }
 
         @media (max-width:480px) {
             .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 28px); }
+            .fig-nav-inner { width:calc(100% - 48px); }
             .fig-logo { width:52px; font-size:12px; line-height:17px; }
             .fig-nav-links { gap:10px; }
             .fig-nav-link { font-size:10px; }
             .fig-nav-link::after { width:18px; }
+
             .fig-hero { height:670px; }
             .fig-hero-content { height:670px; }
             .fig-hero-name { top:128px; font-size:clamp(58px, 18vw, 72px); }
-            .fig-hero-title { top:226px; font-size:20px; letter-spacing:.04em; }
+            .fig-hero-title { top:226px; font-size:20px; letter-spacing:.035em; }
             .fig-hero-exp { top:286px; font-size:12px; line-height:21px; }
             .fig-hero-tags { top:374px; }
             .fig-hero-tag, .fig-hero-tag:first-child { height:27px; padding:0 12px; line-height:27px; }
             .fig-hero-scroll-label { top:534px; }
             .fig-hero-arrow { top:572px; }
-            .fig-main-card { height:520px; }
-            .fig-main-content { left:22px; top:44px; transform:scale(.60); }
-            .fig-support-card { height:310px; }
-            .fig-support-content { left:22px; top:50px; width:calc(100% - 44px); }
-            .fig-support-btn { left:22px; bottom:24px; }
-            .fig-lead-card { height:510px; }
-            .fig-lead-content { left:22px; right:22px; top:42px; }
-            .fig-lead-h3 { font-size:34px; }
-            .fig-lead-body { margin-top:20px; font-size:14px; line-height:22px; }
-            .fig-lead-tags { margin-top:20px; }
-            .fig-lead-metrics { margin-top:26px; }
-            .fig-lead-btn { margin-top:28px; }
-            .fig-exp-card { padding-left:22px; padding-right:22px; }
+
+            .fig-main-card { height:500px; }
+            .fig-main-content { left:20px; right:20px; top:32px; }
+            .fig-vtn-headline { margin-top:16px; font-size:21px; line-height:30px; }
+            .fig-vtn-desc { margin-top:13px; font-size:11px; line-height:18px; }
+            .fig-metrics { margin-top:18px; height:86px; gap:6px; }
+            .fig-metric { height:86px; }
+            .fig-metric-value { top:18px; font-size:15px; }
+            .fig-metric-label { top:48px; font-size:9.5px; line-height:13px; }
+            .fig-main-btn { margin-top:18px; }
+
+            .fig-support-card { height:318px; }
+            .fig-support-content { left:20px; top:44px; width:calc(100% - 40px); }
+            .fig-support-title { font-size:21px; line-height:30px; }
+            .fig-support-sub { top:42px; font-size:11.5px; }
+            .fig-support-tags, .fig-support-tags.wrap { top:76px; }
+            .fig-support-btn { left:20px; bottom:22px; }
+
+            .legacy-ai-cover-video-wrap { height:82%; }
+            .legacy-ai-cover-video { transform:scale(.88); }
+            .legacy-ai-cover-video.abm-ai { transform:scale(.96); }
+            .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:calc(50% + 15px) !important; }
+            .legacy-ai-cover-video-wrap.abm-ai-wrap { left:calc(55% + 4px) !important; }
+
+            .fig-lead-card { height:500px; }
+            .fig-lead-content { left:20px; right:20px; top:38px; }
+            .fig-lead-h3 { font-size:21px; line-height:30px; }
+            .fig-lead-body { margin-top:18px; font-size:13px; line-height:21px; }
+            .fig-lead-tags { margin-top:18px; gap:7px; }
+            .fig-lead-tag, .fig-lead-tag:nth-child(1), .fig-lead-tag:nth-child(n+2) { padding-left:10px; padding-right:10px; font-size:10.5px; }
+            .fig-lead-metrics { margin-top:24px; }
+            .fig-lead-btn { margin-top:25px; }
+
+            .fig-exp-card { padding:32px 20px 24px; }
             .fig-contact-title { font-size:44px; }
-            .fig-contact-sub { font-size:17px; }
+        }
+
+        @media (max-width:380px) {
+            .fig-nav-links { gap:8px; }
+            .fig-nav-link { font-size:9.5px; }
+            .fig-hero-title { font-size:19px; }
+            .fig-support-title { font-size:20px; }
+            .fig-main-content, .fig-lead-content { left:18px; right:18px; }
+            .fig-vtn-headline, .fig-lead-h3 { font-size:20px; line-height:29px; }
         }
 
     </style>
@@ -427,10 +485,10 @@
 
         const personalInfo = {
             name: "丁贺亮", enName: "HELIANG", lastName: "DING",
-            title: "产品体验设计 · 设计领导力",
+            title: "产品体验设计 · 设计管理",
             experience: "15年产品设计经验",
             management: "6+年团队管理经验",
-            tags: ["C端电商", "复杂b端", "AI产品", "商业增长", "全球化"],
+            tags: ["C端电商", "复杂b端", "AI产品", "商业增长", "海外业务"],
             phone: "15669907825", email: "578458461@qq.com",
             school: "厦门大学", degree: "本科", major: "数字媒体艺术专业",
             avatar: freshAssetUrl(`${COS_URL}/assets/avatar.jpg`)
@@ -496,7 +554,7 @@
                         ], 
                         fullWidth: true 
                     },
-                    { id: 2, title: "NTX东南亚海外市场", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") },
+                    { id: 2, title: "NTX东南亚体验建设", subtitle: "东南亚市场C端及B端布局", cover: `${COS_URL}/projects/overseas/cover.jpg`, gallery: generateGallery("overseas") },
                     { id: 7, title: "ABM经销商", subtitle: "B端个体经销商全链路数字化工作台", cover: `${COS_URL}/projects/abm-b2b/cover.jpg`, gallery: generateGallery("abm-b2b") }
                 ]
             },
@@ -583,49 +641,49 @@
                 headline: "品牌与体验升级",
                 role: "设计统筹/项目主设",
                 description: "将“源健康”业务战略与“主流之前”品牌价值转化为产品体验，从品牌设计语言、核心用户旅程到设计体系完成全链路升级。",
-                metrics: [["8.43", "升级满意度调研"], ["+33.68%", "分类商品CTR"], ["+11.52%", "商详加购下单率"]],
+                metrics: [["8.43", "品牌与体验满意度"], ["+33.68%", "分类商品CTR"], ["+11.52%", "商详加购/下单转化率"]],
                 visual: `${HOME_ASSETS}/vtn-visual.png`,
                 featured: true
             },
             {
                 id: 4,
                 title: "VTN AI营养师",
-                subtitle: "项目主设 (UI+交互) ",
+                subtitle: "AI健康智能体 / AI产品体验",
                 tags: ["AI产品", "多模态", "多工具"],
                 visual: `${HOME_ASSETS}/ai-nutritionist.png`
             },
             {
                 id: 7,
-                title: "ABM 经销商平台",
-                subtitle: "设计统筹/部分项目主设 ",
+                title: "ABM经销商平台",
+                subtitle: "复杂B端经营平台",
                 tags: ["复杂B端", "经营数据", "客户管理", "营销支持", "能力成长"],
                 visual: `${HOME_ASSETS}/abm-platform.png`
             },
             {
                 id: 5,
                 title: "VTN福利甄选",
-                subtitle: "项目主设 (UI+交互) ",
+                subtitle: "电商频道体验升级",
                 tags: ["营销频道", "业务升级", "流量勾子"],
                 visual: `${HOME_ASSETS}/welfare-selection.png`
             },
             {
                 id: 2,
-                title: "NTX东南亚海外市场",
-                subtitle: "项目主设 (UI+交互) ",
+                title: "NTX东南亚体验建设",
+                subtitle: "海外C/B双平台",
                 tags: ["0～1", "海外设计体系", "多语言"],
                 visual: `${HOME_ASSETS}/ntx-overseas.png`
             },
             {
                 id: 6,
                 title: "VTN直播",
-                subtitle: "项目主设 (UI+交互) ",
+                subtitle: "自研直播产品",
                 tags: ["自研直播", "常态/大促", "多工具"],
                 visual: `${HOME_ASSETS}/vtn-live.png`
             },
             {
                 id: 3,
                 title: "ABM AI获客中心",
-                subtitle: "项目主设 (UI+交互) ",
+                subtitle: "B端AI内容获客",
                 tags: ["AI产品", "工作流", "经销商IP打造"],
                 visual: `${HOME_ASSETS}/ai-acquisition.png`
             }
@@ -635,8 +693,7 @@
             { time: "2026～2019", company: "ACCESS品牌管理集团", role: "UED经理" },
             { time: "2019～2016", company: "杭州金诚集团", role: "设计组负责人" },
             { time: "2016～2014", company: "墨仕（厦门）", role: "体验设计师" },
-            { time: "2014～2011", company: "联想移动", role: "UI设计师" },
-            { time: "2011～2007", company: "厦门大学", role: "本科 数字媒体艺术" }
+            { time: "2014～2011", company: "联想移动", role: "UI设计师" }
         ];
 
         // --- 交互组件 ---
@@ -936,7 +993,7 @@
                 { id: 4, title: "VTN AI营养师" },
                 { id: 7, title: "ABM经销商" },
                 { id: 5, title: "VTN福利甄选" },
-                { id: 2, title: "NTX东南亚海外市场" },
+                { id: 2, title: "NTX东南亚体验建设" },
                 { id: 6, title: "VTN直播" },
                 { id: 3, title: "ABM AI获客中心" },
                 { id: 9, title: "设计领导力" }
@@ -1096,7 +1153,7 @@
                             referrerPolicy="no-referrer"
                         />
                         <div
-                            className="legacy-ai-cover-video-wrap"
+                            className={`legacy-ai-cover-video-wrap ${isABMAI ? 'abm-ai-wrap' : 'vtn-ai-wrap'}`}
                             style={{ left: isABMAI ? 'calc(55% + 20px)' : 'calc(50% + 40px)' }}
                         >
                             <video
@@ -1300,7 +1357,7 @@
                             </button>
                             <div className="fig-nav-links">
                                 <button onClick={() => scrollToSection('projects')} className={`fig-button-reset fig-nav-link ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
-                                <button onClick={() => scrollToSection('leadership')} className={`fig-button-reset fig-nav-link ${activeSection === 'leadership' ? 'active' : ''}`}>设计领导力</button>
+                                <button onClick={() => scrollToSection('leadership')} className={`fig-button-reset fig-nav-link ${activeSection === 'leadership' ? 'active' : ''}`}>团队管理</button>
                                 <button onClick={() => scrollToSection('experience')} className={`fig-button-reset fig-nav-link ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
                                 <button onClick={() => scrollToSection('contact')} className={`fig-button-reset fig-nav-link ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
                             </div>
@@ -1313,14 +1370,14 @@
                             <HomeImage src={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="fig-hero-bg" />
                             <div className="fig-hero-content">
                                 <div className="fig-hero-name">丁贺亮</div>
-                                <div className="fig-hero-title">产品体验设计 · 设计领导力</div>
-                                <div className="fig-hero-exp">15+年体验设计&nbsp;&nbsp;|&nbsp;&nbsp;6+年团队管理&nbsp;&nbsp;|&nbsp;&nbsp;厦门大学&nbsp;&nbsp;|&nbsp;&nbsp;数字媒体艺术专业</div>
+                                <div className="fig-hero-title">产品体验设计 · 设计管理</div>
+                                <div className="fig-hero-exp">10+年产品体验设计｜6+年设计管理｜厦门大学｜数字媒体艺术</div>
                                 <div className="fig-hero-tags">
                                     {[
-                                        ['C端电商',113],['复杂b端',112],['AI产品',104],['商业增长',117],['全球化',104]
+                                        ['C端电商',113],['复杂b端',112],['AI产品',104],['商业增长',117],['海外业务',104]
                                     ].map(([t,w]) => <span key={t} className="fig-hero-tag" style={{width:`${w}px`}}>{t}</span>)}
                                 </div>
-                                <div className="fig-hero-scroll-label">向下查看作品集</div>
+                                <div className="fig-hero-scroll-label">浏览精选项目</div>
                                 <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="fig-hero-arrow" />
                             </div>
                         </header>
@@ -1392,15 +1449,15 @@
                                         <HomeImage src={`${HOME_ASSETS}/leadership-team.png`} alt="" className="fig-cover-img" />
                                     </div>
                                     <div className="fig-lead-content">
-                                        <h3 className="fig-lead-h3">设计领导力</h3>
-                                        <p className="fig-lead-body">从设计交付团队到业务共创伙伴，将个人能力逐步沉淀为可持续的组织能力。</p>
+                                        <h3 className="fig-lead-h3">团队管理与体系建设</h3>
+                                        <p className="fig-lead-body">围绕团队能力建设与设计体系完善，持续提升专业水平、协同效率与组织稳定性</p>
                                         <div className="fig-lead-tags">
-                                            {['人才文化建设','协作机制','设计资产','业务影响'].map(t => <span key={t} className="fig-lead-tag">{t}</span>)}
+                                            {['人才培养','协作机制','设计体系','业务协同'].map(t => <span key={t} className="fig-lead-tag">{t}</span>)}
                                         </div>
                                         <div className="fig-lead-metrics fig-inter">
                                             <span className="fig-lead-sep s1"></span><span className="fig-lead-sep s2"></span>
                                             {[
-                                                ['i1','11','人','设计团队规模'],['i2','3','条','核心业务线'],['i3','5','大','设计语言体系']
+                                                ['i1','11','人','设计团队规模'],['i2','3','条','核心业务线'],['i3','5','套','设计体系']
                                             ].map(([cls,n,u,l]) => (
                                                 <div key={l} className={`fig-lead-item ${cls}`}>
                                                     <div className="fig-lead-numline"><span className="fig-lead-num">{n}</span><span className="fig-lead-unit">{u}</span></div>
@@ -1446,7 +1503,6 @@
                             {/* Figma v4: contact is a solid black section; no background image */}
                             <div className="fig-contact-group">
                                 <h2 className="fig-contact-title">联系我</h2>
-                                <p className="fig-contact-sub">欢迎就产品体验、设计管理与合作机会与我交流</p>
                                 <div className="fig-contact-email">
                                     <p className="fig-contact-label">邮箱</p>
                                     <button onClick={() => handleCopy(personalInfo.email)} className="fig-button-reset fig-contact-value">{personalInfo.email}</button>
