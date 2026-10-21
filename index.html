@@ -82,6 +82,193 @@
         .fig-hero-scroll-label { position:absolute; left:0; top:965.4615px; width:112px; height:15px; font-family:Brown, "Brown Light", "Helvetica Neue", Arial, sans-serif; font-size:16px; line-height:15.2px; font-weight:300; letter-spacing:0; color:#010101; white-space:nowrap; }
         .fig-hero-arrow { position:absolute; left:-3.6816px; top:1028.5156px; width:7.3632px; height:79.4598px; object-fit:contain; }
 
+        /* HERO / PC foreground — rebuilt from 作品集首页(2).fig
+           Only the foreground typography/info layer is defined here.
+           The existing hero background image is intentionally untouched. */
+        .fig-hero-desktop {
+            display:block;
+            position:absolute;
+            left:0;
+            top:224.4615px;
+            width:884px;
+            height:857.4598px;
+            font-family:"PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            color:#010101;
+        }
+        .fig-hero-mobile-legacy { display:none; }
+
+        .hero-pc-name {
+            position:absolute;
+            left:0;
+            top:0;
+            width:884px;
+            height:230px;
+            margin:0;
+            font-size:164px;
+            line-height:230px;
+            font-weight:600;
+            letter-spacing:0;
+            color:#010101;
+            white-space:nowrap;
+        }
+
+        .hero-pc-profile {
+            position:absolute;
+            left:0;
+            top:286px;
+            width:884px;
+            height:113px;
+        }
+        .hero-pc-title {
+            position:absolute;
+            left:0;
+            top:0;
+            width:884px;
+            height:67px;
+            margin:0;
+            font-size:48px;
+            line-height:67.2px;
+            font-weight:600;
+            letter-spacing:0;
+            color:#010101;
+            white-space:nowrap;
+        }
+        .hero-pc-experience {
+            position:absolute;
+            left:0;
+            top:91px;
+            width:884px;
+            height:22px;
+            margin:0;
+            font-size:16px;
+            line-height:22.4px;
+            font-weight:400;
+            letter-spacing:0;
+            color:rgba(0,0,0,.60);
+            white-space:pre;
+        }
+
+        .hero-pc-core {
+            position:absolute;
+            left:0;
+            top:455px;
+            width:884px;
+            height:62px;
+        }
+        .hero-pc-section-label {
+            position:absolute;
+            left:0;
+            top:0;
+            height:22px;
+            margin:0;
+            font-size:16px;
+            line-height:22.4px;
+            font-weight:400;
+            letter-spacing:0;
+            color:rgba(0,0,0,.50);
+            white-space:nowrap;
+        }
+        .hero-pc-skills {
+            position:absolute;
+            left:0;
+            top:34px;
+            width:884px;
+            height:28px;
+            display:flex;
+            align-items:center;
+            gap:16px;
+        }
+        .hero-pc-skill {
+            flex:0 0 auto;
+            height:28px;
+            margin:0;
+            font-size:20px;
+            line-height:28px;
+            font-weight:600;
+            letter-spacing:0;
+            color:#000;
+            white-space:nowrap;
+        }
+        .hero-pc-separator {
+            flex:0 0 24px;
+            width:24px;
+            height:22px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin:0;
+            font-size:16px;
+            line-height:22.4px;
+            font-weight:400;
+            letter-spacing:0;
+            color:#999;
+            white-space:nowrap;
+        }
+
+        .hero-pc-business {
+            position:absolute;
+            left:0;
+            top:573px;
+            width:759px;
+            height:70px;
+        }
+        .hero-pc-tags {
+            position:absolute;
+            left:0;
+            top:34px;
+            width:759px;
+            height:36px;
+            display:flex;
+            align-items:center;
+            gap:32px;
+        }
+        .hero-pc-tag {
+            flex:0 0 auto;
+            height:36px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin:0;
+            background:rgba(0,0,0,.04);
+            color:#000;
+            font-size:14px;
+            line-height:20px;
+            font-weight:600;
+            letter-spacing:0;
+            white-space:nowrap;
+        }
+
+        .hero-pc-scroll {
+            position:absolute;
+            left:0;
+            top:739px;
+            width:96px;
+            height:118.4598px;
+        }
+        .hero-pc-scroll-label {
+            position:absolute;
+            left:0;
+            top:0;
+            width:96px;
+            height:15px;
+            margin:0;
+            font-family:Brown, "Brown Light", "Helvetica Neue", Arial, sans-serif;
+            font-size:16px;
+            line-height:15.2px;
+            font-weight:300;
+            letter-spacing:0;
+            color:#000;
+            white-space:nowrap;
+        }
+        .hero-pc-scroll-arrow {
+            position:absolute;
+            left:0;
+            top:39px;
+            width:7.3632px;
+            height:79.4598px;
+            object-fit:contain;
+        }
+
         /* PROJECTS / section starts at y=1275 */
         .fig-projects { padding-top:80px; }
         .fig-section-title { width:1360px; height:56px; font-size:40px; line-height:56px; font-weight:600; letter-spacing:0; margin:0; color:#000; }
@@ -274,6 +461,8 @@
         }
         /* ===== Mobile layout v2 — desktop rules above remain untouched ===== */
         @media (max-width:900px) {
+            .fig-hero-desktop { display:none; }
+            .fig-hero-mobile-legacy { display:block; }
             html { scroll-padding-top:64px; }
             .fig-home { overflow-x:hidden; padding-bottom:0; }
             .fig-nav { height:64px; }
@@ -448,6 +637,133 @@
             .fig-support-title { font-size:20px; }
             .fig-main-content, .fig-lead-content { left:18px; right:18px; }
             .fig-vtn-headline, .fig-lead-h3 { font-size:20px; line-height:29px; }
+        }
+
+
+        /* ===== MOBILE HOME / 作品集首页-移动端.fig · 375px baseline ===== */
+        .m-home { display:none; }
+        @media (max-width:767px) {
+            html { scroll-padding-top:56px; }
+            body { overflow-x:hidden; }
+            .m-home { display:block; width:100%; background:#fff; color:#000; overflow-x:hidden; }
+            .m-shell { width:calc(100% - 48px); max-width:560px; margin:0 auto; }
+
+            /* mobile nav */
+            .m-nav { position:fixed; left:0; top:0; z-index:300; width:100%; height:56px; background:transparent; transition:background-color .2s ease, backdrop-filter .2s ease; }
+            .m-nav.scrolled { background:rgba(255,255,255,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+            .m-nav-inner { width:calc(100% - 24px); max-width:720px; height:56px; margin:0 auto; position:relative; }
+            .m-logo { position:absolute; left:0; top:12px; border:0; padding:0; background:none; color:#000; font-family:Inter,"Helvetica Neue",Arial,sans-serif; font-size:9px; line-height:10px; font-weight:500; text-align:left; letter-spacing:0; cursor:pointer; }
+            .m-nav-links { position:absolute; right:0; top:18px; display:flex; align-items:center; gap:22px; height:20px; }
+            .m-nav-link { border:0; padding:0; background:none; color:rgba(0,0,0,.28); font-size:9px; line-height:20px; font-weight:400; white-space:nowrap; cursor:pointer; }
+            .m-nav-link.active { color:#000; font-weight:600; }
+
+            /* mobile hero */
+            .m-hero { position:relative; width:100%; height:680px; overflow:hidden; background:#eef0f2; }
+            .m-hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; }
+            .m-hero-inner { position:relative; width:calc(100% - 48px); max-width:560px; height:680px; margin:0 auto; z-index:2; }
+            .m-hero-name { position:absolute; left:0; top:142px; margin:0; font-size:44px; line-height:62px; font-weight:600; letter-spacing:0; white-space:nowrap; }
+            .m-hero-title { position:absolute; left:0; top:220px; margin:0; font-size:24px; line-height:34px; font-weight:600; letter-spacing:.02em; white-space:nowrap; }
+            .m-hero-exp { position:absolute; left:0; top:264px; margin:0; font-size:11px; line-height:17px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
+            .m-hero-label { margin:0; font-size:11px; line-height:16px; font-weight:300; color:rgba(0,0,0,.48); }
+            .m-hero-core { position:absolute; left:0; top:326px; width:100%; }
+            .m-hero-core-grid { margin-top:12px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+            .m-hero-core-item { height:32px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.035); font-size:11px; line-height:16px; font-weight:600; white-space:nowrap; }
+            .m-hero-business { position:absolute; left:0; top:462px; width:100%; }
+            .m-hero-business-grid { margin-top:12px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+            .m-hero-business-item { height:32px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.035); font-size:10.5px; line-height:16px; font-weight:600; white-space:nowrap; }
+            .m-hero-scroll { position:absolute; left:0; top:574px; width:110px; height:70px; }
+            .m-hero-scroll-label { font-size:11px; line-height:16px; font-weight:300; color:rgba(0,0,0,.55); white-space:nowrap; }
+            .m-hero-scroll-arrow { position:absolute; left:-2px; top:28px; width:5px; height:45px; object-fit:fill; }
+
+            /* mobile sections */
+            .m-section { width:100%; background:#fff; }
+            .m-projects { padding-top:34px; }
+            .m-section-title { margin:0 0 20px; font-size:30px; line-height:42px; font-weight:600; letter-spacing:0; }
+            .m-project-list { display:flex; flex-direction:column; gap:16px; }
+            .m-project-card { position:relative; display:block; width:100%; aspect-ratio:664 / 374; overflow:hidden; border:0; padding:0; background:#eef0f2; color:#000; text-align:left; cursor:pointer; }
+            .m-project-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+            .m-project-copy { position:absolute; left:24px; top:34px; z-index:60; width:58%; min-width:0; }
+            .m-project-title { margin:0; font-size:18px; line-height:25px; font-weight:600; letter-spacing:0; white-space:nowrap; }
+            .m-project-subtitle { margin:8px 0 0; font-size:10px; line-height:15px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
+            .m-project-tags { margin-top:10px; display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap; }
+            .m-project-tag { min-width:0; height:20px; padding:2px 9px; background:rgba(255,255,255,.55); display:flex; align-items:center; justify-content:center; font-size:9px; line-height:16px; font-weight:400; color:#666; white-space:nowrap; }
+            .m-project-btn { position:absolute; left:24px; bottom:20px; z-index:61; width:84px; height:24px; background:#000; color:#fff; }
+            .m-project-btn-label { position:absolute; left:17px; top:4px; font-size:10px; line-height:16px; font-weight:400; white-space:nowrap; }
+            .m-project-btn-arrow { position:absolute; right:10px; top:10px; width:12px; height:4px; object-fit:fill; filter:brightness(0) invert(1); }
+
+            /* first VTN card has its own mobile hierarchy */
+            .m-main-head { position:absolute; left:24px; top:28px; z-index:60; height:32px; }
+            .m-main-icon { position:absolute; left:0; top:0; width:30px; height:30px; object-fit:contain; }
+            .m-main-title { position:absolute; left:40px; top:-1px; margin:0; font-size:18px; line-height:22px; font-weight:600; }
+            .m-main-platform { position:absolute; left:40px; top:20px; margin:0; width:125px; font-size:9px; line-height:13px; font-weight:400; color:#666; white-space:nowrap; }
+            .m-main-headline { position:absolute; left:24px; top:70px; z-index:60; margin:0; font-size:18px; line-height:25px; font-weight:600; white-space:nowrap; }
+            .m-main-role { position:absolute; left:24px; top:104px; z-index:60; margin:0; font-size:10px; line-height:15px; font-weight:500; color:#008080; white-space:nowrap; }
+
+            /* AI covers: preserve desktop composition and scale it proportionally */
+            .m-project-card .legacy-ai-cover { inset:0; width:100%; height:100%; }
+            .m-project-card .legacy-ai-cover-video-wrap { height:90%; }
+            .m-project-card .legacy-ai-cover-video { transform:scale(.94); }
+            .m-project-card .legacy-ai-cover-video.abm-ai { transform:scale(1.05); }
+            .m-project-card .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:56.0241% !important; }
+            .m-project-card .legacy-ai-cover-video-wrap.abm-ai-wrap { left:58.012% !important; }
+
+            /* team management */
+            .m-team { padding-top:54px; }
+            .m-team-card { position:relative; display:block; width:100%; height:402px; overflow:hidden; border:0; padding:0; background:#f5f2ef; color:#000; text-align:left; cursor:pointer; }
+            .m-team-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+            .m-team-copy { position:absolute; left:24px; right:24px; top:244px; z-index:3; }
+            .m-team-title { margin:0; font-size:18px; line-height:25px; font-weight:600; }
+            .m-team-body { margin:11px 0 0; width:100%; font-size:10px; line-height:16px; font-weight:300; color:rgba(0,0,0,.48); }
+            .m-team-tags { margin-top:12px; display:flex; gap:8px; flex-wrap:nowrap; }
+            .m-team-tag { height:20px; padding:2px 9px; background:rgba(255,255,255,.58); display:flex; align-items:center; justify-content:center; font-size:9px; line-height:16px; font-weight:400; color:#666; white-space:nowrap; }
+            .m-team-btn { position:absolute; left:24px; bottom:27px; z-index:4; width:84px; height:24px; background:#000; color:#fff; }
+
+            /* work experience */
+            .m-experience { padding-top:54px; }
+            .m-exp-card { position:relative; width:100%; height:414px; background:#f7f7f8; overflow:hidden; }
+            .m-exp-list { position:absolute; left:28px; right:18px; top:36px; bottom:28px; }
+            .m-exp-item { position:relative; height:88px; padding-left:48px; }
+            .m-exp-dot { position:absolute; left:0; top:7px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
+            .m-exp-line { position:absolute; left:2.75px; top:13px; width:.5px; height:82px; background:rgba(0,0,0,.3); }
+            .m-exp-item:last-child .m-exp-line { display:none; }
+            .m-exp-time { margin:0; font-size:10px; line-height:14px; font-weight:300; color:rgba(0,0,0,.35); }
+            .m-exp-company { margin:8px 0 0; font-size:15px; line-height:20px; font-weight:600; white-space:nowrap; }
+            .m-exp-role { margin:3px 0 0; font-size:10px; line-height:15px; font-weight:400; color:#000; white-space:nowrap; }
+
+            /* contact */
+            .m-contact-wrap { padding-top:44px; background:#fff; }
+            .m-contact { position:relative; width:100%; height:360px; background:#000; color:#fff; text-align:center; overflow:hidden; }
+            .m-contact-title { margin:0; padding-top:58px; font-size:28px; line-height:39px; font-weight:600; }
+            .m-contact-block { margin-top:22px; }
+            .m-contact-block + .m-contact-block { margin-top:18px; }
+            .m-contact-label { margin:0; font-size:9px; line-height:13px; color:rgba(255,255,255,.45); font-weight:400; }
+            .m-contact-value { margin-top:5px; border:0; padding:0; background:none; color:#fff; font-size:10px; line-height:15px; font-weight:400; cursor:pointer; }
+            .m-contact-back { position:relative; margin:25px auto 0; width:112px; height:32px; border:0; background:#fff; color:#000; cursor:pointer; }
+            .m-contact-back-label { position:absolute; left:24px; top:8px; font-size:10px; line-height:16px; white-space:nowrap; }
+            .m-contact-up { position:absolute; right:24px; top:8px; width:10px; height:16px; }
+            .m-footer-brand { position:absolute; left:0; bottom:15px; width:100%; display:flex; align-items:center; justify-content:center; gap:12px; color:rgba(255,255,255,.22); }
+            .m-footer-line { height:.5px; width:72px; background:rgba(255,255,255,.14); }
+            .m-footer-name { font-size:8px; line-height:12px; letter-spacing:.12em; white-space:nowrap; }
+
+            @media (max-width:390px) {
+                .m-nav-links { gap:18px; }
+                .m-nav-link { font-size:8.5px; }
+                .m-hero-exp { font-size:10.5px; }
+                .m-hero-core-item { font-size:10.5px; }
+                .m-project-copy { width:60%; }
+            }
+            @media (max-width:350px) {
+                .m-shell, .m-hero-inner { width:calc(100% - 32px); }
+                .m-nav-inner { width:calc(100% - 16px); }
+                .m-nav-links { gap:12px; }
+                .m-nav-link { font-size:8px; }
+                .m-hero-name { font-size:40px; }
+                .m-hero-title { font-size:21px; }
+                .m-hero-exp { font-size:9.5px; }
+                .m-hero-core-item, .m-hero-business-item { font-size:9.5px; }
+                .m-project-copy, .m-main-head, .m-main-headline, .m-main-role, .m-project-btn, .m-team-copy, .m-team-btn { left:20px; }
+                .m-team-copy { right:20px; }
+            }
         }
 
     </style>
@@ -687,6 +1003,22 @@
                 tags: ["AI产品", "工作流", "经销商IP打造"],
                 visual: `${HOME_ASSETS}/ai-acquisition.png`
             }
+        ];
+
+        const mobileFeaturedProjects = [
+            { id: 4, title: "VTN AI营养师", subtitle: "AI智能体/AI产品体验", tags: ["多模态", "多工具"] },
+            { id: 7, title: "ABM经销商平台", subtitle: "复杂B端经营平台", tags: ["经营数据", "客户管理"] },
+            { id: 5, title: "VTN福利精选", subtitle: "电商频道业务升级", tags: ["营销支持", "平台流量勾子"] },
+            { id: 2, title: "NTX东南亚海外市场", subtitle: "海外C/B双平台", tags: ["0～1", "海外设计体系"] },
+            { id: 6, title: "VTN直播", subtitle: "自研直播产品", tags: ["支持常态/大促", "多工具"] },
+            { id: 3, title: "ABM AI获客中心", subtitle: "B端AI内容获客", tags: ["AI工作流", "IP打造"] }
+        ].map(item => ({ ...featuredProjects.find(p => p.id === item.id), ...item }));
+
+        const mobileExperienceData = [
+            { time: "2026～2019", company: "ACCESS品牌管理集团", role: "UED经理" },
+            { time: "2019～2016", company: "杭州金诚集团", role: "设计组负责人" },
+            { time: "2016～2014", company: "墨仕（厦门）", role: "体验设计师" },
+            { time: "2014～2011", company: "联想移动（厦门）", role: "UI设计师" }
         ];
 
         const homeExperienceData = [
@@ -984,6 +1316,18 @@
             const [navScrolled, setNavScrolled] = useState(false);
             const [toast, setToast] = useState("");
             const scrollPosRef = useRef(0);
+            const [isMobileHome, setIsMobileHome] = useState(() => window.matchMedia('(max-width: 767px)').matches);
+            useEffect(() => {
+                const mq = window.matchMedia('(max-width: 767px)');
+                const sync = (e) => setIsMobileHome(e.matches);
+                setIsMobileHome(mq.matches);
+                if (mq.addEventListener) mq.addEventListener('change', sync);
+                else mq.addListener(sync);
+                return () => {
+                    if (mq.removeEventListener) mq.removeEventListener('change', sync);
+                    else mq.removeListener(sync);
+                };
+            }, []);
 
             const allProjects = useMemo(() => [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)], []);
 
@@ -1048,7 +1392,7 @@
                 setActiveSection(id);
                 const el = document.getElementById(id);
                 if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-                else if (el) { window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' }); }
+                else if (el) { window.scrollTo({ top: el.offsetTop - (isMobileHome ? 56 : 80), behavior: 'smooth' }); }
             };
 
             const handleCopy = (txt) => {
@@ -1345,6 +1689,140 @@
                 );
             }
 
+            if (isMobileHome) {
+                return (
+                    <div className="m-home fig-pf fade-in">
+                        {toast && <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-black text-white px-5 py-2 rounded-full text-xs z-[1000] fade-in shadow-2xl">{toast}</div>}
+
+                        <nav className={`m-nav ${navScrolled ? 'scrolled' : ''}`}>
+                            <div className="m-nav-inner">
+                                <button onClick={() => scrollToSection('bio')} className="m-logo"><span className="block">DING</span><span className="block">HELIANG</span></button>
+                                <div className="m-nav-links">
+                                    <button onClick={() => scrollToSection('projects')} className={`m-nav-link ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
+                                    <button onClick={() => scrollToSection('leadership')} className={`m-nav-link ${activeSection === 'leadership' ? 'active' : ''}`}>团队管理</button>
+                                    <button onClick={() => scrollToSection('experience')} className={`m-nav-link ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
+                                    <button onClick={() => scrollToSection('contact')} className={`m-nav-link ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
+                                </div>
+                            </div>
+                        </nav>
+
+                        <header id="bio" className="m-hero">
+                            <HomeImage src={`${HOME_ASSETS}/hero-bg-mobile.jpg`} fallback={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="m-hero-bg" />
+                            <div className="m-hero-inner">
+                                <h1 className="m-hero-name">丁贺亮</h1>
+                                <p className="m-hero-title">体验设计 · 设计管理</p>
+                                <p className="m-hero-exp">10+年体验设计&nbsp;&nbsp;|&nbsp;&nbsp;6+年团队管理&nbsp;&nbsp;|&nbsp;&nbsp;厦门大学&nbsp;&nbsp;|&nbsp;&nbsp;数字媒体艺术</p>
+
+                                <div className="m-hero-core">
+                                    <p className="m-hero-label">核心能力</p>
+                                    <div className="m-hero-core-grid">
+                                        {['体验策略','交互与UI设计','多产品线设计管理','设计体系建设','团队建设','人才培养'].map(t => <span key={t} className="m-hero-core-item">{t}</span>)}
+                                    </div>
+                                </div>
+
+                                <div className="m-hero-business">
+                                    <p className="m-hero-label">业务经验</p>
+                                    <div className="m-hero-business-grid">
+                                        {['C端电商','B端产品','AI产品','海外业务'].map(t => <span key={t} className="m-hero-business-item">{t}</span>)}
+                                    </div>
+                                </div>
+
+                                <div className="m-hero-scroll">
+                                    <span className="m-hero-scroll-label">查看精选项目</span>
+                                    <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="m-hero-scroll-arrow" />
+                                </div>
+                            </div>
+                        </header>
+
+                        <section id="projects" className="m-section m-projects">
+                            <div className="m-shell">
+                                <h2 className="m-section-title">精选项目</h2>
+                                <div className="m-project-list">
+                                    <button onClick={() => openProjectById(1)} className="m-project-card">
+                                        <HomeImage src={`${HOME_ASSETS}/vtn-visual.png`} alt="" className="m-project-bg" />
+                                        <div className="m-main-head">
+                                            <HomeImage src={`${HOME_ASSETS}/vtn-app-icon.png`} alt="VTN" className="m-main-icon" />
+                                            <p className="m-main-title">VTN</p>
+                                            <p className="m-main-platform">健康美丽会员店</p>
+                                        </div>
+                                        <p className="m-main-headline">品牌与体验升级</p>
+                                        <p className="m-main-role">设计统筹/项目主设</p>
+                                        <span className="m-project-btn"><span className="m-project-btn-label">查看详情</span><img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m-project-btn-arrow" /></span>
+                                    </button>
+
+                                    {mobileFeaturedProjects.map(p => (
+                                        <button key={p.id} onClick={() => openProjectById(p.id)} className="m-project-card">
+                                            {(p.id === 4 || p.id === 3)
+                                                ? <LegacyAIHomepageCover projectId={p.id} title={p.title} />
+                                                : <HomeImage src={p.visual} alt="" className="m-project-bg" />
+                                            }
+                                            <div className="m-project-copy">
+                                                <h3 className="m-project-title">{p.title}</h3>
+                                                <p className="m-project-subtitle">{p.subtitle}</p>
+                                                <div className="m-project-tags">{p.tags.map(t => <span key={t} className="m-project-tag">{t}</span>)}</div>
+                                            </div>
+                                            <span className="m-project-btn"><span className="m-project-btn-label">查看详情</span><img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m-project-btn-arrow" /></span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="leadership" className="m-section m-team">
+                            <div className="m-shell">
+                                <h2 className="m-section-title">团队管理</h2>
+                                <button onClick={() => openProjectById(9)} className="m-team-card">
+                                    <HomeImage src={`${HOME_ASSETS}/leadership-team-mobile.jpg`} fallback={`${HOME_ASSETS}/leadership-team.png`} alt="" className="m-team-bg" />
+                                    <div className="m-team-copy">
+                                        <h3 className="m-team-title">团队管理与体系建设</h3>
+                                        <p className="m-team-body">围绕团队能力建设和设计体系完善，持续提升专业水平、协同效率与组织稳定性</p>
+                                        <div className="m-team-tags">{['人才培养','协作机制','设计体系','业务协同'].map(t => <span key={t} className="m-team-tag">{t}</span>)}</div>
+                                    </div>
+                                    <span className="m-team-btn"><span className="m-project-btn-label">查看详情</span><img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m-project-btn-arrow" /></span>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section id="experience" className="m-section m-experience">
+                            <div className="m-shell">
+                                <h2 className="m-section-title">工作经历</h2>
+                                <div className="m-exp-card">
+                                    <div className="m-exp-list">
+                                        {mobileExperienceData.map(exp => (
+                                            <div key={exp.company} className="m-exp-item">
+                                                <span className="m-exp-dot"></span><span className="m-exp-line"></span>
+                                                <p className="m-exp-time">{exp.time}</p>
+                                                <p className="m-exp-company">{exp.company}</p>
+                                                <p className="m-exp-role">{exp.role}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div className="m-contact-wrap">
+                            <footer id="contact" className="m-contact">
+                                <h2 className="m-contact-title">联系我</h2>
+                                <div className="m-contact-block">
+                                    <p className="m-contact-label">邮箱</p>
+                                    <button onClick={() => handleCopy(personalInfo.email)} className="m-contact-value">{personalInfo.email}</button>
+                                </div>
+                                <div className="m-contact-block">
+                                    <p className="m-contact-label">电话</p>
+                                    <button onClick={() => handleCopy(personalInfo.phone)} className="m-contact-value">{personalInfo.phone}</button>
+                                </div>
+                                <button onClick={() => window.scrollTo({top:0, behavior:'smooth'})} className="m-contact-back">
+                                    <span className="m-contact-back-label">返回顶部</span>
+                                    <svg className="m-contact-up" viewBox="0 0 14 20" aria-hidden="true"><path d="M7 19V3.5M2.5 8L7 3.5 11.5 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" /></svg>
+                                </button>
+                                <div className="m-footer-brand"><span className="m-footer-line"></span><span className="m-footer-name">DING HELIANG</span><span className="m-footer-line"></span></div>
+                            </footer>
+                        </div>
+                    </div>
+                );
+            }
+
             return (
                 <div className="min-h-screen bg-white text-[#111] fade-in">
                     {toast && <div className="fixed top-8 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full text-xs z-[1000] fade-in shadow-2xl">{toast}</div>}
@@ -1369,16 +1847,56 @@
                         <header id="bio" className="fig-hero">
                             <HomeImage src={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="fig-hero-bg" />
                             <div className="fig-hero-content">
-                                <div className="fig-hero-name">丁贺亮</div>
-                                <div className="fig-hero-title">产品体验设计 · 设计管理</div>
-                                <div className="fig-hero-exp">10+年产品体验设计｜6+年设计管理｜厦门大学｜数字媒体艺术</div>
-                                <div className="fig-hero-tags">
-                                    {[
-                                        ['C端电商',113],['复杂b端',112],['AI产品',104],['商业增长',117],['海外业务',104]
-                                    ].map(([t,w]) => <span key={t} className="fig-hero-tag" style={{width:`${w}px`}}>{t}</span>)}
+                                <div className="fig-hero-desktop">
+                                    <div className="hero-pc-name">丁贺亮</div>
+
+                                    <div className="hero-pc-profile">
+                                        <div className="hero-pc-title">体验设计 · 设计管理</div>
+                                        <div className="hero-pc-experience">10+年体验设计  |  6+年团队管理  |  厦门大学  |  数字媒体艺术</div>
+                                    </div>
+
+                                    <div className="hero-pc-core">
+                                        <div className="hero-pc-section-label">核心能力</div>
+                                        <div className="hero-pc-skills">
+                                            <span className="hero-pc-skill" style={{width:'80px'}}>体验策略</span>
+                                            <span className="hero-pc-separator">｜</span>
+                                            <span className="hero-pc-skill" style={{width:'120px'}}>交互与UI设计</span>
+                                            <span className="hero-pc-separator">｜</span>
+                                            <span className="hero-pc-skill" style={{width:'120px'}}>设计体系建设</span>
+                                            <span className="hero-pc-separator">｜</span>
+                                            <span className="hero-pc-skill" style={{width:'160px'}}>多产品线设计管理</span>
+                                            <span className="hero-pc-separator">｜</span>
+                                            <span className="hero-pc-skill" style={{width:'180px'}}>团队建设与人才培养</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="hero-pc-business">
+                                        <div className="hero-pc-section-label">业务经验</div>
+                                        <div className="hero-pc-tags">
+                                            {[
+                                                ['C端电商',133],['B端产品',132],['AI产品',122],['海外业务',136],['社交',108]
+                                            ].map(([t,w]) => <span key={t} className="hero-pc-tag" style={{width:`${w}px`}}>{t}</span>)}
+                                        </div>
+                                    </div>
+
+                                    <div className="hero-pc-scroll">
+                                        <div className="hero-pc-scroll-label">查看精选项目</div>
+                                        <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="hero-pc-scroll-arrow" />
+                                    </div>
                                 </div>
-                                <div className="fig-hero-scroll-label">浏览精选项目</div>
-                                <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="fig-hero-arrow" />
+
+                                <div className="fig-hero-mobile-legacy">
+                                    <div className="fig-hero-name">丁贺亮</div>
+                                    <div className="fig-hero-title">产品体验设计 · 设计管理</div>
+                                    <div className="fig-hero-exp">10+年产品体验设计｜6+年设计管理｜厦门大学｜数字媒体艺术</div>
+                                    <div className="fig-hero-tags">
+                                        {[
+                                            ['C端电商',113],['复杂b端',112],['AI产品',104],['商业增长',117],['海外业务',104]
+                                        ].map(([t,w]) => <span key={t} className="fig-hero-tag" style={{width:`${w}px`}}>{t}</span>)}
+                                    </div>
+                                    <div className="fig-hero-scroll-label">浏览精选项目</div>
+                                    <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="fig-hero-arrow" />
+                                </div>
                             </div>
                         </header>
 
