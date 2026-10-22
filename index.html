@@ -492,8 +492,20 @@
                 font:inherit; text-align:left; border-radius:0;
             }
 
-            /* NAV — source node 6:344 */
-            .m375-nav { position:absolute; left:0; top:0; width:375.5271px; height:58px; z-index:100; }
+            /* NAV — fixed to the viewport while preserving the 375px Figma coordinate system. */
+            .m375-nav-shell {
+                position:fixed; left:50%; top:0; z-index:1200;
+                transform:translateX(-50%); overflow:hidden;
+                pointer-events:none; background:transparent;
+                transition:background .22s ease, box-shadow .22s ease;
+            }
+            .m375-nav-shell.scrolled {
+                background:rgba(255,255,255,.92);
+                -webkit-backdrop-filter:blur(12px);
+                backdrop-filter:blur(12px);
+                box-shadow:0 .5px 0 rgba(0,0,0,.08);
+            }
+            .m375-nav { position:absolute; left:0; top:0; width:375.5271px; height:58px; z-index:1; transform-origin:0 0; pointer-events:auto; }
             .m375-logo {
                 position:absolute; left:16px; top:16px; width:40px; height:26px;
                 font-size:9px; line-height:13px; font-weight:600; letter-spacing:0;
@@ -609,16 +621,26 @@
             .m375-team-tags { position:absolute; left:0; top:66px; height:17px; display:flex; gap:5.909638px; }
             .m375-team-btn { position:absolute; left:24px; top:319px; width:81.968674px; height:21px; background:#000; color:#fff; z-index:20; pointer-events:none; }
 
-            /* WORK — nodes 6:468–6:474 */
+            /* WORK — timeline rebuilt from the annotated mobile reference. */
             .m375-work-card { position:absolute; left:24px; top:50px; width:327.5271px; height:416px; overflow:hidden; background:#f7f7f8; }
-            .m375-work-row { position:absolute; left:24px; height:96px; }
+            /* Main timeline: begins at the centre of the first dot, no line protrudes above it. */
+            .m375-work-card::before {
+                content:""; position:absolute; left:27px; top:31.5px; width:.5px; height:192px;
+                background:rgba(0,0,0,.30); z-index:0;
+            }
+            /* Final interval fades out from top to bottom, matching the Figma treatment. */
+            .m375-work-card::after {
+                content:""; position:absolute; left:27px; top:223.5px; width:.5px; height:96px;
+                background:linear-gradient(to bottom, rgba(0,0,0,.30) 0%, rgba(0,0,0,0) 100%); z-index:0;
+            }
+            .m375-work-row { position:absolute; left:24px; height:96px; z-index:1; }
             .m375-work-row.r1 { top:24px; width:154px; }
             .m375-work-row.r2 { top:120px; width:100px; }
             .m375-work-row.r3 { top:216px; width:100px; }
             .m375-work-row.r4 { top:312px; width:126px; }
-            .m375-line-top { position:absolute; left:3px; top:0; width:.5px; height:8px; background:rgba(0,0,0,.5); }
-            .m375-dot { position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:#000; }
-            .m375-line-bottom { position:absolute; left:3px; top:14px; width:.5px; height:82px; background:rgba(0,0,0,.5); }
+            .m375-line-top, .m375-line-bottom { display:none; }
+            /* 6px dot is vertically centred on the 15px year line: (15 - 6) / 2 = 4.5px. */
+            .m375-dot { position:absolute; left:0; top:4.5px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
             .m375-work-time { position:absolute; left:22px; top:0; margin:0; height:15px; font-size:11px; line-height:15px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
             .m375-work-company { position:absolute; left:22px; top:19px; margin:0; height:18px; font-size:13px; line-height:18px; font-weight:600; white-space:nowrap; }
             .m375-work-role { position:absolute; left:22px; top:41px; margin:0; height:15px; font-size:11px; line-height:15px; font-weight:300; white-space:nowrap; }
@@ -1252,7 +1274,7 @@
                         const y = window.scrollY;
                         setNavScrolled(y > 18);
                         const sections = ['projects', 'leadership', 'experience', 'contact'];
-                        const marker = y + 150;
+                        const marker = y + (isMobileHome ? (58 * mobileScale + 12) : 150);
                         let current = 'projects';
                         sections.forEach((id) => {
                             const el = document.getElementById(id);
@@ -1273,7 +1295,7 @@
                     window.removeEventListener('scroll', handler);
                     window.removeEventListener('resize', handler);
                 };
-            }, [activeProject]);
+            }, [activeProject, isMobileHome, mobileScale]);
 
             const scrollToSection = (id) => {
                 setActiveSection(id);
@@ -1281,7 +1303,8 @@
                 if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
                 else if (el) {
                     const visualTop = el.getBoundingClientRect().top + window.scrollY;
-                    window.scrollTo({ top: visualTop - (isMobileHome ? 0 : 80), behavior: 'smooth' });
+                    const navOffset = isMobileHome ? (58 * mobileScale) : 80;
+                    window.scrollTo({ top: Math.max(0, visualTop - navOffset), behavior: 'smooth' });
                 }
             };
 
@@ -1595,16 +1618,18 @@
                 return (
                     <div className="m375-outer fade-in" style={{ width: `${outerWidth}px`, height: `${outerHeight}px` }}>
                         {toast && <div className="m375-toast">{toast}</div>}
+                        <div className={`m375-nav-shell ${navScrolled ? 'scrolled' : ''}`} style={{ width: `${outerWidth}px`, height: `${58 * scale}px` }}>
+                            <nav className="m375-nav" style={{ transform: `scale(${scale})` }}>
+                                <button onClick={() => scrollToSection('bio')} className="m375-reset m375-logo">Ding {"\n"}Heliang</button>
+                                <button onClick={() => scrollToSection('projects')} className={`m375-reset m375-nav-link n1 ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
+                                <button onClick={() => scrollToSection('leadership')} className={`m375-reset m375-nav-link n2 ${activeSection === 'leadership' ? 'active' : ''}`}>团队管理</button>
+                                <button onClick={() => scrollToSection('experience')} className={`m375-reset m375-nav-link n3 ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
+                                <button onClick={() => scrollToSection('contact')} className={`m375-reset m375-nav-link n4 ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
+                            </nav>
+                        </div>
                         <div className="m375-canvas" style={{ transform: `scale(${scale})` }}>
                             <header id="bio" className="m375-hero">
                                 <HomeImage src={`${HOME_ASSETS}/hero-bg-mobile.jpg`} fallback={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="m375-hero-bg" />
-                                <nav className="m375-nav">
-                                    <button onClick={() => scrollToSection('bio')} className="m375-reset m375-logo">Ding {"\n"}Heliang</button>
-                                    <button onClick={() => scrollToSection('projects')} className={`m375-reset m375-nav-link n1 ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
-                                    <button onClick={() => scrollToSection('leadership')} className={`m375-reset m375-nav-link n2 ${activeSection === 'leadership' ? 'active' : ''}`}>团队管理</button>
-                                    <button onClick={() => scrollToSection('experience')} className={`m375-reset m375-nav-link n3 ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
-                                    <button onClick={() => scrollToSection('contact')} className={`m375-reset m375-nav-link n4 ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
-                                </nav>
 
                                 <div className="m375-hero-content">
                                     <h1 className="m375-name">丁贺亮</h1>
