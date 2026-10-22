@@ -459,301 +459,186 @@
             .fig-support-grid { grid-template-columns:calc(50% - 16px) calc(50% - 16px); }
             .fig-support-card { width:100%; }
         }
-        /* ===== Mobile layout v2 — desktop rules above remain untouched ===== */
-        @media (max-width:900px) {
-            .fig-hero-desktop { display:none; }
-            .fig-hero-mobile-legacy { display:block; }
-            html { scroll-padding-top:64px; }
-            .fig-home { overflow-x:hidden; padding-bottom:0; }
-            .fig-nav { height:64px; }
-            .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 32px); }
-            .fig-nav-inner { width:calc(100% - 48px); height:64px; }
-            .fig-logo { top:12px; width:58px; height:40px; font-size:13px; line-height:18px; }
-            .fig-nav-links { left:auto; right:0; top:22px; width:auto; height:20px; gap:14px; justify-content:flex-start; }
-            .fig-nav-link { height:20px; font-size:11px; line-height:20px; }
-            .fig-nav-link::after { top:24px; width:20px; }
 
-            /* Hero: mobile composition, not a scaled desktop canvas. */
-            .fig-hero { height:690px; }
-            .fig-hero-content { height:690px; }
-            .fig-hero-bg { inset:0 auto auto 0; width:100%; height:auto; object-fit:contain; object-position:center top; }
-            .fig-hero-name { left:0; top:132px; width:auto; height:auto; font-size:clamp(64px, 19vw, 82px); line-height:1.08; letter-spacing:normal; }
-            .fig-hero-title { left:0; top:238px; width:auto; height:auto; font-size:22px; line-height:1.35; letter-spacing:.045em; white-space:nowrap; }
-            .fig-hero-exp { left:0; top:300px; width:min(100%, 390px); height:auto; font-size:13px; line-height:22px; font-weight:300; white-space:normal; }
-            .fig-hero-tags { left:0; top:386px; width:100%; height:auto; display:flex; flex-wrap:wrap; gap:8px; transform:none; }
-            .fig-hero-tag, .fig-hero-tag:first-child { width:auto !important; height:28px; min-width:0; padding:0 14px; transform:none; font-size:11px; line-height:28px; }
-            .fig-hero-scroll-label { left:0; top:548px; width:auto; height:auto; font-size:14px; line-height:18px; }
-            .fig-hero-arrow { left:-2px; top:586px; width:6px; height:54px; }
-
-            /* Section rhythm */
-            .fig-projects { padding-top:56px; }
-            .fig-section-title { width:100%; height:auto; font-size:30px; line-height:42px; }
-            .fig-projects-title, .fig-lead-title, .fig-exp-title { margin-bottom:20px; }
-            .fig-gap-168 { height:80px; }
-
-            /* Featured project: rebuild the information hierarchy for mobile. */
-            .fig-main-card { width:100%; height:520px; }
-            .fig-main-card > .fig-cover-img { inset:0 auto auto 0; width:100%; height:auto; object-fit:contain; object-position:center top; }
-            .fig-main-content { left:24px; right:24px; top:36px; width:auto; height:auto; transform:none; }
-            .fig-vtn-head { position:relative; left:auto; top:auto; width:100%; height:56px; }
-            .fig-vtn-icon { left:0; top:1px; width:52px; height:52px; }
-            .fig-vtn-title { left:64px; top:0; width:auto; height:auto; font-size:28px; line-height:34px; }
-            .fig-vtn-platform { left:64px; top:33px; width:auto; height:auto; font-size:12px; line-height:18px; }
-            .fig-vtn-headline { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:18px; font-size:22px; line-height:31px; white-space:nowrap; }
-            .fig-vtn-role { position:relative; left:auto; top:auto; width:auto; height:auto; margin-top:10px; font-size:12px; line-height:18px; }
-            .fig-vtn-rule { position:relative; left:auto; top:auto; display:block; width:44px; height:.5px; margin-top:18px; }
-            .fig-vtn-desc { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:15px; font-size:12px; line-height:19px; }
-            .fig-metrics { position:relative; left:auto; top:auto; width:100%; height:90px; margin-top:21px; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; }
-            .fig-metric { width:auto; height:90px; min-width:0; flex:none; }
-            .fig-metric-value { top:20px; height:auto; font-size:16px; line-height:22px; }
-            .fig-metric-label { top:51px; height:auto; padding:0 4px; font-size:10px; line-height:14px; white-space:normal; }
-            .fig-main-btn { position:relative; left:auto; top:auto; display:block; width:114px; height:28px; margin-top:22px; }
-            .fig-main-btn-label { left:21px; top:5.5px; width:48px; height:17px; font-size:12px; line-height:17px; }
-            .fig-main-btn-arrow { left:77px; top:12.1148px; width:16px; height:3.7705px; }
-
-            /* Supporting projects: single-column, full information visible by default. */
-            .fig-support-grid { width:100%; height:auto; margin-top:16px; grid-template-columns:1fr; grid-template-rows:none; gap:16px; }
-            .fig-support-card { width:100%; height:330px; }
-            .fig-support-content { left:24px; top:48px; width:calc(100% - 48px); height:auto; }
-            .fig-support-title { width:100%; height:auto; font-size:22px; line-height:31px; }
-            .fig-support-sub { top:43px; max-width:100%; height:auto; font-size:12px; line-height:18px; overflow:visible; text-overflow:clip; white-space:normal; }
-            .fig-support-tags, .fig-support-tags.wrap { top:78px; width:100%; min-height:19px; flex-wrap:wrap; gap:8px; row-gap:8px; }
-            .fig-support-tag { height:20px; padding:2px 10px; font-size:10px; line-height:16px; }
-            .fig-support-btn { left:24px; top:auto; bottom:26px; }
-
-            /* AI covers: mobile-specific framing; desktop positioning stays untouched. */
-            .legacy-ai-cover-video-wrap { height:84%; }
-            .legacy-ai-cover-video { transform:scale(.90); }
-            .legacy-ai-cover-video.abm-ai { transform:scale(.98); }
-            .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:calc(50% + 20px) !important; }
-            .legacy-ai-cover-video-wrap.abm-ai-wrap { left:calc(55% + 8px) !important; }
-
-            /* Team management: genuine vertical mobile composition. */
-            .fig-lead-card { width:100%; height:520px; }
-            .fig-lead-content { left:24px; right:24px; top:42px; width:auto; height:auto; transform:none; }
-            .fig-lead-h3 { position:relative; left:auto; top:auto; width:100%; height:auto; font-size:22px; line-height:31px; }
-            .fig-lead-body { position:relative; left:auto; top:auto; width:100%; height:auto; margin:20px 0 0; font-size:14px; line-height:22px; }
-            .fig-lead-tags { position:relative; left:auto; top:auto; width:100%; height:auto; margin-top:20px; display:flex; flex-wrap:wrap; gap:8px; }
-            .fig-lead-tag, .fig-lead-tag:nth-child(1), .fig-lead-tag:nth-child(n+2) { width:auto; height:26px; padding:4px 12px; font-size:11px; line-height:17px; }
-            .fig-lead-metrics { position:relative; left:auto; top:auto; width:100%; height:64px; margin-top:27px; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); }
-            .fig-lead-item, .fig-lead-item.i1, .fig-lead-item.i2, .fig-lead-item.i3 { position:relative; left:auto; top:auto; width:auto; height:64px; }
-            .fig-lead-item:not(:last-child) { border-right:.5px solid rgba(0,0,0,.20); }
-            .fig-lead-sep { display:none; }
-            .fig-lead-num { font-size:22px; }
-            .fig-lead-label { margin-top:9px; font-size:10px; line-height:14px; white-space:normal; }
-            .fig-lead-btn { position:relative; left:auto; top:auto; display:block; width:114px; height:28px; margin-top:28px; }
-            .fig-lead-btn-label { left:21px; top:5.5px; width:48px; height:17px; font-size:12px; line-height:17px; }
-            .fig-lead-btn-arrow { left:77px; top:12.1148px; width:16px; height:3.7705px; }
-            .fig-lead-ambient { inset:0; animation:none; transform:none; }
-            .fig-lead-ambient .fig-cover-img { inset:0 auto auto 0; width:100%; height:auto; object-fit:contain; object-position:center top; }
-            .fig-lead-card::after { display:none; }
-
-            /* Work experience: horizontal desktop timeline becomes vertical on mobile. */
-            .fig-exp-card { width:100%; height:auto; min-height:0; overflow:visible; padding:34px 24px 28px; }
-            .fig-exp-row { position:relative; left:auto; top:auto; width:100%; height:auto; display:flex; flex-direction:column; }
-            .fig-exp-item { position:relative; height:102px; min-height:102px; padding-left:22px; }
-            .fig-exp-time { left:22px; top:0; font-size:13px; line-height:18px; }
-            .fig-exp-dot { left:0; top:6px; width:6px; height:6px; }
-            .fig-exp-line { left:2.75px; top:16px; right:auto; bottom:-2px; width:.5px; height:auto; background:rgba(0,0,0,.22); }
-            .fig-exp-item:last-child .fig-exp-line { display:none; }
-            .fig-exp-company { left:22px; top:28px; max-width:calc(100% - 22px); font-size:15px; line-height:21px; white-space:normal; }
-            .fig-exp-role { left:22px; top:56px; max-width:calc(100% - 22px); font-size:13px; line-height:19px; white-space:normal; }
-
-            /* Contact: compact mobile footer after the explanatory sentence was removed. */
-            .fig-contact { height:520px; }
-            .fig-contact-group { left:50%; top:74px; width:calc(100% - 32px); height:340px; transform:translateX(-50%); }
-            .fig-contact-title { left:0; top:0; width:100%; height:auto; font-size:48px; line-height:1.15; }
-            .fig-contact-email { left:0; top:94px; width:100%; height:auto; }
-            .fig-contact-phone { left:0; top:168px; width:100%; height:auto; }
-            .fig-contact-label { font-size:13px; line-height:19px; }
-            .fig-contact-value { margin-top:6px; font-size:15px; line-height:21px; }
-            .fig-contact-back { left:50%; top:252px; transform:translateX(-50%); }
-            .fig-footer-brand { top:auto; bottom:22px; gap:16px; }
-            .fig-footer-line { width:calc((100vw - 185px) / 2); max-width:120px; }
-            .fig-footer-name { width:121px; font-size:12px; letter-spacing:.14em; }
-
-            /* Touch feedback only; no mobile-only information depends on hover. */
-            .fig-main-card:active, .fig-support-card:active, .fig-lead-card:active { transform:scale(.995); }
-        }
-
-        @media (max-width:480px) {
-            .fig-nav-inner, .fig-hero-content, .fig-shell { width:calc(100% - 28px); }
-            .fig-nav-inner { width:calc(100% - 48px); }
-            .fig-logo { width:52px; font-size:12px; line-height:17px; }
-            .fig-nav-links { gap:10px; }
-            .fig-nav-link { font-size:10px; }
-            .fig-nav-link::after { width:18px; }
-
-            .fig-hero { height:670px; }
-            .fig-hero-content { height:670px; }
-            .fig-hero-name { top:128px; font-size:clamp(58px, 18vw, 72px); }
-            .fig-hero-title { top:226px; font-size:20px; letter-spacing:.035em; }
-            .fig-hero-exp { top:286px; font-size:12px; line-height:21px; }
-            .fig-hero-tags { top:374px; }
-            .fig-hero-tag, .fig-hero-tag:first-child { height:27px; padding:0 12px; line-height:27px; }
-            .fig-hero-scroll-label { top:534px; }
-            .fig-hero-arrow { top:572px; }
-
-            .fig-main-card { height:500px; }
-            .fig-main-content { left:20px; right:20px; top:32px; }
-            .fig-vtn-headline { margin-top:16px; font-size:21px; line-height:30px; }
-            .fig-vtn-desc { margin-top:13px; font-size:11px; line-height:18px; }
-            .fig-metrics { margin-top:18px; height:86px; gap:6px; }
-            .fig-metric { height:86px; }
-            .fig-metric-value { top:18px; font-size:15px; }
-            .fig-metric-label { top:48px; font-size:9.5px; line-height:13px; }
-            .fig-main-btn { margin-top:18px; }
-
-            .fig-support-card { height:318px; }
-            .fig-support-content { left:20px; top:44px; width:calc(100% - 40px); }
-            .fig-support-title { font-size:21px; line-height:30px; }
-            .fig-support-sub { top:42px; font-size:11.5px; }
-            .fig-support-tags, .fig-support-tags.wrap { top:76px; }
-            .fig-support-btn { left:20px; bottom:22px; }
-
-            .legacy-ai-cover-video-wrap { height:82%; }
-            .legacy-ai-cover-video { transform:scale(.88); }
-            .legacy-ai-cover-video.abm-ai { transform:scale(.96); }
-            .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:calc(50% + 15px) !important; }
-            .legacy-ai-cover-video-wrap.abm-ai-wrap { left:calc(55% + 4px) !important; }
-
-            .fig-lead-card { height:500px; }
-            .fig-lead-content { left:20px; right:20px; top:38px; }
-            .fig-lead-h3 { font-size:21px; line-height:30px; }
-            .fig-lead-body { margin-top:18px; font-size:13px; line-height:21px; }
-            .fig-lead-tags { margin-top:18px; gap:7px; }
-            .fig-lead-tag, .fig-lead-tag:nth-child(1), .fig-lead-tag:nth-child(n+2) { padding-left:10px; padding-right:10px; font-size:10.5px; }
-            .fig-lead-metrics { margin-top:24px; }
-            .fig-lead-btn { margin-top:25px; }
-
-            .fig-exp-card { padding:32px 20px 24px; }
-            .fig-contact-title { font-size:44px; }
-        }
-
-        @media (max-width:380px) {
-            .fig-nav-links { gap:8px; }
-            .fig-nav-link { font-size:9.5px; }
-            .fig-hero-title { font-size:19px; }
-            .fig-support-title { font-size:20px; }
-            .fig-main-content, .fig-lead-content { left:18px; right:18px; }
-            .fig-vtn-headline, .fig-lead-h3 { font-size:20px; line-height:29px; }
-        }
-
-
-        /* ===== MOBILE HOME / 作品集首页-移动端.fig · 375px baseline ===== */
-        /* ===== Mobile home — 375px Figma is the single 1× source of truth ===== */
-        .m-home { display:none; }
+        /* ===== Mobile homepage / 作品集首页-移动端.fig — clean 375px 1× rebuild =====
+           375 CSS px is the Figma source coordinate system. No desktop/mobile style inheritance. */
+        .m375-outer { display:none; }
         @media (max-width:767px) {
-            html { scroll-padding-top:56px; }
-            body { overflow-x:hidden; }
-            .m-home {
+            html { scroll-padding-top:0; }
+            body { margin:0; overflow-x:hidden; background:#fff; }
+            .m375-outer {
                 display:block;
-                width:375px;
-                min-width:375px;
+                position:relative;
                 margin:0 auto;
+                overflow:hidden;
+                background:#fff;
+            }
+            .m375-canvas {
+                position:absolute;
+                left:0; top:0;
+                width:375px; height:3526px;
+                overflow:hidden;
                 background:#fff;
                 color:#000;
-                overflow:hidden;
-                transform-origin:top center;
+                font-family:"PingFang SC","Helvetica Neue",Arial,sans-serif;
+                transform-origin:0 0;
+                -webkit-font-smoothing:antialiased;
+                text-rendering:geometricPrecision;
             }
-            .m-shell { width:327px; margin:0 24px; }
+            .m375-canvas *, .m375-canvas *::before, .m375-canvas *::after { box-sizing:border-box; }
+            .m375-reset {
+                appearance:none; -webkit-appearance:none;
+                margin:0; padding:0; border:0; background:none; color:inherit;
+                font:inherit; text-align:left; border-radius:0;
+            }
 
-            /* Navigation — exact 375px baseline, 24px safe margins. */
-            .m-nav { position:fixed; left:0; top:0; z-index:300; width:375px; height:56px; background:transparent; transition:background-color .2s ease, backdrop-filter .2s ease; }
-            .m-nav.scrolled { background:rgba(255,255,255,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
-            .m-nav-inner { position:relative; width:327px; height:56px; margin:0 24px; }
-            .m-logo { position:absolute; left:0; top:18px; border:0; padding:0; background:none; color:#000; font-family:Inter,"Helvetica Neue",Arial,sans-serif; font-size:9px; line-height:10px; font-weight:500; text-align:left; letter-spacing:0; cursor:pointer; }
-            .m-nav-links { position:absolute; right:0; top:18px; display:flex; align-items:center; gap:22px; height:20px; }
-            .m-nav-link { border:0; padding:0; background:none; color:rgba(0,0,0,.28); font-size:9px; line-height:20px; font-weight:400; white-space:nowrap; cursor:pointer; }
-            .m-nav-link.active { color:#000; font-weight:600; }
+            /* NAV — source node 6:344 */
+            .m375-nav { position:absolute; left:0; top:0; width:375.5271px; height:58px; z-index:100; }
+            .m375-logo {
+                position:absolute; left:16px; top:16px; width:40px; height:26px;
+                font-size:9px; line-height:13px; font-weight:600; letter-spacing:0;
+                white-space:pre-line; cursor:pointer;
+            }
+            .m375-nav-link {
+                position:absolute; top:22px; height:14px;
+                font-size:10px; line-height:14px; font-weight:400;
+                color:rgba(0,0,0,.34); white-space:nowrap; cursor:pointer;
+            }
+            .m375-nav-link.active { color:#000; font-weight:600; }
+            .m375-nav-link.n1 { left:137.5271px; width:40px; }
+            .m375-nav-link.n2 { left:201.5271px; width:40px; }
+            .m375-nav-link.n3 { left:265.5271px; width:40px; }
+            .m375-nav-link.n4 { left:329.5271px; width:30px; }
 
-            /* Hero — 375 × 680 from the mobile Figma. */
-            .m-hero { position:relative; width:375px; height:680px; overflow:hidden; background:#eef0f2; }
-            .m-hero-bg { position:absolute; inset:0; width:375px; height:680px; object-fit:cover; object-position:center top; }
-            .m-hero-inner { position:relative; width:327px; height:680px; margin:0 24px; z-index:2; }
-            .m-hero-name { position:absolute; left:0; top:142px; margin:0; font-size:44px; line-height:62px; font-weight:600; letter-spacing:0; white-space:nowrap; }
-            .m-hero-title { position:absolute; left:0; top:220px; margin:0; font-size:24px; line-height:34px; font-weight:600; letter-spacing:.02em; white-space:nowrap; }
-            .m-hero-exp { position:absolute; left:0; top:264px; margin:0; font-size:11px; line-height:17px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
-            .m-hero-label { margin:0; font-size:11px; line-height:16px; font-weight:300; color:rgba(0,0,0,.48); }
-            .m-hero-core { position:absolute; left:0; top:326px; width:327px; }
-            .m-hero-core-grid { margin-top:12px; display:grid; grid-template-columns:repeat(3,103.6667px); gap:8px; }
-            .m-hero-core-item { height:32px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.035); font-size:11px; line-height:16px; font-weight:600; white-space:nowrap; }
-            .m-hero-business { position:absolute; left:0; top:462px; width:327px; }
-            .m-hero-business-grid { margin-top:12px; display:grid; grid-template-columns:repeat(4,75.75px); gap:8px; }
-            .m-hero-business-item { height:32px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.035); font-size:10.5px; line-height:16px; font-weight:600; white-space:nowrap; }
-            .m-hero-scroll { position:absolute; left:0; top:574px; width:110px; height:70px; }
-            .m-hero-scroll-label { font-size:11px; line-height:16px; font-weight:300; color:rgba(0,0,0,.55); white-space:nowrap; }
-            .m-hero-scroll-arrow { position:absolute; left:-2px; top:28px; width:5px; height:45px; object-fit:fill; }
+            /* HERO — source nodes 6:313 / 6:317 */
+            .m375-hero { position:absolute; left:0; top:0; width:375.5271px; height:677px; overflow:hidden; background:#eef0f2; }
+            .m375-hero-bg { position:absolute; left:0; top:0; width:375.5271px; height:677px; object-fit:cover; object-position:center; display:block; }
+            .m375-hero-content { position:absolute; left:24px; top:130px; width:327px; height:506.449px; z-index:2; }
+            .m375-name { position:absolute; left:0; top:0; width:327px; height:67px; margin:0; font-size:48px; line-height:67px; font-weight:600; white-space:nowrap; }
+            .m375-profile { position:absolute; left:0; top:83px; width:329px; height:65px; }
+            .m375-profile-title { position:absolute; left:0; top:0; width:327px; height:34px; margin:0; font-size:24px; line-height:34px; font-weight:600; white-space:nowrap; }
+            .m375-profile-exp { position:absolute; left:0; top:40px; width:329px; height:25px; margin:0; font-size:12px; line-height:25px; font-weight:400; color:rgba(0,0,0,.60); white-space:nowrap; letter-spacing:0; }
+            .m375-mini-label { position:absolute; left:0; top:0; width:327px; height:17px; margin:0; font-size:12px; line-height:17px; font-weight:400; color:#666; }
+            .m375-core { position:absolute; left:0; top:188px; width:327px; height:99px; }
+            .m375-core-grid { position:absolute; left:0; top:29px; width:327px; height:70px; }
+            .m375-core-cell {
+                position:absolute; width:103.666664px; height:31px;
+                display:flex; align-items:center; justify-content:center;
+                background:rgba(0,0,0,.04); font-size:11px; line-height:15px; font-weight:600; white-space:nowrap;
+            }
+            .m375-core-cell:nth-child(1) { left:0; top:0; }
+            .m375-core-cell:nth-child(2) { left:111.666664px; top:0; }
+            .m375-core-cell:nth-child(3) { left:223.333328px; top:0; }
+            .m375-core-cell:nth-child(4) { left:0; top:39px; }
+            .m375-core-cell:nth-child(5) { left:111.666664px; top:39px; }
+            .m375-core-cell:nth-child(6) { left:223.333328px; top:39px; }
+            .m375-business { position:absolute; left:0; top:327px; width:327px; height:60px; }
+            .m375-business-row { position:absolute; left:0; top:29px; width:327px; height:31px; }
+            .m375-business-cell {
+                position:absolute; top:0; width:75.75px; height:31px;
+                display:flex; align-items:center; justify-content:center;
+                background:rgba(0,0,0,.04); font-size:11px; line-height:15px; font-weight:600; white-space:nowrap;
+            }
+            .m375-business-cell:nth-child(1) { left:0; }
+            .m375-business-cell:nth-child(2) { left:83.75px; }
+            .m375-business-cell:nth-child(3) { left:167.5px; }
+            .m375-business-cell:nth-child(4) { left:251.25px; }
+            .m375-scroll { position:absolute; left:0; top:443px; width:327px; height:63.449px; }
+            .m375-scroll-label { position:absolute; left:0; top:0; width:72px; height:11px; font-family:Brown,"Helvetica Neue",Arial,sans-serif; font-size:12px; line-height:11px; font-weight:300; color:#666; white-space:nowrap; }
+            .m375-scroll-arrow { position:absolute; left:0; top:23px; width:3.74823px; height:40.44899px; object-fit:fill; display:block; }
 
-            /* Sections — Figma 375px baseline. */
-            .m-section { width:375px; background:#fff; }
-            .m-projects { padding-top:32px; }
-            .m-section-title { margin:0 0 12px; font-size:24px; line-height:34px; font-weight:600; letter-spacing:0; }
-            .m-project-list { display:flex; flex-direction:column; gap:16px; }
-            .m-project-card { position:relative; display:block; width:327px; height:184.2px; overflow:hidden; border:0; padding:0; background:#eef0f2; color:#000; text-align:left; cursor:pointer; }
-            .m-project-bg { position:absolute; inset:0; width:327px; height:184.2px; object-fit:cover; object-position:center; }
-            .m-project-copy { position:absolute; left:24px; top:28px; z-index:60; width:190px; min-width:0; }
-            .m-project-title { margin:0; font-size:16px; line-height:22px; font-weight:600; letter-spacing:0; white-space:nowrap; }
-            .m-project-subtitle { margin:7px 0 0; font-size:10px; line-height:15px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
-            .m-project-tags { margin-top:9px; display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap; }
-            .m-project-tag { min-width:0; height:20px; padding:2px 9px; background:rgba(255,255,255,.55); display:flex; align-items:center; justify-content:center; font-size:9px; line-height:16px; font-weight:400; color:#666; white-space:nowrap; }
-            .m-project-btn { position:absolute; left:24px; bottom:20px; z-index:61; width:84px; height:24px; background:#000; color:#fff; }
-            .m-project-btn-label { position:absolute; left:17px; top:4px; font-size:10px; line-height:16px; font-weight:400; white-space:nowrap; }
-            .m-project-btn-arrow { position:absolute; right:10px; top:10px; width:12px; height:4px; object-fit:fill; filter:brightness(0) invert(1); }
+            /* Exact section coordinates from the 375×3526 Figma frame */
+            .m375-projects { position:absolute; left:0; top:709px; width:375.5271px; height:1435.039917px; }
+            .m375-team { position:absolute; left:0; top:2192.039917px; width:375.5271px; height:414px; }
+            .m375-work { position:absolute; left:0; top:2654.039917px; width:375.5271px; height:466px; }
+            .m375-contact { position:absolute; left:0; top:3168.040039px; width:375.5271px; height:357.921631px; background:#000; color:#fff; }
+            .m375-section-title { position:absolute; left:24px; top:0; width:327.5271px; height:34px; margin:0; font-size:24px; line-height:34px; font-weight:600; color:#000; white-space:nowrap; }
 
-            /* First VTN card. */
-            .m-main-head { position:absolute; left:24px; top:28px; z-index:60; height:30px; }
-            .m-main-icon { position:absolute; left:0; top:0; width:30px; height:30px; object-fit:contain; }
-            .m-main-title { position:absolute; left:40px; top:-1px; margin:0; font-size:16px; line-height:20px; font-weight:600; }
-            .m-main-platform { position:absolute; left:40px; top:19px; margin:0; width:125px; font-size:9px; line-height:13px; font-weight:400; color:#666; white-space:nowrap; }
-            .m-main-headline { position:absolute; left:24px; top:70px; z-index:60; margin:0; font-size:16px; line-height:22px; font-weight:600; white-space:nowrap; }
-            .m-main-role { position:absolute; left:24px; top:100px; z-index:60; margin:0; font-size:10px; line-height:15px; font-weight:500; color:#008080; white-space:nowrap; }
+            /* PROJECTS — source nodes 6:354–6:461 */
+            .m375-card {
+                position:absolute; left:24px; overflow:hidden;
+                appearance:none; -webkit-appearance:none; border:0; padding:0; margin:0; border-radius:0;
+                background:#eef0f2; color:#000; text-align:left; cursor:pointer;
+            }
+            .m375-card.main { top:50px; width:327.5271px; height:183.9375px; }
+            .m375-card.p2 { top:249.9375px; width:327px; height:184.183731px; }
+            .m375-card.p3 { top:450.121216px; width:327.5271px; height:184.183731px; }
+            .m375-card.p4 { top:650.304932px; width:327.5271px; height:184.183731px; }
+            .m375-card.p5 { top:850.488647px; width:327.5271px; height:184.183731px; }
+            .m375-card.p6 { top:1050.672363px; width:327.5271px; height:184.183731px; }
+            .m375-card.p7 { top:1250.856079px; width:327.5271px; height:184.183731px; }
+            .m375-card-visual { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; max-width:none; }
 
-            /* AI covers reuse the desktop composite as one proportional visual system. */
-            .m-project-card .legacy-ai-cover { inset:0; width:327px; height:184.2px; }
-            .m-project-card .legacy-ai-cover-video-wrap { height:90%; }
-            .m-project-card .legacy-ai-cover-video { transform:scale(.94); }
-            .m-project-card .legacy-ai-cover-video.abm-ai { transform:scale(1.05); }
-            .m-project-card .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:56.0241% !important; }
-            .m-project-card .legacy-ai-cover-video-wrap.abm-ai-wrap { left:58.012% !important; }
+            /* First VTN card content — node 6:355 */
+            .m375-main-icon { position:absolute; left:24px; top:25.5px; width:30px; height:30px; object-fit:contain; display:block; z-index:10; }
+            .m375-main-vtn { position:absolute; left:60.376px; top:24px; width:61px; height:22px; margin:0; font-size:16px; line-height:22px; font-weight:600; white-space:nowrap; z-index:10; }
+            .m375-main-platform { position:absolute; left:60.376px; top:43px; width:70px; height:14px; margin:0; font-size:10px; line-height:14px; font-weight:400; color:rgba(0,0,0,.5); white-space:nowrap; z-index:10; }
+            .m375-main-headline { position:absolute; left:24px; top:65px; width:112px; height:22px; margin:0; font-size:16px; line-height:22px; font-weight:600; white-space:nowrap; z-index:10; }
+            .m375-main-role { position:absolute; left:24px; top:95px; width:116px; height:14px; margin:0; font-size:10px; line-height:14px; font-weight:400; color:#008080; white-space:nowrap; z-index:10; }
 
-            /* Team management — mobile-specific background, exact mobile card geometry. */
-            .m-team { padding-top:54px; }
-            .m-team-card { position:relative; display:block; width:327px; height:360px; overflow:hidden; border:0; padding:0; background:#f5f2ef; color:#000; text-align:left; cursor:pointer; }
-            .m-team-bg { position:absolute; inset:0; width:327px; height:360px; object-fit:cover; object-position:center; }
-            .m-team-copy { position:absolute; left:24px; right:24px; top:208px; z-index:3; }
-            .m-team-title { margin:0; font-size:16px; line-height:22px; font-weight:600; }
-            .m-team-body { margin:8px 0 0; width:100%; font-size:10px; line-height:15px; font-weight:300; color:rgba(0,0,0,.48); }
-            .m-team-tags { margin-top:10px; display:flex; gap:8px; flex-wrap:nowrap; }
-            .m-team-tag { height:20px; padding:2px 9px; background:rgba(255,255,255,.58); display:flex; align-items:center; justify-content:center; font-size:9px; line-height:16px; font-weight:400; color:#666; white-space:nowrap; }
-            .m-team-btn { position:absolute; left:24px; bottom:24px; z-index:4; width:84px; height:24px; background:#000; color:#fff; }
+            /* Standard card copy — master component 6:290 */
+            .m375-copy { position:absolute; left:24px; top:27.091866px; width:279px; height:69px; z-index:20; }
+            .m375-card-title { position:absolute; left:0; top:0; margin:0; height:22px; font-size:16px; line-height:22px; font-weight:600; white-space:nowrap; }
+            .m375-card-subtitle { position:absolute; left:0; top:30px; margin:0; height:14px; font-size:10px; line-height:14px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
+            .m375-tags { position:absolute; left:0; top:52px; height:17px; display:flex; gap:5.909638px; align-items:flex-start; }
+            .m375-tag { height:17px; padding:0 8px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.54); font-size:9px; line-height:13px; font-weight:300; white-space:nowrap; }
 
-            /* Work experience — 96px rhythm between timeline nodes in Figma. */
-            .m-experience { padding-top:54px; }
-            .m-exp-card { position:relative; width:327px; height:414px; background:#f7f7f8; overflow:hidden; }
-            .m-exp-list { position:absolute; left:28px; right:18px; top:24px; bottom:0; }
-            .m-exp-item { position:relative; height:96px; padding-left:48px; }
-            .m-exp-dot { position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
-            .m-exp-line { position:absolute; left:2.75px; top:14px; width:.5px; height:90px; background:rgba(0,0,0,.3); }
-            .m-exp-item:last-child .m-exp-line { display:none; }
-            .m-exp-time { margin:0; font-size:9px; line-height:13px; font-weight:300; color:rgba(0,0,0,.35); }
-            .m-exp-company { margin:6px 0 0; font-size:14px; line-height:20px; font-weight:600; white-space:nowrap; }
-            .m-exp-role { margin:2px 0 0; font-size:9px; line-height:14px; font-weight:400; color:#000; white-space:nowrap; }
+            /* Button — master component 6:285; PC arrow asset reused */
+            .m375-detail-btn { position:absolute; left:24px; top:136.091858px; width:81.968674px; height:21px; background:#000; color:#fff; z-index:30; pointer-events:none; }
+            .m375-card.main .m375-detail-btn { top:139px; }
+            .m375-detail-label { position:absolute; left:16px; top:4px; width:36px; height:13px; font-size:9px; line-height:13px; font-weight:400; white-space:nowrap; }
+            .m375-detail-arrow { position:absolute; left:58px; top:9.388194px; width:15.968676px; height:2.223611px; object-fit:fill; filter:brightness(0) invert(1); display:block; }
 
-            /* Contact. */
-            .m-contact-wrap { padding-top:48px; background:#fff; }
-            .m-contact { position:relative; width:375px; height:360px; background:#000; color:#fff; text-align:center; overflow:hidden; }
-            .m-contact-title { margin:0; padding-top:48px; font-size:24px; line-height:34px; font-weight:600; }
-            .m-contact-block { margin-top:22px; }
-            .m-contact-block + .m-contact-block { margin-top:18px; }
-            .m-contact-label { margin:0; font-size:9px; line-height:13px; color:rgba(255,255,255,.45); font-weight:400; }
-            .m-contact-value { margin-top:5px; border:0; padding:0; background:none; color:#fff; font-size:10px; line-height:15px; font-weight:400; cursor:pointer; }
-            .m-contact-back { position:relative; margin:25px auto 0; width:112px; height:32px; border:0; background:#fff; color:#000; cursor:pointer; }
-            .m-contact-back-label { position:absolute; left:24px; top:8px; font-size:10px; line-height:16px; white-space:nowrap; }
-            .m-contact-up { position:absolute; right:24px; top:8px; width:10px; height:16px; }
-            .m-footer-brand { position:absolute; left:0; bottom:15px; width:100%; display:flex; align-items:center; justify-content:center; gap:12px; color:rgba(255,255,255,.22); }
-            .m-footer-line { height:.5px; width:72px; background:rgba(255,255,255,.14); }
-            .m-footer-name { font-size:8px; line-height:12px; letter-spacing:.12em; white-space:nowrap; }
+            /* AI: reuse the complete 664×374 PC composite, then scale the whole canvas only. */
+            .m375-ai-viewport { position:absolute; inset:0; overflow:hidden; }
+            .m375-ai-source { position:absolute; left:0; top:0; width:664px; height:374px; transform-origin:0 0; }
+            .m375-ai-source .legacy-ai-cover { position:absolute; inset:0; width:664px; height:374px; }
+            .m375-ai-source .legacy-ai-cover-bg,
+            .m375-ai-source .legacy-ai-cover-fg,
+            .m375-ai-source .legacy-ai-cover-initial { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
+            .m375-ai-source .legacy-ai-cover-video-wrap { height:90%; }
+            .m375-ai-source .legacy-ai-cover-video { transform:scale(.94); }
+            .m375-ai-source .legacy-ai-cover-video.abm-ai { transform:scale(1.05); }
+
+            /* TEAM — nodes 6:462–6:467 */
+            .m375-team-card { position:absolute; left:24px; top:50px; width:327px; height:364px; overflow:hidden; appearance:none; -webkit-appearance:none; border:0; padding:0; margin:0; border-radius:0; background:#f5f2ef; color:#000; text-align:left; cursor:pointer; }
+            .m375-team-bg { position:absolute; inset:0; width:327px; height:364px; object-fit:cover; object-position:center; display:block; }
+            .m375-team-copy { position:absolute; left:24px; top:210px; width:279px; height:83px; z-index:10; }
+            .m375-team-title { position:absolute; left:0; top:0; margin:0; width:144px; height:22px; font-size:16px; line-height:22px; font-weight:600; white-space:nowrap; }
+            .m375-team-body { position:absolute; left:0; top:30px; width:279px; height:28px; margin:0; font-size:10px; line-height:14px; font-weight:300; color:rgba(0,0,0,.5); }
+            .m375-team-tags { position:absolute; left:0; top:66px; height:17px; display:flex; gap:5.909638px; }
+            .m375-team-btn { position:absolute; left:24px; top:319px; width:81.968674px; height:21px; background:#000; color:#fff; z-index:20; pointer-events:none; }
+
+            /* WORK — nodes 6:468–6:474 */
+            .m375-work-card { position:absolute; left:24px; top:50px; width:327.5271px; height:416px; overflow:hidden; background:#f7f7f8; }
+            .m375-work-row { position:absolute; left:24px; height:96px; }
+            .m375-work-row.r1 { top:24px; width:154px; }
+            .m375-work-row.r2 { top:120px; width:100px; }
+            .m375-work-row.r3 { top:216px; width:100px; }
+            .m375-work-row.r4 { top:312px; width:126px; }
+            .m375-line-top { position:absolute; left:3px; top:0; width:.5px; height:8px; background:rgba(0,0,0,.5); }
+            .m375-dot { position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:#000; }
+            .m375-line-bottom { position:absolute; left:3px; top:14px; width:.5px; height:82px; background:rgba(0,0,0,.5); }
+            .m375-work-time { position:absolute; left:22px; top:0; margin:0; height:15px; font-size:11px; line-height:15px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
+            .m375-work-company { position:absolute; left:22px; top:19px; margin:0; height:18px; font-size:13px; line-height:18px; font-weight:600; white-space:nowrap; }
+            .m375-work-role { position:absolute; left:22px; top:41px; margin:0; height:15px; font-size:11px; line-height:15px; font-weight:300; white-space:nowrap; }
+
+            /* CONTACT — nodes 6:475–6:492 */
+            .m375-contact-group { position:absolute; left:132.59938px; top:48px; width:110.32834px; height:237px; }
+            .m375-contact-title { position:absolute; left:19.16417px; top:0; width:72px; height:34px; margin:0; font-size:24px; line-height:34px; font-weight:600; white-space:nowrap; }
+            .m375-contact-email { position:absolute; left:.595268px; top:60px; width:109.137802px; height:39px; }
+            .m375-contact-phone { position:absolute; left:18.371502px; top:125px; width:73.585335px; height:39px; }
+            .m375-contact-label { position:absolute; left:0; top:0; width:100%; height:14px; margin:0; font-size:10px; line-height:14px; font-weight:400; color:rgba(255,255,255,.5); text-align:center; }
+            .m375-contact-value { position:absolute; left:50%; top:22px; transform:translateX(-50%); margin:0; padding:0; border:0; background:none; color:#fff; font-size:12px; line-height:17px; font-weight:400; white-space:nowrap; cursor:pointer; }
+            .m375-back { position:absolute; left:0; top:204px; width:110.328339px; height:33px; appearance:none; -webkit-appearance:none; padding:0; border:0; border-radius:0; background:#fff; color:#000; cursor:pointer; }
+            .m375-back-label { position:absolute; left:24px; top:8px; width:48px; height:17px; font-size:12px; line-height:17px; font-weight:400; white-space:nowrap; }
+            .m375-back-arrow { position:absolute; left:81.921616px; top:6.5px; width:9.315445px; height:20px; display:block; }
+            .m375-footer { position:absolute; left:0; top:335px; width:375.5271px; height:13px; }
+            .m375-footer-name { position:absolute; left:146.26355px; top:0; width:83px; height:13px; font-size:9px; line-height:13px; font-weight:300; letter-spacing:.2em; color:rgba(255,255,255,.5); white-space:nowrap; }
+            .m375-footer-line { position:absolute; top:6.5px; height:.5px; background:rgba(255,255,255,.2); }
+            .m375-footer-line.left { left:0; width:129.314px; }
+            .m375-footer-line.right { left:246.213px; width:129.314px; }
+            .m375-toast { position:fixed; left:50%; top:24px; transform:translateX(-50%); z-index:1000; padding:8px 14px; border-radius:999px; background:#000; color:#fff; font-size:11px; line-height:16px; white-space:nowrap; }
         }
 
     </style>
@@ -995,20 +880,21 @@
             }
         ];
 
+
         const mobileFeaturedProjects = [
-            { id: 4, title: "VTN AI营养师", subtitle: "AI智能体/AI产品体验", tags: ["多模态", "多工具"] },
-            { id: 7, title: "ABM经销商平台", subtitle: "复杂B端经营平台", tags: ["经营数据", "客户管理"] },
-            { id: 5, title: "VTN福利精选", subtitle: "电商频道业务升级", tags: ["营销支持", "平台流量勾子"] },
-            { id: 2, title: "NTX东南亚海外市场", subtitle: "海外C/B双平台", tags: ["0～1", "海外设计体系"] },
-            { id: 6, title: "VTN直播", subtitle: "自研直播产品", tags: ["支持常态/大促", "多工具"] },
-            { id: 3, title: "ABM AI获客中心", subtitle: "B端AI内容获客", tags: ["AI工作流", "IP打造"] }
+            { id: 4, title: "VTN AI营养师", subtitle: "AI智能体/AI产品体验", tags: ["多模态", "多工具"], slot: "p2", cardWidth: 327 },
+            { id: 7, title: "ABM经销商平台", subtitle: "复杂B端经营平台", tags: ["经营数据", "客户管理"], slot: "p3", cardWidth: 327.5271 },
+            { id: 5, title: "VTN福利精选", subtitle: "电商频道业务升级", tags: ["营销", "平台流量勾子"], slot: "p4", cardWidth: 327.5271 },
+            { id: 2, title: "NTX东南亚海外市场", subtitle: "海外C/B双平台", tags: ["0→1", "海外设计体系"], slot: "p5", cardWidth: 327.5271 },
+            { id: 6, title: "VTN直播", subtitle: "自研直播产品", tags: ["支持常态/大促", "多工具"], slot: "p6", cardWidth: 327.5271 },
+            { id: 3, title: "ABM AI获客中心", subtitle: "B端AI内容获客", tags: ["AI工作流", "IP打造"], slot: "p7", cardWidth: 327.5271 }
         ].map(item => ({ ...featuredProjects.find(p => p.id === item.id), ...item }));
 
         const mobileExperienceData = [
             { time: "2026～2019", company: "ACCESS品牌管理集团", role: "UED经理" },
             { time: "2019～2016", company: "杭州金诚集团", role: "设计组负责人" },
             { time: "2016～2014", company: "墨仕（厦门）", role: "体验设计师" },
-            { time: "2014～2011", company: "联想移动（厦门）", role: "UI设计师" }
+            { time: "2011～2007", company: "联想移动（厦门）", role: "UI设计师" }
         ];
 
         const homeExperienceData = [
@@ -1324,7 +1210,7 @@
                 window.addEventListener('resize', syncMobileWidth, { passive: true });
                 return () => window.removeEventListener('resize', syncMobileWidth);
             }, []);
-            // 375px = Figma 1×. Phones up to 430px scale the whole mobile composition uniformly.
+            // 375px = Figma 1×. Other phone widths scale the complete canvas uniformly; no per-element responsive rewrites.
             const mobileScale = Math.min(Math.max(mobileViewportWidth, 1), 430) / 375;
 
             const allProjects = useMemo(() => [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)], []);
@@ -1395,7 +1281,7 @@
                 if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
                 else if (el) {
                     const visualTop = el.getBoundingClientRect().top + window.scrollY;
-                    window.scrollTo({ top: visualTop - (isMobileHome ? 56 * mobileScale : 80), behavior: 'smooth' });
+                    window.scrollTo({ top: visualTop - (isMobileHome ? 0 : 80), behavior: 'smooth' });
                 }
             };
 
@@ -1694,133 +1580,153 @@
             }
 
             if (isMobileHome) {
+                const scale = mobileScale;
+                const outerWidth = 375 * scale;
+                const outerHeight = 3526 * scale;
+                const aiScale = (width) => width / 664;
+
+                const MobileButton = ({ team = false }) => (
+                    <span className={team ? "m375-team-btn" : "m375-detail-btn"}>
+                        <span className="m375-detail-label">查看详情</span>
+                        <img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m375-detail-arrow" />
+                    </span>
+                );
+
                 return (
-                    <div className="m-home fig-pf fade-in" style={{ zoom: mobileScale }}>
-                        {toast && <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-black text-white px-5 py-2 rounded-full text-xs z-[1000] fade-in shadow-2xl">{toast}</div>}
+                    <div className="m375-outer fade-in" style={{ width: `${outerWidth}px`, height: `${outerHeight}px` }}>
+                        {toast && <div className="m375-toast">{toast}</div>}
+                        <div className="m375-canvas" style={{ transform: `scale(${scale})` }}>
+                            <header id="bio" className="m375-hero">
+                                <HomeImage src={`${HOME_ASSETS}/hero-bg-mobile.jpg`} fallback={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="m375-hero-bg" />
+                                <nav className="m375-nav">
+                                    <button onClick={() => scrollToSection('bio')} className="m375-reset m375-logo">Ding {"\n"}Heliang</button>
+                                    <button onClick={() => scrollToSection('projects')} className={`m375-reset m375-nav-link n1 ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
+                                    <button onClick={() => scrollToSection('leadership')} className={`m375-reset m375-nav-link n2 ${activeSection === 'leadership' ? 'active' : ''}`}>团队管理</button>
+                                    <button onClick={() => scrollToSection('experience')} className={`m375-reset m375-nav-link n3 ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
+                                    <button onClick={() => scrollToSection('contact')} className={`m375-reset m375-nav-link n4 ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
+                                </nav>
 
-                        <nav className={`m-nav ${navScrolled ? 'scrolled' : ''}`}>
-                            <div className="m-nav-inner">
-                                <button onClick={() => scrollToSection('bio')} className="m-logo"><span className="block">DING</span><span className="block">HELIANG</span></button>
-                                <div className="m-nav-links">
-                                    <button onClick={() => scrollToSection('projects')} className={`m-nav-link ${activeSection === 'projects' ? 'active' : ''}`}>精选项目</button>
-                                    <button onClick={() => scrollToSection('leadership')} className={`m-nav-link ${activeSection === 'leadership' ? 'active' : ''}`}>团队管理</button>
-                                    <button onClick={() => scrollToSection('experience')} className={`m-nav-link ${activeSection === 'experience' ? 'active' : ''}`}>工作经历</button>
-                                    <button onClick={() => scrollToSection('contact')} className={`m-nav-link ${activeSection === 'contact' ? 'active' : ''}`}>联系我</button>
-                                </div>
-                            </div>
-                        </nav>
-
-                        <header id="bio" className="m-hero">
-                            <HomeImage src={`${HOME_ASSETS}/hero-bg-mobile.jpg`} fallback={`${HOME_ASSETS}/hero-bg.png`} alt="" priority className="m-hero-bg" />
-                            <div className="m-hero-inner">
-                                <h1 className="m-hero-name">丁贺亮</h1>
-                                <p className="m-hero-title">体验设计 · 设计管理</p>
-                                <p className="m-hero-exp">10+年体验设计&nbsp;&nbsp;|&nbsp;&nbsp;6+年团队管理&nbsp;&nbsp;|&nbsp;&nbsp;厦门大学&nbsp;&nbsp;|&nbsp;&nbsp;数字媒体艺术</p>
-
-                                <div className="m-hero-core">
-                                    <p className="m-hero-label">核心能力</p>
-                                    <div className="m-hero-core-grid">
-                                        {['体验策略','交互与UI设计','多产品线设计管理','设计体系建设','团队建设','人才培养'].map(t => <span key={t} className="m-hero-core-item">{t}</span>)}
+                                <div className="m375-hero-content">
+                                    <h1 className="m375-name">丁贺亮</h1>
+                                    <div className="m375-profile">
+                                        <h2 className="m375-profile-title">体验设计 · 设计管理</h2>
+                                        <p className="m375-profile-exp">10+年体验设计&nbsp;&nbsp;|&nbsp;&nbsp;6+年团队管理&nbsp;&nbsp;|&nbsp;&nbsp;厦门大学&nbsp;&nbsp;|&nbsp;&nbsp;数字媒体艺术</p>
                                     </div>
-                                </div>
-
-                                <div className="m-hero-business">
-                                    <p className="m-hero-label">业务经验</p>
-                                    <div className="m-hero-business-grid">
-                                        {['C端电商','B端产品','AI产品','海外业务'].map(t => <span key={t} className="m-hero-business-item">{t}</span>)}
-                                    </div>
-                                </div>
-
-                                <div className="m-hero-scroll">
-                                    <span className="m-hero-scroll-label">查看精选项目</span>
-                                    <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="m-hero-scroll-arrow" />
-                                </div>
-                            </div>
-                        </header>
-
-                        <section id="projects" className="m-section m-projects">
-                            <div className="m-shell">
-                                <h2 className="m-section-title">精选项目</h2>
-                                <div className="m-project-list">
-                                    <button onClick={() => openProjectById(1)} className="m-project-card">
-                                        <HomeImage src={`${HOME_ASSETS}/vtn-visual.png`} alt="" className="m-project-bg" />
-                                        <div className="m-main-head">
-                                            <HomeImage src={`${HOME_ASSETS}/vtn-app-icon.png`} alt="VTN" className="m-main-icon" />
-                                            <p className="m-main-title">VTN</p>
-                                            <p className="m-main-platform">健康美丽会员店</p>
+                                    <div className="m375-core">
+                                        <p className="m375-mini-label">核心能力</p>
+                                        <div className="m375-core-grid">
+                                            <span className="m375-core-cell">体验策略</span>
+                                            <span className="m375-core-cell">交互与UI设计</span>
+                                            <span className="m375-core-cell">多产品线设计管理</span>
+                                            <span className="m375-core-cell">设计体系建设</span>
+                                            <span className="m375-core-cell">团队建设</span>
+                                            <span className="m375-core-cell">人才培养</span>
                                         </div>
-                                        <p className="m-main-headline">品牌与体验升级</p>
-                                        <p className="m-main-role">设计统筹/项目主设</p>
-                                        <span className="m-project-btn"><span className="m-project-btn-label">查看详情</span><img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m-project-btn-arrow" /></span>
-                                    </button>
+                                    </div>
+                                    <div className="m375-business">
+                                        <p className="m375-mini-label">业务经验</p>
+                                        <div className="m375-business-row">
+                                            <span className="m375-business-cell">C端电商</span>
+                                            <span className="m375-business-cell">B端产品</span>
+                                            <span className="m375-business-cell">AI产品</span>
+                                            <span className="m375-business-cell">海外业务</span>
+                                        </div>
+                                    </div>
+                                    <div className="m375-scroll">
+                                        <span className="m375-scroll-label">查看精选项目</span>
+                                        <HomeImage src={`${HOME_ASSETS}/hero-scroll-arrow.svg`} alt="" priority className="m375-scroll-arrow" />
+                                    </div>
+                                </div>
+                            </header>
 
-                                    {mobileFeaturedProjects.map(p => (
-                                        <button key={p.id} onClick={() => openProjectById(p.id)} className="m-project-card">
-                                            {(p.id === 4 || p.id === 3)
-                                                ? <LegacyAIHomepageCover projectId={p.id} title={p.title} />
-                                                : <HomeImage src={p.visual} alt="" className="m-project-bg" />
-                                            }
-                                            <div className="m-project-copy">
-                                                <h3 className="m-project-title">{p.title}</h3>
-                                                <p className="m-project-subtitle">{p.subtitle}</p>
-                                                <div className="m-project-tags">{p.tags.map(t => <span key={t} className="m-project-tag">{t}</span>)}</div>
+                            <section id="projects" className="m375-projects">
+                                <h2 className="m375-section-title">精选项目</h2>
+
+                                <button onClick={() => openProjectById(1)} className="m375-card main">
+                                    <HomeImage src={`${HOME_ASSETS}/vtn-visual.png`} alt="" className="m375-card-visual" />
+                                    <HomeImage src={`${HOME_ASSETS}/vtn-app-icon.png`} alt="VTN" className="m375-main-icon" />
+                                    <p className="m375-main-vtn">VTN</p>
+                                    <p className="m375-main-platform">健康美丽会员店</p>
+                                    <p className="m375-main-headline">品牌与体验升级</p>
+                                    <p className="m375-main-role">设计统筹/项目主设</p>
+                                    <MobileButton />
+                                </button>
+
+                                {mobileFeaturedProjects.map(p => (
+                                    <button key={p.id} onClick={() => openProjectById(p.id)} className={`m375-card ${p.slot}`}>
+                                        {(p.id === 4 || p.id === 3) ? (
+                                            <div className="m375-ai-viewport">
+                                                <div className="m375-ai-source" style={{ transform: `scale(${aiScale(p.cardWidth)})` }}>
+                                                    <LegacyAIHomepageCover projectId={p.id} title={p.title} />
+                                                </div>
                                             </div>
-                                            <span className="m-project-btn"><span className="m-project-btn-label">查看详情</span><img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m-project-btn-arrow" /></span>
-                                        </button>
+                                        ) : (
+                                            <HomeImage src={p.visual} alt="" className="m375-card-visual" />
+                                        )}
+                                        <div className="m375-copy">
+                                            <h3 className="m375-card-title">{p.title}</h3>
+                                            <p className="m375-card-subtitle">{p.subtitle}</p>
+                                            <div className="m375-tags">
+                                                {p.tags.map(t => <span key={t} className="m375-tag">{t}</span>)}
+                                            </div>
+                                        </div>
+                                        <MobileButton />
+                                    </button>
+                                ))}
+                            </section>
+
+                            <section id="leadership" className="m375-team">
+                                <h2 className="m375-section-title">团队管理</h2>
+                                <button onClick={() => openProjectById(9)} className="m375-team-card">
+                                    <HomeImage src={`${HOME_ASSETS}/leadership-team-mobile.jpg`} fallback={`${HOME_ASSETS}/leadership-team.png`} alt="" className="m375-team-bg" />
+                                    <div className="m375-team-copy">
+                                        <h3 className="m375-team-title">团队管理与体系建设</h3>
+                                        <p className="m375-team-body">围绕团队能力建设和设计体系完善，持续提升专业水平，协同效率与组织稳定性</p>
+                                        <div className="m375-team-tags">
+                                            {['人才培养','协作机制','设计体系','业务协同'].map(t => <span key={t} className="m375-tag">{t}</span>)}
+                                        </div>
+                                    </div>
+                                    <MobileButton team />
+                                </button>
+                            </section>
+
+                            <section id="experience" className="m375-work">
+                                <h2 className="m375-section-title">工作经历</h2>
+                                <div className="m375-work-card">
+                                    {mobileExperienceData.map((exp, idx) => (
+                                        <div key={`${exp.time}-${exp.company}`} className={`m375-work-row r${idx + 1}`}>
+                                            <span className="m375-line-top"></span>
+                                            <span className="m375-dot"></span>
+                                            <span className="m375-line-bottom"></span>
+                                            <p className="m375-work-time">{exp.time}</p>
+                                            <p className="m375-work-company">{exp.company}</p>
+                                            <p className="m375-work-role">{exp.role}</p>
+                                        </div>
                                     ))}
                                 </div>
-                            </div>
-                        </section>
+                            </section>
 
-                        <section id="leadership" className="m-section m-team">
-                            <div className="m-shell">
-                                <h2 className="m-section-title">团队管理</h2>
-                                <button onClick={() => openProjectById(9)} className="m-team-card">
-                                    <HomeImage src={`${HOME_ASSETS}/leadership-team-mobile.jpg`} fallback={`${HOME_ASSETS}/leadership-team.png`} alt="" className="m-team-bg" />
-                                    <div className="m-team-copy">
-                                        <h3 className="m-team-title">团队管理与体系建设</h3>
-                                        <p className="m-team-body">围绕团队能力建设和设计体系完善，持续提升专业水平、协同效率与组织稳定性</p>
-                                        <div className="m-team-tags">{['人才培养','协作机制','设计体系','业务协同'].map(t => <span key={t} className="m-team-tag">{t}</span>)}</div>
+                            <footer id="contact" className="m375-contact">
+                                <div className="m375-contact-group">
+                                    <h2 className="m375-contact-title">联系我</h2>
+                                    <div className="m375-contact-email">
+                                        <p className="m375-contact-label">邮箱</p>
+                                        <button onClick={() => handleCopy(personalInfo.email)} className="m375-contact-value">{personalInfo.email}</button>
                                     </div>
-                                    <span className="m-team-btn"><span className="m-project-btn-label">查看详情</span><img src={`${HOME_ASSETS}/btn-arrow.svg`} alt="" className="m-project-btn-arrow" /></span>
-                                </button>
-                            </div>
-                        </section>
-
-                        <section id="experience" className="m-section m-experience">
-                            <div className="m-shell">
-                                <h2 className="m-section-title">工作经历</h2>
-                                <div className="m-exp-card">
-                                    <div className="m-exp-list">
-                                        {mobileExperienceData.map(exp => (
-                                            <div key={exp.company} className="m-exp-item">
-                                                <span className="m-exp-dot"></span><span className="m-exp-line"></span>
-                                                <p className="m-exp-time">{exp.time}</p>
-                                                <p className="m-exp-company">{exp.company}</p>
-                                                <p className="m-exp-role">{exp.role}</p>
-                                            </div>
-                                        ))}
+                                    <div className="m375-contact-phone">
+                                        <p className="m375-contact-label">电话</p>
+                                        <button onClick={() => handleCopy(personalInfo.phone)} className="m375-contact-value">{personalInfo.phone}</button>
                                     </div>
+                                    <button onClick={() => window.scrollTo({top:0, behavior:'smooth'})} className="m375-back">
+                                        <span className="m375-back-label">返回顶部</span>
+                                        <svg className="m375-back-arrow" viewBox="0 0 14 20" aria-hidden="true"><path d="M7 19V3.5M2.5 8L7 3.5 11.5 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" /></svg>
+                                    </button>
                                 </div>
-                            </div>
-                        </section>
-
-                        <div className="m-contact-wrap">
-                            <footer id="contact" className="m-contact">
-                                <h2 className="m-contact-title">联系我</h2>
-                                <div className="m-contact-block">
-                                    <p className="m-contact-label">邮箱</p>
-                                    <button onClick={() => handleCopy(personalInfo.email)} className="m-contact-value">{personalInfo.email}</button>
+                                <div className="m375-footer">
+                                    <span className="m375-footer-line left"></span>
+                                    <span className="m375-footer-name">DING HELIANG</span>
+                                    <span className="m375-footer-line right"></span>
                                 </div>
-                                <div className="m-contact-block">
-                                    <p className="m-contact-label">电话</p>
-                                    <button onClick={() => handleCopy(personalInfo.phone)} className="m-contact-value">{personalInfo.phone}</button>
-                                </div>
-                                <button onClick={() => window.scrollTo({top:0, behavior:'smooth'})} className="m-contact-back">
-                                    <span className="m-contact-back-label">返回顶部</span>
-                                    <svg className="m-contact-up" viewBox="0 0 14 20" aria-hidden="true"><path d="M7 19V3.5M2.5 8L7 3.5 11.5 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" strokeLinejoin="miter" /></svg>
-                                </button>
-                                <div className="m-footer-brand"><span className="m-footer-line"></span><span className="m-footer-name">DING HELIANG</span><span className="m-footer-line"></span></div>
                             </footer>
                         </div>
                     </div>
