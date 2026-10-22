@@ -641,99 +641,109 @@
 
 
         /* ===== MOBILE HOME / 作品集首页-移动端.fig · 375px baseline ===== */
+        /* ===== Mobile home — 375px Figma is the single 1× source of truth ===== */
         .m-home { display:none; }
         @media (max-width:767px) {
             html { scroll-padding-top:56px; }
             body { overflow-x:hidden; }
-            .m-home { display:block; width:100%; background:#fff; color:#000; overflow-x:hidden; }
-            .m-shell { width:calc(100% - 48px); max-width:560px; margin:0 auto; }
+            .m-home {
+                display:block;
+                width:375px;
+                min-width:375px;
+                margin:0 auto;
+                background:#fff;
+                color:#000;
+                overflow:hidden;
+                transform-origin:top center;
+            }
+            .m-shell { width:327px; margin:0 24px; }
 
-            /* mobile nav */
-            .m-nav { position:fixed; left:0; top:0; z-index:300; width:100%; height:56px; background:transparent; transition:background-color .2s ease, backdrop-filter .2s ease; }
+            /* Navigation — exact 375px baseline, 24px safe margins. */
+            .m-nav { position:fixed; left:0; top:0; z-index:300; width:375px; height:56px; background:transparent; transition:background-color .2s ease, backdrop-filter .2s ease; }
             .m-nav.scrolled { background:rgba(255,255,255,.92); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
-            .m-nav-inner { width:calc(100% - 24px); max-width:720px; height:56px; margin:0 auto; position:relative; }
-            .m-logo { position:absolute; left:0; top:12px; border:0; padding:0; background:none; color:#000; font-family:Inter,"Helvetica Neue",Arial,sans-serif; font-size:9px; line-height:10px; font-weight:500; text-align:left; letter-spacing:0; cursor:pointer; }
+            .m-nav-inner { position:relative; width:327px; height:56px; margin:0 24px; }
+            .m-logo { position:absolute; left:0; top:18px; border:0; padding:0; background:none; color:#000; font-family:Inter,"Helvetica Neue",Arial,sans-serif; font-size:9px; line-height:10px; font-weight:500; text-align:left; letter-spacing:0; cursor:pointer; }
             .m-nav-links { position:absolute; right:0; top:18px; display:flex; align-items:center; gap:22px; height:20px; }
             .m-nav-link { border:0; padding:0; background:none; color:rgba(0,0,0,.28); font-size:9px; line-height:20px; font-weight:400; white-space:nowrap; cursor:pointer; }
             .m-nav-link.active { color:#000; font-weight:600; }
 
-            /* mobile hero */
-            .m-hero { position:relative; width:100%; height:680px; overflow:hidden; background:#eef0f2; }
-            .m-hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; }
-            .m-hero-inner { position:relative; width:calc(100% - 48px); max-width:560px; height:680px; margin:0 auto; z-index:2; }
+            /* Hero — 375 × 680 from the mobile Figma. */
+            .m-hero { position:relative; width:375px; height:680px; overflow:hidden; background:#eef0f2; }
+            .m-hero-bg { position:absolute; inset:0; width:375px; height:680px; object-fit:cover; object-position:center top; }
+            .m-hero-inner { position:relative; width:327px; height:680px; margin:0 24px; z-index:2; }
             .m-hero-name { position:absolute; left:0; top:142px; margin:0; font-size:44px; line-height:62px; font-weight:600; letter-spacing:0; white-space:nowrap; }
             .m-hero-title { position:absolute; left:0; top:220px; margin:0; font-size:24px; line-height:34px; font-weight:600; letter-spacing:.02em; white-space:nowrap; }
             .m-hero-exp { position:absolute; left:0; top:264px; margin:0; font-size:11px; line-height:17px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
             .m-hero-label { margin:0; font-size:11px; line-height:16px; font-weight:300; color:rgba(0,0,0,.48); }
-            .m-hero-core { position:absolute; left:0; top:326px; width:100%; }
-            .m-hero-core-grid { margin-top:12px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+            .m-hero-core { position:absolute; left:0; top:326px; width:327px; }
+            .m-hero-core-grid { margin-top:12px; display:grid; grid-template-columns:repeat(3,103.6667px); gap:8px; }
             .m-hero-core-item { height:32px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.035); font-size:11px; line-height:16px; font-weight:600; white-space:nowrap; }
-            .m-hero-business { position:absolute; left:0; top:462px; width:100%; }
-            .m-hero-business-grid { margin-top:12px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+            .m-hero-business { position:absolute; left:0; top:462px; width:327px; }
+            .m-hero-business-grid { margin-top:12px; display:grid; grid-template-columns:repeat(4,75.75px); gap:8px; }
             .m-hero-business-item { height:32px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.035); font-size:10.5px; line-height:16px; font-weight:600; white-space:nowrap; }
             .m-hero-scroll { position:absolute; left:0; top:574px; width:110px; height:70px; }
             .m-hero-scroll-label { font-size:11px; line-height:16px; font-weight:300; color:rgba(0,0,0,.55); white-space:nowrap; }
             .m-hero-scroll-arrow { position:absolute; left:-2px; top:28px; width:5px; height:45px; object-fit:fill; }
 
-            /* mobile sections */
-            .m-section { width:100%; background:#fff; }
-            .m-projects { padding-top:34px; }
-            .m-section-title { margin:0 0 20px; font-size:30px; line-height:42px; font-weight:600; letter-spacing:0; }
+            /* Sections — Figma 375px baseline. */
+            .m-section { width:375px; background:#fff; }
+            .m-projects { padding-top:32px; }
+            .m-section-title { margin:0 0 12px; font-size:24px; line-height:34px; font-weight:600; letter-spacing:0; }
             .m-project-list { display:flex; flex-direction:column; gap:16px; }
-            .m-project-card { position:relative; display:block; width:100%; aspect-ratio:664 / 374; overflow:hidden; border:0; padding:0; background:#eef0f2; color:#000; text-align:left; cursor:pointer; }
-            .m-project-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
-            .m-project-copy { position:absolute; left:24px; top:34px; z-index:60; width:58%; min-width:0; }
-            .m-project-title { margin:0; font-size:18px; line-height:25px; font-weight:600; letter-spacing:0; white-space:nowrap; }
-            .m-project-subtitle { margin:8px 0 0; font-size:10px; line-height:15px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
-            .m-project-tags { margin-top:10px; display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap; }
+            .m-project-card { position:relative; display:block; width:327px; height:184.2px; overflow:hidden; border:0; padding:0; background:#eef0f2; color:#000; text-align:left; cursor:pointer; }
+            .m-project-bg { position:absolute; inset:0; width:327px; height:184.2px; object-fit:cover; object-position:center; }
+            .m-project-copy { position:absolute; left:24px; top:28px; z-index:60; width:190px; min-width:0; }
+            .m-project-title { margin:0; font-size:16px; line-height:22px; font-weight:600; letter-spacing:0; white-space:nowrap; }
+            .m-project-subtitle { margin:7px 0 0; font-size:10px; line-height:15px; font-weight:300; color:rgba(0,0,0,.5); white-space:nowrap; }
+            .m-project-tags { margin-top:9px; display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap; }
             .m-project-tag { min-width:0; height:20px; padding:2px 9px; background:rgba(255,255,255,.55); display:flex; align-items:center; justify-content:center; font-size:9px; line-height:16px; font-weight:400; color:#666; white-space:nowrap; }
             .m-project-btn { position:absolute; left:24px; bottom:20px; z-index:61; width:84px; height:24px; background:#000; color:#fff; }
             .m-project-btn-label { position:absolute; left:17px; top:4px; font-size:10px; line-height:16px; font-weight:400; white-space:nowrap; }
             .m-project-btn-arrow { position:absolute; right:10px; top:10px; width:12px; height:4px; object-fit:fill; filter:brightness(0) invert(1); }
 
-            /* first VTN card has its own mobile hierarchy */
-            .m-main-head { position:absolute; left:24px; top:28px; z-index:60; height:32px; }
+            /* First VTN card. */
+            .m-main-head { position:absolute; left:24px; top:28px; z-index:60; height:30px; }
             .m-main-icon { position:absolute; left:0; top:0; width:30px; height:30px; object-fit:contain; }
-            .m-main-title { position:absolute; left:40px; top:-1px; margin:0; font-size:18px; line-height:22px; font-weight:600; }
-            .m-main-platform { position:absolute; left:40px; top:20px; margin:0; width:125px; font-size:9px; line-height:13px; font-weight:400; color:#666; white-space:nowrap; }
-            .m-main-headline { position:absolute; left:24px; top:70px; z-index:60; margin:0; font-size:18px; line-height:25px; font-weight:600; white-space:nowrap; }
-            .m-main-role { position:absolute; left:24px; top:104px; z-index:60; margin:0; font-size:10px; line-height:15px; font-weight:500; color:#008080; white-space:nowrap; }
+            .m-main-title { position:absolute; left:40px; top:-1px; margin:0; font-size:16px; line-height:20px; font-weight:600; }
+            .m-main-platform { position:absolute; left:40px; top:19px; margin:0; width:125px; font-size:9px; line-height:13px; font-weight:400; color:#666; white-space:nowrap; }
+            .m-main-headline { position:absolute; left:24px; top:70px; z-index:60; margin:0; font-size:16px; line-height:22px; font-weight:600; white-space:nowrap; }
+            .m-main-role { position:absolute; left:24px; top:100px; z-index:60; margin:0; font-size:10px; line-height:15px; font-weight:500; color:#008080; white-space:nowrap; }
 
-            /* AI covers: preserve desktop composition and scale it proportionally */
-            .m-project-card .legacy-ai-cover { inset:0; width:100%; height:100%; }
+            /* AI covers reuse the desktop composite as one proportional visual system. */
+            .m-project-card .legacy-ai-cover { inset:0; width:327px; height:184.2px; }
             .m-project-card .legacy-ai-cover-video-wrap { height:90%; }
             .m-project-card .legacy-ai-cover-video { transform:scale(.94); }
             .m-project-card .legacy-ai-cover-video.abm-ai { transform:scale(1.05); }
             .m-project-card .legacy-ai-cover-video-wrap.vtn-ai-wrap { left:56.0241% !important; }
             .m-project-card .legacy-ai-cover-video-wrap.abm-ai-wrap { left:58.012% !important; }
 
-            /* team management */
+            /* Team management — mobile-specific background, exact mobile card geometry. */
             .m-team { padding-top:54px; }
-            .m-team-card { position:relative; display:block; width:100%; height:402px; overflow:hidden; border:0; padding:0; background:#f5f2ef; color:#000; text-align:left; cursor:pointer; }
-            .m-team-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
-            .m-team-copy { position:absolute; left:24px; right:24px; top:244px; z-index:3; }
-            .m-team-title { margin:0; font-size:18px; line-height:25px; font-weight:600; }
-            .m-team-body { margin:11px 0 0; width:100%; font-size:10px; line-height:16px; font-weight:300; color:rgba(0,0,0,.48); }
-            .m-team-tags { margin-top:12px; display:flex; gap:8px; flex-wrap:nowrap; }
+            .m-team-card { position:relative; display:block; width:327px; height:360px; overflow:hidden; border:0; padding:0; background:#f5f2ef; color:#000; text-align:left; cursor:pointer; }
+            .m-team-bg { position:absolute; inset:0; width:327px; height:360px; object-fit:cover; object-position:center; }
+            .m-team-copy { position:absolute; left:24px; right:24px; top:208px; z-index:3; }
+            .m-team-title { margin:0; font-size:16px; line-height:22px; font-weight:600; }
+            .m-team-body { margin:8px 0 0; width:100%; font-size:10px; line-height:15px; font-weight:300; color:rgba(0,0,0,.48); }
+            .m-team-tags { margin-top:10px; display:flex; gap:8px; flex-wrap:nowrap; }
             .m-team-tag { height:20px; padding:2px 9px; background:rgba(255,255,255,.58); display:flex; align-items:center; justify-content:center; font-size:9px; line-height:16px; font-weight:400; color:#666; white-space:nowrap; }
-            .m-team-btn { position:absolute; left:24px; bottom:27px; z-index:4; width:84px; height:24px; background:#000; color:#fff; }
+            .m-team-btn { position:absolute; left:24px; bottom:24px; z-index:4; width:84px; height:24px; background:#000; color:#fff; }
 
-            /* work experience */
+            /* Work experience — 96px rhythm between timeline nodes in Figma. */
             .m-experience { padding-top:54px; }
-            .m-exp-card { position:relative; width:100%; height:414px; background:#f7f7f8; overflow:hidden; }
-            .m-exp-list { position:absolute; left:28px; right:18px; top:36px; bottom:28px; }
-            .m-exp-item { position:relative; height:88px; padding-left:48px; }
-            .m-exp-dot { position:absolute; left:0; top:7px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
-            .m-exp-line { position:absolute; left:2.75px; top:13px; width:.5px; height:82px; background:rgba(0,0,0,.3); }
+            .m-exp-card { position:relative; width:327px; height:414px; background:#f7f7f8; overflow:hidden; }
+            .m-exp-list { position:absolute; left:28px; right:18px; top:24px; bottom:0; }
+            .m-exp-item { position:relative; height:96px; padding-left:48px; }
+            .m-exp-dot { position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:#000; z-index:2; }
+            .m-exp-line { position:absolute; left:2.75px; top:14px; width:.5px; height:90px; background:rgba(0,0,0,.3); }
             .m-exp-item:last-child .m-exp-line { display:none; }
-            .m-exp-time { margin:0; font-size:10px; line-height:14px; font-weight:300; color:rgba(0,0,0,.35); }
-            .m-exp-company { margin:8px 0 0; font-size:15px; line-height:20px; font-weight:600; white-space:nowrap; }
-            .m-exp-role { margin:3px 0 0; font-size:10px; line-height:15px; font-weight:400; color:#000; white-space:nowrap; }
+            .m-exp-time { margin:0; font-size:9px; line-height:13px; font-weight:300; color:rgba(0,0,0,.35); }
+            .m-exp-company { margin:6px 0 0; font-size:14px; line-height:20px; font-weight:600; white-space:nowrap; }
+            .m-exp-role { margin:2px 0 0; font-size:9px; line-height:14px; font-weight:400; color:#000; white-space:nowrap; }
 
-            /* contact */
-            .m-contact-wrap { padding-top:44px; background:#fff; }
-            .m-contact { position:relative; width:100%; height:360px; background:#000; color:#fff; text-align:center; overflow:hidden; }
-            .m-contact-title { margin:0; padding-top:58px; font-size:28px; line-height:39px; font-weight:600; }
+            /* Contact. */
+            .m-contact-wrap { padding-top:48px; background:#fff; }
+            .m-contact { position:relative; width:375px; height:360px; background:#000; color:#fff; text-align:center; overflow:hidden; }
+            .m-contact-title { margin:0; padding-top:48px; font-size:24px; line-height:34px; font-weight:600; }
             .m-contact-block { margin-top:22px; }
             .m-contact-block + .m-contact-block { margin-top:18px; }
             .m-contact-label { margin:0; font-size:9px; line-height:13px; color:rgba(255,255,255,.45); font-weight:400; }
@@ -744,26 +754,6 @@
             .m-footer-brand { position:absolute; left:0; bottom:15px; width:100%; display:flex; align-items:center; justify-content:center; gap:12px; color:rgba(255,255,255,.22); }
             .m-footer-line { height:.5px; width:72px; background:rgba(255,255,255,.14); }
             .m-footer-name { font-size:8px; line-height:12px; letter-spacing:.12em; white-space:nowrap; }
-
-            @media (max-width:390px) {
-                .m-nav-links { gap:18px; }
-                .m-nav-link { font-size:8.5px; }
-                .m-hero-exp { font-size:10.5px; }
-                .m-hero-core-item { font-size:10.5px; }
-                .m-project-copy { width:60%; }
-            }
-            @media (max-width:350px) {
-                .m-shell, .m-hero-inner { width:calc(100% - 32px); }
-                .m-nav-inner { width:calc(100% - 16px); }
-                .m-nav-links { gap:12px; }
-                .m-nav-link { font-size:8px; }
-                .m-hero-name { font-size:40px; }
-                .m-hero-title { font-size:21px; }
-                .m-hero-exp { font-size:9.5px; }
-                .m-hero-core-item, .m-hero-business-item { font-size:9.5px; }
-                .m-project-copy, .m-main-head, .m-main-headline, .m-main-role, .m-project-btn, .m-team-copy, .m-team-btn { left:20px; }
-                .m-team-copy { right:20px; }
-            }
         }
 
     </style>
@@ -1328,6 +1318,14 @@
                     else mq.removeListener(sync);
                 };
             }, []);
+            const [mobileViewportWidth, setMobileViewportWidth] = useState(() => window.innerWidth);
+            useEffect(() => {
+                const syncMobileWidth = () => setMobileViewportWidth(window.innerWidth);
+                window.addEventListener('resize', syncMobileWidth, { passive: true });
+                return () => window.removeEventListener('resize', syncMobileWidth);
+            }, []);
+            // 375px = Figma 1×. Phones up to 430px scale the whole mobile composition uniformly.
+            const mobileScale = Math.min(Math.max(mobileViewportWidth, 1), 430) / 375;
 
             const allProjects = useMemo(() => [...corePortfolioData.flatMap(g => g.projects), ...managementData.flatMap(g => g.projects)], []);
 
@@ -1372,7 +1370,10 @@
                         let current = 'projects';
                         sections.forEach((id) => {
                             const el = document.getElementById(id);
-                            if (el && el.offsetTop <= marker) current = id;
+                            if (el) {
+                                const visualTop = el.getBoundingClientRect().top + y;
+                                if (visualTop <= marker) current = id;
+                            }
                         });
                         if (window.innerHeight + y >= document.documentElement.scrollHeight - 100) current = 'contact';
                         setActiveSection(current);
@@ -1392,7 +1393,10 @@
                 setActiveSection(id);
                 const el = document.getElementById(id);
                 if (id === 'bio') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-                else if (el) { window.scrollTo({ top: el.offsetTop - (isMobileHome ? 56 : 80), behavior: 'smooth' }); }
+                else if (el) {
+                    const visualTop = el.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({ top: visualTop - (isMobileHome ? 56 * mobileScale : 80), behavior: 'smooth' });
+                }
             };
 
             const handleCopy = (txt) => {
@@ -1691,7 +1695,7 @@
 
             if (isMobileHome) {
                 return (
-                    <div className="m-home fig-pf fade-in">
+                    <div className="m-home fig-pf fade-in" style={{ zoom: mobileScale }}>
                         {toast && <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-black text-white px-5 py-2 rounded-full text-xs z-[1000] fade-in shadow-2xl">{toast}</div>}
 
                         <nav className={`m-nav ${navScrolled ? 'scrolled' : ''}`}>
